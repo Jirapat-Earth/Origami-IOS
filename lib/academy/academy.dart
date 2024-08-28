@@ -97,10 +97,6 @@ class _AcademyPageState extends State<AcademyPage> {
     }
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
-      appBar: AppBar(
-        backgroundColor: Colors.orange,
-        title: Text('Academy'),
-      ),
       body: loading(),
       bottomNavigationBar: BottomBarInspiredInside(
         items: [

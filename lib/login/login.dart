@@ -9,6 +9,7 @@ import '../language/translate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../origami_view.dart';
 import '../setting_translate.dart';
 
 class LoginPage extends StatefulWidget {
@@ -77,8 +78,9 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => AcademyPage(
+              builder: (context) => OrigamiPage(
                 employee: employee1,
+                popPage: widget.popPage,
               ),
             ),
           );
