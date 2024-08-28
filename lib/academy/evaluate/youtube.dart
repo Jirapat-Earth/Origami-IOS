@@ -16,7 +16,6 @@ class _YouTubeScreenState extends State<YouTubeScreen> {
   void initState() {
     super.initState();
     _loadStoppedPosition(); // Load the saved position
-
     _controller = YoutubePlayerController(
       initialVideoId: videoId,
       flags: YoutubePlayerFlags(
@@ -29,7 +28,6 @@ class _YouTubeScreenState extends State<YouTubeScreen> {
         _saveStoppedPosition();
       }
     });
-
   }
 
   Future<void> _loadStoppedPosition() async {
@@ -52,7 +50,7 @@ class _YouTubeScreenState extends State<YouTubeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('YouTube Player')),
+      // appBar: AppBar(title: Text('YouTube Player')),
       body: YoutubePlayerBuilder(
         player: YoutubePlayer(
           controller: _controller,
