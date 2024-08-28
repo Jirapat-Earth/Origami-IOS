@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:camera/camera.dart';
 // import 'package:carousel_slider/carousel_options.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -2453,7 +2454,7 @@ class _NeedDetailState extends State<NeedDetail> {
     }
   }
 
-  // final CarouselController _carouselController = CarouselController();
+  final CarouselSliderController _controller = CarouselSliderController();
   int _currentIndex = 0;
   Widget _InPhoto() {
     return Column(
@@ -2464,90 +2465,90 @@ class _NeedDetailState extends State<NeedDetail> {
                   SizedBox(
                     height: 16,
                   ),
-                  // CarouselSlider.builder(
-                  //   carouselController: _carouselController,
-                  //   itemCount: selectedImages.length,
-                  //   itemBuilder: (context, index, realIndex) {
-                  //     return Column(
-                  //       children: [
-                  //         Expanded(
-                  //           child: Container(
-                  //             decoration: BoxDecoration(
-                  //               borderRadius: BorderRadius.circular(15),
-                  //               border: Border.all(
-                  //                 color: Colors.orange.shade300,
-                  //                 width: 1.0,
-                  //               ),
-                  //             ),
-                  //             child: kIsWeb
-                  //                 ? ClipRRect(
-                  //                     borderRadius: BorderRadius.circular(12),
-                  //                     child: Image.network(
-                  //                         selectedImages[index].path))
-                  //                 : ClipRRect(
-                  //                     borderRadius: BorderRadius.circular(12),
-                  //                     child: Image.file(
-                  //                       selectedImages[index],
-                  //                       fit: BoxFit.cover,
-                  //                     ),
-                  //                   ),
-                  //           ),
-                  //         ),
-                  //         SizedBox(
-                  //           height: 30,
-                  //         ),
-                  //         SingleChildScrollView(
-                  //           scrollDirection: Axis.horizontal,
-                  //           child: Row(
-                  //             children: List.generate(
-                  //               selectedImages.length,
-                  //               (indexImage) {
-                  //                 final base64String = imageToBase64(
-                  //                     selectedImages[indexImage].path,
-                  //                     myList);
-                  //                 print(base64String);
-                  //                 return Padding(
-                  //                   padding: const EdgeInsets.only(
-                  //                       left: 4, right: 4),
-                  //                   child: Container(
-                  //                     decoration: BoxDecoration(
-                  //                       borderRadius:
-                  //                           BorderRadius.circular(10),
-                  //                       color: (index == indexImage)
-                  //                           ? Colors.orange.shade500
-                  //                           : Colors.transparent,
-                  //                       border: Border.all(
-                  //                         color: (index == indexImage)
-                  //                             ? Colors.orange.shade500
-                  //                             : Colors.orange.shade500,
-                  //                         width: 1.0,
-                  //                       ),
-                  //                     ),
-                  //                     padding: EdgeInsets.all(4),
-                  //                   ),
-                  //                 );
-                  //               },
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     );
-                  //   },
-                  //   options: CarouselOptions(
-                  //     height: MediaQuery.of(context).size.height * 0.64,
-                  //     autoPlay: false,
-                  //     autoPlayInterval: Duration(seconds: 3),
-                  //     enlargeCenterPage: true,
-                  //     aspectRatio: 16 / 9,
-                  //     viewportFraction: 0.8,
-                  //     initialPage: _currentIndex,
-                  //     onPageChanged: (index, reason) {
-                  //       setState(() {
-                  //         _currentIndex = index;
-                  //       });
-                  //     },
-                  //   ),
-                  // ),
+                  CarouselSlider.builder(
+                    controller: _controller,
+                    itemCount: selectedImages.length,
+                    itemBuilder: (context, index, realIndex) {
+                      return Column(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                  color: Colors.orange.shade300,
+                                  width: 1.0,
+                                ),
+                              ),
+                              child: kIsWeb
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.network(
+                                          selectedImages[index].path))
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.file(
+                                        selectedImages[index],
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: List.generate(
+                                selectedImages.length,
+                                (indexImage) {
+                                  final base64String = imageToBase64(
+                                      selectedImages[indexImage].path,
+                                      myList);
+                                  print(base64String);
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 4, right: 4),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10),
+                                        color: (index == indexImage)
+                                            ? Colors.orange.shade500
+                                            : Colors.transparent,
+                                        border: Border.all(
+                                          color: (index == indexImage)
+                                              ? Colors.orange.shade500
+                                              : Colors.orange.shade500,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      padding: EdgeInsets.all(4),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                    options: CarouselOptions(
+                      height: MediaQuery.of(context).size.height * 0.64,
+                      autoPlay: false,
+                      autoPlayInterval: Duration(seconds: 3),
+                      enlargeCenterPage: true,
+                      aspectRatio: 16 / 9,
+                      viewportFraction: 0.8,
+                      initialPage: _currentIndex,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
+                    ),
+                  ),
                 ],
               )
             : Expanded(child: Center(child: Text('$No_Image'))),
