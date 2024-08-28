@@ -4,17 +4,17 @@ import 'TH.dart';
 
 Future<String>? futureLoadData;
 Future<String> loadData() async {
-  await Future.delayed(Duration(seconds: 1)); // Simulate a network call
+  await Future.delayed(const Duration(seconds: 1)); // Simulate a network call
   return 'Data Loaded';
 }
-
-// void Translate() {
-//   if (selectedRadio == 1) {
-//     TH();
-//   } else if (selectedRadio == 2) {
-//     ENG();
-//   }
-// }
+int selectedRadio = 2;
+void Translate() {
+  if (selectedRadio == 1) {
+    TH();
+  } else if (selectedRadio == 2) {
+    ENG();
+  }
+}
 
 // origami view
 String need = '';

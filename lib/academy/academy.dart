@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:origami_ios/login/login.dart';
 import '../../Language/translate.dart';
 import 'evaluate/evaluate_module.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AcademyPage extends StatefulWidget {
-  AcademyPage({super.key});
-
+  AcademyPage({super.key, required this.employee});
+  final Employee employee;
   @override
   _AcademyPageState createState() => _AcademyPageState();
 }
@@ -93,6 +94,10 @@ class _AcademyPageState extends State<AcademyPage> {
     }
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        title: Text('Academy'),
+      ),
       body: loading(),
       bottomNavigationBar: BottomBarInspiredInside(
         items: [
