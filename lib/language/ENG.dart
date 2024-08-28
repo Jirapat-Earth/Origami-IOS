@@ -1,5 +1,5 @@
 
-import 'package:origami_ios/Language/translate.dart';
+import 'package:origami_ios/language/translate.dart';
 
 Future<void> ENG() async {
   need = "Need";

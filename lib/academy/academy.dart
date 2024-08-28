@@ -4,14 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:origami_ios/login/login.dart';
-import '../../Language/translate.dart';
+import '../../language/translate.dart';
 import 'evaluate/evaluate_module.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AcademyPage extends StatefulWidget {
-  AcademyPage({super.key, required this.employee});
+  AcademyPage({super.key,
+    required this.employee,
+  });
   final Employee employee;
   @override
   _AcademyPageState createState() => _AcademyPageState();

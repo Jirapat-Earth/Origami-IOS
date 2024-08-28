@@ -9,10 +9,16 @@ import '../language/translate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../setting_translate.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({
     Key? key,
+    required this.num,
+    required this.popPage,
   }) : super(key: key);
+  final int num;
+  final int popPage;
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -111,9 +117,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _loadCredentials() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // if (widget.num == 1) {
-    //   prefs.clear();
-    // }
+    if (widget.num == 1) {
+      prefs.clear();
+    }
     String username = prefs.getString('username') ?? '';
     String password = prefs.getString('password') ?? '';
 
@@ -123,18 +129,18 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     if (username.isNotEmpty && password.isNotEmpty) {
-      // if (widget.num == 1) {
-      //   prefs.clear();
-      // } else if (widget.num == 0) {
+      if (widget.num == 1) {
+        prefs.clear();
+      } else if (widget.num == 0) {
         _login();
-      // }
+      }
     }
   }
 
   _loadSelectedRadio() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      // selectedRadio = prefs.getInt('selectedRadio') ?? 1;
+      selectedRadio = prefs.getInt('selectedRadio') ?? 1;
       Translate();
     });
   }
@@ -142,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    // Translate();
+    Translate();
     _loadSelectedRadio();
     _loadCredentials();
   }

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../Language/translate.dart';
+import '../../../../language/translate.dart';
 
 class Description extends StatefulWidget {
   Description({

@@ -1,4 +1,5 @@
 
+import '../setting_translate.dart';
 import 'ENG.dart';
 import 'TH.dart';
 
@@ -7,7 +8,7 @@ Future<String> loadData() async {
   await Future.delayed(const Duration(seconds: 1)); // Simulate a network call
   return 'Data Loaded';
 }
-int selectedRadio = 2;
+
 void Translate() {
   if (selectedRadio == 1) {
     TH();

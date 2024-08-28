@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import '../../../Language/translate.dart';
+import '../../../language/translate.dart';
 import 'Announcements/announcements.dart';
 import 'attach_file/attach_file.dart';
 import 'certification/certification.dart';
