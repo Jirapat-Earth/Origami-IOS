@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:camera/camera.dart';
-import 'package:carousel_slider/carousel_options.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+// import 'package:camera/camera.dart';
+// import 'package:carousel_slider/carousel_options.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:origami_ios/need/widget_mini/mini_account.dart';
@@ -897,113 +897,113 @@ class _NeedDetailState extends State<NeedDetail> {
         padding: const EdgeInsets.only(right: 8.0),
         child: SizedBox(
           width: double.infinity,
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton2<PriorityData>(
-              isExpanded: true,
-              hint: Row(
-                children: [
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    (widget.request_id == '')
-                        ? detailItem?.priorityName ?? ''
-                        : editpriorityText,
-                    style: GoogleFonts.openSans(
-                        fontSize: 14, color: Color(0xFF555555)),
-                  ),
-                  // Spacer(),
-                  // Icon(Icons.arrow_drop_down)
-                ],
-              ),
-              value: _selectedPriority,
-              style:
-                  GoogleFonts.openSans(fontSize: 14, color: Color(0xFF555555)),
-              underline: Container(
-                height: 1,
-                color: Colors.transparent,
-              ),
-              items: priorityOption.map((PriorityData priority) {
-                return DropdownMenuItem<PriorityData>(
-                  value: priority,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 6, bottom: 6),
-                            child: Container(
-                              color: (priority.priority_name == 'Low')
-                                  ? Colors.green
-                                  : (priority.priority_name == 'Medium')
-                                      ? Colors.yellow
-                                      : (priority.priority_name == 'High')
-                                          ? Colors.orangeAccent
-                                          : (priority.priority_name ==
-                                                  'Very high')
-                                              ? Colors.redAccent
-                                              : Color(0xFF555555),
-                              // color: Color(int.parse(
-                              //     '0xFF${this.detailItem?.priorityColor??''}')),
-                              padding: EdgeInsets.only(
-                                  top: 14, bottom: 14, left: 2, right: 2),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            priority.priority_name ?? '',
-                            style: GoogleFonts.openSans(
-                              fontSize: 14,
-                              color: Color(0xFF555555),
-                            ),
-                          ),
-                          // Spacer(),
-                          // Icon(Icons.arrow_drop_down)
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-              onChanged: (PriorityData? newValue) {
-                setState(() {
-                  is_priority = true;
-                  _selectedPriority = newValue;
-                });
-              },
-              iconStyleData: IconStyleData(
-                icon: Icon(Icons.arrow_drop_down),
-                iconEnabledColor: Color(0xFF555555),
-                iconDisabledColor: Color(0xFF555555),
-                iconSize: 24,
-              ),
-              dropdownStyleData: DropdownStyleData(
-                elevation: 1,
-                decoration: BoxDecoration(
-                  color: Colors.white, // สีพื้นหลังของเมนู dropdown
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(15),
-                    bottomRight: Radius.circular(15),
-                  ),
-                ),
-              ),
-              // buttonStyleData: ButtonStyleData(
-              //   height: 50,
-              //   decoration: BoxDecoration(
-              //     color: Colors.white, // สีพื้นหลังของปุ่ม
-              //     borderRadius: BorderRadius.circular(15),
-              //   ),
-              //   padding: EdgeInsets.symmetric(horizontal: 16),
-              // ),
-            ),
-          ),
+          // child: DropdownButtonHideUnderline(
+          //   child: DropdownButton2<PriorityData>(
+          //     isExpanded: true,
+          //     hint: Row(
+          //       children: [
+          //         SizedBox(
+          //           width: 8,
+          //         ),
+          //         Text(
+          //           (widget.request_id == '')
+          //               ? detailItem?.priorityName ?? ''
+          //               : editpriorityText,
+          //           style: GoogleFonts.openSans(
+          //               fontSize: 14, color: Color(0xFF555555)),
+          //         ),
+          //         // Spacer(),
+          //         // Icon(Icons.arrow_drop_down)
+          //       ],
+          //     ),
+          //     value: _selectedPriority,
+          //     style:
+          //         GoogleFonts.openSans(fontSize: 14, color: Color(0xFF555555)),
+          //     underline: Container(
+          //       height: 1,
+          //       color: Colors.transparent,
+          //     ),
+          //     items: priorityOption.map((PriorityData priority) {
+          //       return DropdownMenuItem<PriorityData>(
+          //         value: priority,
+          //         child: Column(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             Row(
+          //               crossAxisAlignment: CrossAxisAlignment.center,
+          //               children: [
+          //                 Padding(
+          //                   padding: const EdgeInsets.only(top: 6, bottom: 6),
+          //                   child: Container(
+          //                     color: (priority.priority_name == 'Low')
+          //                         ? Colors.green
+          //                         : (priority.priority_name == 'Medium')
+          //                             ? Colors.yellow
+          //                             : (priority.priority_name == 'High')
+          //                                 ? Colors.orangeAccent
+          //                                 : (priority.priority_name ==
+          //                                         'Very high')
+          //                                     ? Colors.redAccent
+          //                                     : Color(0xFF555555),
+          //                     // color: Color(int.parse(
+          //                     //     '0xFF${this.detailItem?.priorityColor??''}')),
+          //                     padding: EdgeInsets.only(
+          //                         top: 14, bottom: 14, left: 2, right: 2),
+          //                     decoration: BoxDecoration(
+          //                       borderRadius: BorderRadius.circular(25),
+          //                     ),
+          //                   ),
+          //                 ),
+          //                 SizedBox(
+          //                   width: 8,
+          //                 ),
+          //                 Text(
+          //                   priority.priority_name ?? '',
+          //                   style: GoogleFonts.openSans(
+          //                     fontSize: 14,
+          //                     color: Color(0xFF555555),
+          //                   ),
+          //                 ),
+          //                 // Spacer(),
+          //                 // Icon(Icons.arrow_drop_down)
+          //               ],
+          //             ),
+          //           ],
+          //         ),
+          //       );
+          //     }).toList(),
+          //     onChanged: (PriorityData? newValue) {
+          //       setState(() {
+          //         is_priority = true;
+          //         _selectedPriority = newValue;
+          //       });
+          //     },
+          //     iconStyleData: IconStyleData(
+          //       icon: Icon(Icons.arrow_drop_down),
+          //       iconEnabledColor: Color(0xFF555555),
+          //       iconDisabledColor: Color(0xFF555555),
+          //       iconSize: 24,
+          //     ),
+          //     dropdownStyleData: DropdownStyleData(
+          //       elevation: 1,
+          //       decoration: BoxDecoration(
+          //         color: Colors.white, // สีพื้นหลังของเมนู dropdown
+          //         borderRadius: BorderRadius.only(
+          //           bottomLeft: Radius.circular(15),
+          //           bottomRight: Radius.circular(15),
+          //         ),
+          //       ),
+          //     ),
+          //     // buttonStyleData: ButtonStyleData(
+          //     //   height: 50,
+          //     //   decoration: BoxDecoration(
+          //     //     color: Colors.white, // สีพื้นหลังของปุ่ม
+          //     //     borderRadius: BorderRadius.circular(15),
+          //     //   ),
+          //     //   padding: EdgeInsets.symmetric(horizontal: 16),
+          //     // ),
+          //   ),
+          // ),
         ),
       ),
     );
@@ -2388,7 +2388,7 @@ class _NeedDetailState extends State<NeedDetail> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
-                        onTap: () => _pickImage(),
+                        // onTap: () => _pickImage(),
                         child: Icon(
                           Icons.camera_alt_outlined,
                           color: Color(0xFF555555),
@@ -2399,7 +2399,7 @@ class _NeedDetailState extends State<NeedDetail> {
                         style: GoogleFonts.openSans(color: Color(0xFF555555),),
                       ),
                       InkWell(
-                        onTap: () => getImages(),
+                        // onTap: () => getImages(),
                         child: Icon(
                           Icons.photo_album_outlined,
                           color: Color(0xFF555555),
@@ -2453,7 +2453,7 @@ class _NeedDetailState extends State<NeedDetail> {
     }
   }
 
-  final CarouselController _carouselController = CarouselController();
+  // final CarouselController _carouselController = CarouselController();
   int _currentIndex = 0;
   Widget _InPhoto() {
     return Column(
@@ -2464,90 +2464,90 @@ class _NeedDetailState extends State<NeedDetail> {
                   SizedBox(
                     height: 16,
                   ),
-                  CarouselSlider.builder(
-                    carouselController: _carouselController,
-                    itemCount: selectedImages.length,
-                    itemBuilder: (context, index, realIndex) {
-                      return Column(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                border: Border.all(
-                                  color: Colors.orange.shade300,
-                                  width: 1.0,
-                                ),
-                              ),
-                              child: kIsWeb
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Image.network(
-                                          selectedImages[index].path))
-                                  : ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Image.file(
-                                        selectedImages[index],
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: List.generate(
-                                selectedImages.length,
-                                (indexImage) {
-                                  final base64String = imageToBase64(
-                                      selectedImages[indexImage].path,
-                                      myList);
-                                  print(base64String);
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 4, right: 4),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10),
-                                        color: (index == indexImage)
-                                            ? Colors.orange.shade500
-                                            : Colors.transparent,
-                                        border: Border.all(
-                                          color: (index == indexImage)
-                                              ? Colors.orange.shade500
-                                              : Colors.orange.shade500,
-                                          width: 1.0,
-                                        ),
-                                      ),
-                                      padding: EdgeInsets.all(4),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                    options: CarouselOptions(
-                      height: MediaQuery.of(context).size.height * 0.64,
-                      autoPlay: false,
-                      autoPlayInterval: Duration(seconds: 3),
-                      enlargeCenterPage: true,
-                      aspectRatio: 16 / 9,
-                      viewportFraction: 0.8,
-                      initialPage: _currentIndex,
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          _currentIndex = index;
-                        });
-                      },
-                    ),
-                  ),
+                  // CarouselSlider.builder(
+                  //   carouselController: _carouselController,
+                  //   itemCount: selectedImages.length,
+                  //   itemBuilder: (context, index, realIndex) {
+                  //     return Column(
+                  //       children: [
+                  //         Expanded(
+                  //           child: Container(
+                  //             decoration: BoxDecoration(
+                  //               borderRadius: BorderRadius.circular(15),
+                  //               border: Border.all(
+                  //                 color: Colors.orange.shade300,
+                  //                 width: 1.0,
+                  //               ),
+                  //             ),
+                  //             child: kIsWeb
+                  //                 ? ClipRRect(
+                  //                     borderRadius: BorderRadius.circular(12),
+                  //                     child: Image.network(
+                  //                         selectedImages[index].path))
+                  //                 : ClipRRect(
+                  //                     borderRadius: BorderRadius.circular(12),
+                  //                     child: Image.file(
+                  //                       selectedImages[index],
+                  //                       fit: BoxFit.cover,
+                  //                     ),
+                  //                   ),
+                  //           ),
+                  //         ),
+                  //         SizedBox(
+                  //           height: 30,
+                  //         ),
+                  //         SingleChildScrollView(
+                  //           scrollDirection: Axis.horizontal,
+                  //           child: Row(
+                  //             children: List.generate(
+                  //               selectedImages.length,
+                  //               (indexImage) {
+                  //                 final base64String = imageToBase64(
+                  //                     selectedImages[indexImage].path,
+                  //                     myList);
+                  //                 print(base64String);
+                  //                 return Padding(
+                  //                   padding: const EdgeInsets.only(
+                  //                       left: 4, right: 4),
+                  //                   child: Container(
+                  //                     decoration: BoxDecoration(
+                  //                       borderRadius:
+                  //                           BorderRadius.circular(10),
+                  //                       color: (index == indexImage)
+                  //                           ? Colors.orange.shade500
+                  //                           : Colors.transparent,
+                  //                       border: Border.all(
+                  //                         color: (index == indexImage)
+                  //                             ? Colors.orange.shade500
+                  //                             : Colors.orange.shade500,
+                  //                         width: 1.0,
+                  //                       ),
+                  //                     ),
+                  //                     padding: EdgeInsets.all(4),
+                  //                   ),
+                  //                 );
+                  //               },
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     );
+                  //   },
+                  //   options: CarouselOptions(
+                  //     height: MediaQuery.of(context).size.height * 0.64,
+                  //     autoPlay: false,
+                  //     autoPlayInterval: Duration(seconds: 3),
+                  //     enlargeCenterPage: true,
+                  //     aspectRatio: 16 / 9,
+                  //     viewportFraction: 0.8,
+                  //     initialPage: _currentIndex,
+                  //     onPageChanged: (index, reason) {
+                  //       setState(() {
+                  //         _currentIndex = index;
+                  //       });
+                  //     },
+                  //   ),
+                  // ),
                 ],
               )
             : Expanded(child: Center(child: Text('$No_Image'))),
@@ -2632,86 +2632,86 @@ class _NeedDetailState extends State<NeedDetail> {
     );
   }
 
-  final ImagePicker picker = ImagePicker();
+  // final ImagePicker picker = ImagePicker();
 
-  void _pickImage() async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      final XFile? image = await picker.pickImage(source: ImageSource.camera);
-      if (image != null) {
-        setState(() {
-          selectedImages.add(File(image.path));
-          Navigator.pop(context);
-          setState(() {
-            showModalBottomSheet<void>(
-              barrierColor: Colors.black12,
-              backgroundColor: Colors.transparent,
-              context: context,
-              isScrollControlled: true,
-              isDismissible: false,
-              enableDrag: false,
-              builder: (BuildContext context) {
-                return _bill();
-              },
-            );
-          });
-        });
-      }
-    } catch (e) {
-      print('Error picking image: $e');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
+  // void _pickImage() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   try {
+  //     final XFile? image = await picker.pickImage(source: ImageSource.camera);
+  //     if (image != null) {
+  //       setState(() {
+  //         selectedImages.add(File(image.path));
+  //         Navigator.pop(context);
+  //         setState(() {
+  //           showModalBottomSheet<void>(
+  //             barrierColor: Colors.black12,
+  //             backgroundColor: Colors.transparent,
+  //             context: context,
+  //             isScrollControlled: true,
+  //             isDismissible: false,
+  //             enableDrag: false,
+  //             builder: (BuildContext context) {
+  //               return _bill();
+  //             },
+  //           );
+  //         });
+  //       });
+  //     }
+  //   } catch (e) {
+  //     print('Error picking image: $e');
+  //   } finally {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
 
-  void getImages() async {
-    final pickedFile = await picker.pickMultiImage(
-        requestFullMetadata: true,
-        imageQuality: 100,
-        maxHeight: 1000,
-        maxWidth: 1000);
-    List<XFile> xfilePick = pickedFile;
-
-    setState(
-      () {
-        if (xfilePick.isNotEmpty) {
-          for (var i = 0; i < xfilePick.length; i++) {
-            selectedImages.add(
-              File(xfilePick[i].path),
-            );
-            Navigator.pop(context);
-            setState(() {
-              showModalBottomSheet<void>(
-                barrierColor: Colors.black12,
-                backgroundColor: Colors.transparent,
-                context: context,
-                isScrollControlled: true,
-                isDismissible: false,
-                enableDrag: false,
-                builder: (BuildContext context) {
-                  return _bill();
-                },
-              );
-            });
-          }
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            // is this context <<<
-            SnackBar(
-              content: Text(
-                'Nothing is selected',
-                style: GoogleFonts.openSans(color: Color(0xFF555555),),
-              ),
-            ),
-          );
-        }
-      },
-    );
-  }
+  // void getImages() async {
+  //   final pickedFile = await picker.pickMultiImage(
+  //       requestFullMetadata: true,
+  //       imageQuality: 100,
+  //       maxHeight: 1000,
+  //       maxWidth: 1000);
+  //   List<XFile> xfilePick = pickedFile;
+  //
+  //   setState(
+  //     () {
+  //       if (xfilePick.isNotEmpty) {
+  //         for (var i = 0; i < xfilePick.length; i++) {
+  //           selectedImages.add(
+  //             File(xfilePick[i].path),
+  //           );
+  //           Navigator.pop(context);
+  //           setState(() {
+  //             showModalBottomSheet<void>(
+  //               barrierColor: Colors.black12,
+  //               backgroundColor: Colors.transparent,
+  //               context: context,
+  //               isScrollControlled: true,
+  //               isDismissible: false,
+  //               enableDrag: false,
+  //               builder: (BuildContext context) {
+  //                 return _bill();
+  //               },
+  //             );
+  //           });
+  //         }
+  //       } else {
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           // is this context <<<
+  //           SnackBar(
+  //             content: Text(
+  //               'Nothing is selected',
+  //               style: GoogleFonts.openSans(color: Color(0xFF555555),),
+  //             ),
+  //           ),
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
 
   //fillter
   List<ProjectData> projectOption = [];

@@ -1,4 +1,4 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
+// import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../need_detail.dart';
@@ -43,122 +43,122 @@ class PriorityOtherState extends State<PriorityOther> {
         padding: const EdgeInsets.only(right: 8.0),
         child: SizedBox(
           width: double.infinity,
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton2<PriorityData>(
-              isExpanded: true,
-              hint: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 8),
-                    child: Container(
-                      color: Colors.green,
-                      // color: Color(int.parse(
-                      //     '0xFF${this.detailItem?.priorityColor??''}')),
-                      padding: EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    (is_priority == true)?
-                    editpriorityText:widget.priority[0].priority_name??'',
-                    style:
-                    GoogleFonts.openSans(fontSize: 14, color: Color(0xFF555555)),
-                  ),
-                  // Spacer(),
-                  // Icon(Icons.arrow_drop_down)
-                ],
-              ),
-              value: _selectedPriority,
-              style: GoogleFonts.openSans(fontSize: 14, color: Color(0xFF555555)),
-              underline: Container(
-                height: 1,
-                color: Colors.transparent,
-              ),
-              items: widget.priority.map((PriorityData priority) {
-                return DropdownMenuItem<PriorityData>(
-                  value: priority,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 6, bottom: 6),
-                            child: Container(
-                              color: (priority.priority_name == 'Low')
-                                  ?Colors.green
-                                  :(priority.priority_name == 'Medium')
-                                  ?Colors.yellow
-                                  :(priority.priority_name == 'High')
-                                  ?Colors.orangeAccent
-                                  :(priority.priority_name == 'Very high')
-                                  ?Colors.redAccent
-                                  :Colors.black,
-                              // color: Color(int.parse(
-                              //     '0xFF${this.detailItem?.priorityColor??''}')),
-                              padding: EdgeInsets.only(
-                                  top: 14, bottom: 14, left: 2, right: 2),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            priority.priority_name ?? '',
-                            style: GoogleFonts.openSans(
-                              fontSize: 14,
-                              color: Color(0xFF555555),
-                            ),
-                          ),
-                          // Spacer(),
-                          // Icon(Icons.arrow_drop_down)
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-              onChanged: (PriorityData? newValue) {
-                setState(() {
-                  is_priority = true;
-                  _selectedPriority = newValue;
-                });
-              },
-              iconStyleData: IconStyleData(
-                icon: Icon(Icons.arrow_drop_down),
-                iconEnabledColor: Color(0xFF555555),
-                iconDisabledColor: Color(0xFF555555),
-                iconSize: 24,
-              ),
-              dropdownStyleData: DropdownStyleData(
-                elevation: 1,
-                decoration: BoxDecoration(
-                  color: Colors.white, // สีพื้นหลังของเมนู dropdown
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(15),
-                    bottomRight: Radius.circular(15),
-                  ),
-                ),
-              ),
-              // buttonStyleData: ButtonStyleData(
-              //   height: 50,
-              //   decoration: BoxDecoration(
-              //     color: Colors.white, // สีพื้นหลังของปุ่ม
-              //     borderRadius: BorderRadius.circular(15),
-              //   ),
-              //   padding: EdgeInsets.symmetric(horizontal: 16),
-              // ),
-            ),
-          ),
+          // child: DropdownButtonHideUnderline(
+          //   child: DropdownButton2<PriorityData>(
+          //     isExpanded: true,
+          //     hint: Row(
+          //       children: [
+          //         Padding(
+          //           padding: const EdgeInsets.only(top: 8, bottom: 8),
+          //           child: Container(
+          //             color: Colors.green,
+          //             // color: Color(int.parse(
+          //             //     '0xFF${this.detailItem?.priorityColor??''}')),
+          //             padding: EdgeInsets.all(2),
+          //             decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.circular(25),
+          //             ),
+          //           ),
+          //         ),
+          //         SizedBox(
+          //           width: 8,
+          //         ),
+          //         Text(
+          //           (is_priority == true)?
+          //           editpriorityText:widget.priority[0].priority_name??'',
+          //           style:
+          //           GoogleFonts.openSans(fontSize: 14, color: Color(0xFF555555)),
+          //         ),
+          //         // Spacer(),
+          //         // Icon(Icons.arrow_drop_down)
+          //       ],
+          //     ),
+          //     value: _selectedPriority,
+          //     style: GoogleFonts.openSans(fontSize: 14, color: Color(0xFF555555)),
+          //     underline: Container(
+          //       height: 1,
+          //       color: Colors.transparent,
+          //     ),
+          //     items: widget.priority.map((PriorityData priority) {
+          //       return DropdownMenuItem<PriorityData>(
+          //         value: priority,
+          //         child: Column(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           children: [
+          //             Row(
+          //               crossAxisAlignment: CrossAxisAlignment.center,
+          //               children: [
+          //                 Padding(
+          //                   padding: const EdgeInsets.only(top: 6, bottom: 6),
+          //                   child: Container(
+          //                     color: (priority.priority_name == 'Low')
+          //                         ?Colors.green
+          //                         :(priority.priority_name == 'Medium')
+          //                         ?Colors.yellow
+          //                         :(priority.priority_name == 'High')
+          //                         ?Colors.orangeAccent
+          //                         :(priority.priority_name == 'Very high')
+          //                         ?Colors.redAccent
+          //                         :Colors.black,
+          //                     // color: Color(int.parse(
+          //                     //     '0xFF${this.detailItem?.priorityColor??''}')),
+          //                     padding: EdgeInsets.only(
+          //                         top: 14, bottom: 14, left: 2, right: 2),
+          //                     decoration: BoxDecoration(
+          //                       borderRadius: BorderRadius.circular(25),
+          //                     ),
+          //                   ),
+          //                 ),
+          //                 SizedBox(
+          //                   width: 8,
+          //                 ),
+          //                 Text(
+          //                   priority.priority_name ?? '',
+          //                   style: GoogleFonts.openSans(
+          //                     fontSize: 14,
+          //                     color: Color(0xFF555555),
+          //                   ),
+          //                 ),
+          //                 // Spacer(),
+          //                 // Icon(Icons.arrow_drop_down)
+          //               ],
+          //             ),
+          //           ],
+          //         ),
+          //       );
+          //     }).toList(),
+          //     onChanged: (PriorityData? newValue) {
+          //       setState(() {
+          //         is_priority = true;
+          //         _selectedPriority = newValue;
+          //       });
+          //     },
+          //     iconStyleData: IconStyleData(
+          //       icon: Icon(Icons.arrow_drop_down),
+          //       iconEnabledColor: Color(0xFF555555),
+          //       iconDisabledColor: Color(0xFF555555),
+          //       iconSize: 24,
+          //     ),
+          //     dropdownStyleData: DropdownStyleData(
+          //       elevation: 1,
+          //       decoration: BoxDecoration(
+          //         color: Colors.white, // สีพื้นหลังของเมนู dropdown
+          //         borderRadius: BorderRadius.only(
+          //           bottomLeft: Radius.circular(15),
+          //           bottomRight: Radius.circular(15),
+          //         ),
+          //       ),
+          //     ),
+          //     // buttonStyleData: ButtonStyleData(
+          //     //   height: 50,
+          //     //   decoration: BoxDecoration(
+          //     //     color: Colors.white, // สีพื้นหลังของปุ่ม
+          //     //     borderRadius: BorderRadius.circular(15),
+          //     //   ),
+          //     //   padding: EdgeInsets.symmetric(horizontal: 16),
+          //     // ),
+          //   ),
+          // ),
         ),
       ),
     );
