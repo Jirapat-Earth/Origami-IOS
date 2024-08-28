@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../youtube.dart';
 
 class Curriculum extends StatefulWidget {
   Curriculum({super.key, required this.culums, required this.callImage, required this.callUrl,});
@@ -39,11 +41,11 @@ class _CurriculumState extends State<Curriculum> {
     super.dispose();
   }
 
-  // Future<void> _launchURL(Uri url) async {
-  //   if (!await launchUrl(url)) {
-  //     throw Exception('Could not launch ${url}');
-  //   }
-  // }
+  Future<void> _launchURL(Uri url) async {
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch ${url}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,25 +148,25 @@ class _CurriculumState extends State<Curriculum> {
                             color: Colors.white,
                             child: InkWell(
                               onTap: () {
-                                // setState(() {
-                                //   widget.callImage(curriculums?.avatar ?? '');
-                                // });
-                                // if (curriculums?.type == 'YOUTUBE') {
-                                //   // String callUrl = widget.callUrl("http://www.thapra.lib.su.ac.th/m-talk/attachments/article/75/ebook.pdf");
-                                //   setState(() {
-                                //     Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //           builder: (context) => YouTubeScreen()),
-                                //     );
-                                //   });
-                                // }else if(curriculums?.type == 'PDF'){
-                                //   String callUrl = widget.callUrl("http://www.thapra.lib.su.ac.th/m-talk/attachments/article/75/ebook.pdf");
-                                //   final Uri _url = Uri.parse(callUrl);
-                                //   setState(() {
-                                //     _launchURL(_url);
-                                //   });
-                                // }
+                                setState(() {
+                                  widget.callImage(curriculums?.avatar ?? '');
+                                });
+                                if (curriculums?.type == 'YOUTUBE') {
+                                  // String callUrl = widget.callUrl("http://www.thapra.lib.su.ac.th/m-talk/attachments/article/75/ebook.pdf");
+                                  setState(() {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => YouTubeScreen()),
+                                    );
+                                  });
+                                }else if(curriculums?.type == 'PDF'){
+                                  String callUrl = widget.callUrl("http://www.thapra.lib.su.ac.th/m-talk/attachments/article/75/ebook.pdf");
+                                  final Uri _url = Uri.parse(callUrl);
+                                  setState(() {
+                                    _launchURL(_url);
+                                  });
+                                }
                               },
                               child: Container(
                                 padding: EdgeInsets.all(20),

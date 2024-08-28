@@ -61,6 +61,7 @@ dev_dependencies:
   carousel_slider_plus: ^7.0.0
   dropdown_button2: ^2.3.9
   image_picker: ^1.1.2
+  youtube_player_flutter: ^9.0.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
