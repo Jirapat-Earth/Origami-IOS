@@ -7,6 +7,7 @@ import 'package:origami_ios/login/login.dart';
 import '../../Language/translate.dart';
 import 'evaluate/evaluate_module.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AcademyPage extends StatefulWidget {
@@ -129,7 +130,7 @@ class _AcademyPageState extends State<AcademyPage> {
         indexSelected: _selectedIndex,
         onTap: _onItemTapped,
         chipStyle: const ChipStyle(convexBridge: true),
-        // itemStyle: ItemStyle.hexagon,
+        itemStyle: ItemStyle.circle,
         animated: false,
       ),
     );
