@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import '../../../language/translate.dart';
+import '../../login/login.dart';
 import 'Announcements/announcements.dart';
 import 'attach_file/attach_file.dart';
 import 'certification/certification.dart';
@@ -15,8 +17,9 @@ import 'discussion/discussion.dart';
 import 'instructors/instructors.dart';
 
 class EvaluateModule extends StatefulWidget {
-  EvaluateModule({super.key, required this.id,});
+  EvaluateModule({super.key, required this.id, required this.employee,});
   final String id;
+  final Employee employee;
 
   @override
   _EvaluateModuleState createState() => _EvaluateModuleState();
@@ -481,6 +484,8 @@ class _EvaluateModuleState extends State<EvaluateModule>
         text:
             "Watched text-orange 0h 41m 34s Of  0h 44m 12s\nYou have passed 94.04% of the class "),
   ];
+
+
 }
 
 class CourseData {
