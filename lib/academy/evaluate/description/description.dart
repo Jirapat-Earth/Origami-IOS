@@ -1,14 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../language/translate.dart';
+import '../../../login/login.dart';
+import '../../academy.dart';
 
 class Description extends StatefulWidget {
   Description({
-    super.key,
+    super.key, required this.employee, required this.academy,
   });
+  final Employee employee;
+  final AcademyRespond academy;
 
 
   @override
@@ -16,286 +22,454 @@ class Description extends StatefulWidget {
 }
 
 class _DescriptionState extends State<Description> {
+
+  Future<List<DescriptionData>> fetchDescription() async {
+    final uri =
+    Uri.parse("https://www.origami.life/api/origami/academy/description.php");
+    final response = await http.post(
+      uri,
+      body: {
+        'comp_id': widget.employee.comp_id,
+        'emp_id': widget.employee.emp_id,
+        'academy_id': widget.academy.academy_id,
+        'academy_type': widget.academy.academy_type,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      // เข้าถึงข้อมูลในคีย์ 'academy_data'
+      final List<dynamic> academiesJson = jsonResponse['description_data'];
+      // แปลงข้อมูลจาก JSON เป็น List<AcademyRespond>
+      return academiesJson
+          .map((json) => DescriptionData.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load academies');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    fetchDescription();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '$DescriptionT',
-              style: GoogleFonts.openSans(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF555555),
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Text(
-              '   ด้วยในการประเมินประจำปีที่ผ่านมา เราใช้แบบประเมินใน  Google Sheets  ที่ต้องมีการแชร์ไฟล์ส่งแบบประเมินให้พนักงานทำ เสร็จแล้วต้องมายกเลิกการแชร์ไฟล์ให้กับพนักงาน หลังจากนั้นต้องมาแชร์ไฟล์ส่งให้หัวหน้างาน และส่งต่อให้กับผู้บริหาร ตามลำดับ ประกอบกับจำนวนพนักงานของเราที่เพิ่มมากขึ้นในทุกๆ ปี ซึ่งทำให้ทางฝ่ายบุคคลทำงานในส่วนประเมินค่อนข้างลำบากมาก กว่าจะรวบรวมข้อมูลในแต่ละส่วนได้ ใช้เวลานานมากค่ะ\n   ในการประเมินประจำปี 2565 นี้ (ระหว่างวันที่ 01/01/2565 - 31/12/2565) ทางฝ่ายบุคคลได้ร่วมกับทีมออลลาเบิล จัดทำแบบประเมินประจำปีในระบบ Origami >EVALUATE เพื่อให้พนักงานสามารถเข้าไปทำแบบประเมินในระบบได้อย่างสะดวก รวดเร็ว มากยิ่งขึ้นกว่าเดิม พนักงานและหัวหน้างานสามารถที่จะทำประเมินไปพร้อมๆ กันได้เลย ไม่ต้องมารอการแชร์ไฟล์จากทางฝ่ายบุคคล เหมือนเช่นเดิมค่ะ',
-              style: GoogleFonts.openSans(
-                color: Color(0xFF555555),
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Divider(),
-            SizedBox(
-              height: 16,
-            ),
-            Text("$What_you_learn",
-                style: GoogleFonts.openSans(
-                  color: Color(0xFF555555),
-                )),
-            Column(
-              children: List.generate(2, (index) {
-                return Row(
-                  children: [
-                    SizedBox(
-                      width: 16,
+    return loading();
+  }
+
+  Widget loading() {
+    return FutureBuilder<List<DescriptionData>>(
+      future: fetchDescription(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    color: Colors.orange,
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    '$Loading...',
+                    style: GoogleFonts.openSans(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF555555),
                     ),
-                    Text(
-                      "$Class ${index + 1} :ORIGAMI > EVALUATE",
-                      style: GoogleFonts.openSans(
-                        color: Color(0xFF555555),
-                      ),
-                    ),
-                  ],
-                );
-              }),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Divider(),
-            SizedBox(
-              height: 16,
-            ),
-            Column(
-              children: List.generate(4, (index) {
-                return Column(
-                  children: [
-                    Container(
-                      color: Colors.transparent,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'HR Orientation ALB ${index + 1}',
-                              style: GoogleFonts.openSans(
-                                fontSize: 18.0,
-                                color: Color(0xFF555555),
-                                fontWeight: FontWeight.bold,
-                              ),
+                  ),
+                ],
+              ));
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('No academies found'));
+        } else {
+          return _getContentWidget(snapshot.data!);
+        }
+      },
+    );
+  }
+
+  bool isSwitch = false;
+  Widget _getContentWidget(List<DescriptionData> description){
+    return Container(
+      color: Colors.grey.shade50,
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: List.generate(description.length, (index) {
+                  String video_count = description[index].video_count;
+                  String document_count = description[index].document_count;
+                  String youtube_count = description[index].youtube_count;
+                  String challenge_count = description[index].challenge_count;
+                  String link_count = description[index].link_count;
+                  String event_count = description[index].event_count;
+                  return Column(
+                    children: [
+                      InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () {
+                          setState(() {
+                            (isSwitch == false) ? isSwitch = true : isSwitch = false;
+                          });
+                        },
+                        child: (isSwitch == true)
+                            ? Card(
+                          color: Colors.white,
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                left: 6, right: 6, top: 10, bottom: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          ),
-                          Text('${'0'}%',
-                              style: GoogleFonts.openSans(
-                                color: Color(0xFF555555),
-                              )),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Icon(
-                            Icons.keyboard_arrow_down,
-                            color: Color(0xFF555555),
-                          )
-                        ],
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "$What_you_learn",
-                              style: GoogleFonts.openSans(
-                                fontSize: 16.0,
-                                color: Color(0xFF555555),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            Column(
-                              children: List.generate(2, (index) {
-                                return Text(
-                                    "$Class ${index + 1} : ORIGAMI > EVALUATE",
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    description[index].course_subject,
                                     style: GoogleFonts.openSans(
+                                      fontSize: 18.0,
                                       color: Color(0xFF555555),
-                                    ));
-                              }),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "This course includes",
-                                style: GoogleFonts.openSans(
-                                  fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
                                   color: Color(0xFF555555),
-                                  fontWeight: FontWeight.bold,
+                                  size: 30,
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                            : Container(
+                          padding: EdgeInsets.all(8),
+                          color: Colors.transparent,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  description[index].course_subject,
+                                  style: GoogleFonts.openSans(
+                                    fontSize: 18.0,
+                                    color: Color(0xFF555555),
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                               SizedBox(
-                                width: 16,
+                                width: 4,
                               ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.videocam_rounded,
-                                        color: Color(0xFF555555),
-                                      ),
-                                      Text(
-                                        "${'2'} $Videos",
-                                        style: GoogleFonts.openSans(
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.picture_as_pdf_outlined,
-                                        color: Color(0xFF555555),
-                                      ),
-                                      Text(
-                                        "${'0'} $Documents",
-                                        style: GoogleFonts.openSans(
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.school,
-                                        color: Color(0xFF555555),
-                                      ),
-                                      Text(
-                                        "$Certificate",
-                                        style: GoogleFonts.openSans(
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                              Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Color(0xFF555555),
+                                size: 30,
+                              )
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 24,
+                      ),
+
+                      (isSwitch == false)
+                          ? Card(
+                        color: Color(0xFFF5F5F5),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 0,
+                                blurRadius: 0,
+                                offset: Offset(0, 3), // x, y
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  color: Colors.transparent,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text("What you'll learn?",
+                                    style: GoogleFonts.openSans(
+                                      color: Color(0xFF555555),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      children: List.generate(description[index].topic_section.length, (indexI) {
+                                        return Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(bottom: 4),
+                                            child: Text(
+                                              "   ${description[index].topic_section[indexI]}",
+                                              style: GoogleFonts.openSans(
+                                                color: Color(0xFF555555),
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,),
+                                          ),
+                                        );
+                                      }),
+                                    ),
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(color: Colors.grey),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "This course includes",
+                                            style: GoogleFonts.openSans(
+                                              // fontSize: 16.0,
+                                              color: Color(0xFF555555),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 4.0),
+                                            child: Column(
+                                              children: [
+                                                video_count == "0"?Container():
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.video_collection_outlined,
+                                                        color: Color(0xFF555555),
+                                                      ),
+                                                      SizedBox(width: 8,),
+                                                      Text(
+                                                        "${description[index].video_count} Video",
+                                                        style: GoogleFonts.openSans(
+                                                          color: Colors.grey,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                document_count == "0"?Container():
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.file_copy_outlined,
+                                                        color: Color(0xFF555555),
+                                                      ),
+                                                      SizedBox(width: 8,),
+                                                      Text(
+                                                        "${document_count} $Documents",
+                                                        style: GoogleFonts.openSans(
+                                                          color: Colors.grey,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                youtube_count == "0"?Container():
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.ondemand_video_outlined,
+                                                        color: Color(0xFF555555),
+                                                      ),
+                                                      SizedBox(width: 8,),
+                                                      Text(
+                                                        "${youtube_count} Video",
+                                                        style: GoogleFonts.openSans(
+                                                          color: Colors.grey,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                challenge_count == "0"?Container():
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.emoji_events_outlined,
+                                                        color: Color(0xFF555555),
+                                                      ),
+                                                      SizedBox(width: 8,),
+                                                      Text(
+                                                        "${challenge_count} Challenge",
+                                                        style: GoogleFonts.openSans(
+                                                          color: Colors.grey,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                link_count == "0"?Container():
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.link_outlined,
+                                                        color: Color(0xFF555555),
+                                                      ),
+                                                      SizedBox(width: 8,),
+                                                      Text(
+                                                        "${link_count} Link",
+                                                        style: GoogleFonts.openSans(
+                                                          color: Colors.grey,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                event_count == "0"?Container():
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.event_note,
+                                                        color: Color(0xFF555555),
+                                                      ),
+                                                      SizedBox(width: 8,),
+                                                      Text(
+                                                        "${event_count} Event",
+                                                        style: GoogleFonts.openSans(
+                                                          color: Colors.grey,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(
+                                                        Icons.school_outlined,
+                                                        color: Color(0xFF555555),
+                                                      ),
+                                                      SizedBox(width: 8,),
+                                                      Text(
+                                                        "Certificate of completion",
+                                                        style: GoogleFonts.openSans(
+                                                          color: Colors.grey,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 8,
-                    ),
-                  ],
-                );
-              }),
-            ),
-          ],
+                      )
+                          : Container(),
+                    ],
+                  );
+                }),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class CourseDetail {
-  final String challengeCount;
-  final String courseCode;
-  final List<String> courseDesc;
-  final String? courseDescription;
-  final String documentCount;
-  final String eventCount;
-  final String linkCount;
-  final String page;
-  final int save;
-  final List<String> topicId;
-  final int topicLength;
-  final List<String> topicName;
-  final List<String> topicOption;
-  final List<String> topicTitle;
-  final String videoCount;
-  final String youtubeCount;
+class DescriptionData {
+  final String course_subject;
+  final String video_count;
+  final String document_count;
+  final String youtube_count;
+  final String challenge_count;
+  final String link_count;
+  final String event_count;
+  final List<String> topic_section;
 
-  CourseDetail({
-    required this.challengeCount,
-    required this.courseCode,
-    required this.courseDesc,
-    this.courseDescription,
-    required this.documentCount,
-    required this.eventCount,
-    required this.linkCount,
-    required this.page,
-    required this.save,
-    required this.topicId,
-    required this.topicLength,
-    required this.topicName,
-    required this.topicOption,
-    required this.topicTitle,
-    required this.videoCount,
-    required this.youtubeCount,
+  DescriptionData({
+    required this.course_subject,
+    required this.video_count,
+    required this.document_count,
+    required this.youtube_count,
+    required this.challenge_count,
+    required this.link_count,
+    required this.event_count,
+    required this.topic_section,
   });
 
-  factory CourseDetail.fromJson(Map<String, dynamic> json) {
-    return CourseDetail(
-      challengeCount: json['challenge_count'],
-      courseCode: json['course_code'],
-      courseDesc: json['course_desc'].map((item) => List<String>.from(item)),
-      courseDescription:json['course_description'],
-      documentCount: json['document_count'],
-      eventCount: json['event_count'],
-      linkCount: json['link_count'],
-      page: json['page'],
-      save: json['save'],
-      topicId: json['topic_id'].map((item) => List<String>.from(item)),
-      topicLength: json['topic_length'],
-      topicName: json['topic_name'].map((item) => List<String>.from(item)),
-      topicOption: json['topic_option'].map((item) => List<String>.from(item)),
-      topicTitle: json['topic_title'].map((item) => List<String>.from(item)),
-      videoCount: json['video_count'],
-      youtubeCount: json['youtube_count'],
+  factory DescriptionData.fromJson(Map<String, dynamic> json) {
+    return DescriptionData(
+      course_subject: json['course_subject'],
+      video_count: json['video_count'],
+      document_count: json['document_count'],
+      youtube_count: json['youtube_count'],
+      challenge_count: json['challenge_count'],
+      link_count: json['link_count'],
+      event_count: json['event_count'],
+      topic_section: List<String>.from(json['topic_section']),
     );
   }
 }
+

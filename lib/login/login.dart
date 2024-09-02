@@ -155,44 +155,31 @@ class _LoginPageState extends State<LoginPage> {
     _loadCredentials();
   }
 
+  DateTime? lastPressed;
+  
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            elevation: 0,
-            title: Text(
-              '$ExitApp',
-              style: GoogleFonts.openSans(
-                fontSize: 16,
-                color: Color(0xFF555555),
-              ),
+        // เช็คว่ามีการกดปุ่มย้อนกลับครั้งล่าสุดหรือไม่ และเวลาห่างจากปัจจุบันมากกว่า 2 วินาทีหรือไม่
+        final now = DateTime.now();
+        final maxDuration = Duration(seconds: 2);
+        final isWarning = lastPressed == null || now.difference(lastPressed!) > maxDuration;
+
+        if (isWarning) {
+          // ถ้ายังไม่ได้กดสองครั้งภายในเวลาที่กำหนด ให้แสดง SnackBar แจ้งเตือน
+          lastPressed = DateTime.now();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Press back again to exit'),
+              duration: maxDuration,
             ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(
-                  '$NotNow',
-                  style: GoogleFonts.openSans(
-                    color: Colors.orange,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: Text(
-                  '$Ok',
-                  style: GoogleFonts.openSans(
-                    color: Colors.orange,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ) ??
-            false;
+          );
+          return false; // ไม่ออกจากแอป
+        }
+
+        // ถ้ากดปุ่มย้อนกลับสองครั้งภายในเวลาที่กำหนด ให้ออกจากแอป
+        return true;
       },
       child: Scaffold(
           backgroundColor: Colors.orange.shade500,

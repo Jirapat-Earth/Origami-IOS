@@ -5,13 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../language/translate.dart';
+import '../../../login/login.dart';
+import '../../academy.dart';
 import '../youtube.dart';
 
 class Curriculum extends StatefulWidget {
-  Curriculum({super.key, required this.culums, required this.callImage, required this.callUrl,});
-  final List<Culums> culums;
-  final String Function(String) callImage;
-  final String Function(String) callUrl;
+  Curriculum({super.key, required this.employee, required this.academy,});
+  final Employee employee;
+  final AcademyRespond academy;
 
   @override
   _CurriculumState createState() => _CurriculumState();
@@ -19,12 +21,35 @@ class Curriculum extends StatefulWidget {
 
 class _CurriculumState extends State<Curriculum> {
   bool isSwitch = false;
-  List<Culums> culums = [];
   // late YoutubePlayerController _controller;
+
+  Future<CurriculumData> fetchCurriculum() async {
+    final uri = Uri.parse("https://www.origami.life/api/origami/academy/curriculum.php");
+    final response = await http.post(
+      uri,
+      body: {
+        'comp_id': widget.employee.comp_id,
+        'emp_id': widget.employee.emp_id,
+        'academy_id': widget.academy.academy_id,
+        'academy_type': widget.academy.academy_type,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+      // แปลง JSON ตอบสนองเป็นอ็อบเจกต์ CurriculumData โดยตรง
+      return CurriculumData.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to load academies');
+    }
+  }
+
+
   @override
   void initState() {
     super.initState();
-    culums = widget.culums;
+
     // กำหนดลิงค์วิดีโอที่ต้องการเล่น
     // _controller = YoutubePlayerController(
     //   initialVideoId: 'KpDQhbYzf4Y', // ใส่ Video ID ของ YouTube
@@ -47,364 +72,479 @@ class _CurriculumState extends State<Curriculum> {
     }
   }
 
+  Widget loading() {
+    return FutureBuilder<CurriculumData>(
+      future: fetchCurriculum(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    color: Colors.orange,
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    '$Loading...',
+                    style: GoogleFonts.openSans(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF555555),
+                    ),
+                  ),
+                ],
+              ));
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (snapshot.hasData) {
+          return _getContentWidget(snapshot.data!);
+        } else {
+          return Center(child: Text('No data found.'));
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: SingleChildScrollView(
-        child: Column(
-          children: List.generate(culums.length, (index) {
-            return Column(
-              children: [
-                InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () {
-                    setState(() {
-                      (isSwitch == false) ? isSwitch = true : isSwitch = false;
-                    });
-                  },
-                  child: (isSwitch == true)
-                      ? Card(
+    return loading();
+  }
+
+  void _topic(Topic topic){
+    if (topic.topicType == 'Youtube') {
+      // String callUrl = widget.callUrl("http://www.thapra.lib.su.ac.th/m-talk/attachments/article/75/ebook.pdf");
+      setState(() {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => YouTubeScreen()),
+        );
+      });
+    }else if(topic.topicType == 'Document'){
+      // String callUrl = widget.callUrl("http://www.thapra.lib.su.ac.th/m-talk/attachments/article/75/ebook.pdf");
+      // final Uri _url = Uri.parse(callUrl);
+      // setState(() {
+      //   _launchURL(_url);
+      // });
+    }else if(topic.topicType ==  "External Link"){
+      // String callUrl = widget.callUrl("http://www.thapra.lib.su.ac.th/m-talk/attachments/article/75/ebook.pdf");
+      // final Uri _url = Uri.parse(callUrl);
+      // setState(() {
+      //   _launchURL(_url);
+      // });
+    } else if(topic.topicType ==  "Challenge"){
+
+    } else {
+
+    }
+  }
+
+  Widget _getContentWidget(CurriculumData curriculum){
+    return Container(
+      color: Colors.grey.shade50,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: SingleChildScrollView(
+          child: Column(
+            children: List.generate(curriculum.curriculumData.length, (index) {
+              final course = curriculum.curriculumData[index];
+              return Column(
+                children: [
+                  InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: () {
+                      setState(() {
+                        (isSwitch == false) ? isSwitch = true : isSwitch = false;
+                      });
+                    },
+                    child: (isSwitch == true)
+                        ? Card(
+                      color: Colors.white,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            left: 6, right: 6, top: 10, bottom: 10),
+                        decoration: BoxDecoration(
                           color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                course.courseSubject,
+                                style: GoogleFonts.openSans(
+                                  fontSize: 18.0,
+                                  color: Color(0xFF555555),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Text(course.coursePercent,
+                                style: GoogleFonts.openSans(
+                                  color: Color(0xFF555555),
+                                )),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xFF555555),
+                              size: 30,
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                        : Container(
+                      padding: EdgeInsets.all(8),
+                      color: Colors.transparent,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              course.courseSubject,
+                              style: GoogleFonts.openSans(
+                                fontSize: 16,
+                                color: Color(0xFF555555),
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                          Text(course.coursePercent,
+                              style: GoogleFonts.openSans(
+                                color: Color(0xFF555555),
+                              )),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Color(0xFF555555),
+                            size: 30,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: List.generate(
+                        course.tcopicData.length, (indexI) {
+                      final topic = course.tcopicData[indexI];
+                      return (isSwitch == false)
+                          ? Card(
+                        color: Color(0xFFF5F5F5),
+                        child: InkWell(
+                          onTap: () {
+                            if(topic.topicOpen == "N"){
+                              return ;
+                            }else{
+                              return _topic(topic);
+                            }
+                          },
                           child: Container(
-                            padding: EdgeInsets.only(
-                                left: 6, right: 6, top: 8, bottom: 8),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    culums[index].name ?? '',
-                                    style: GoogleFonts.openSans(
-                                      fontSize: 18.0,
-                                      color: Color(0xFF555555),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 0,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 3), // x, y
                                 ),
-                                Text('${culums[index].persen ?? ''} %',
-                                    style: GoogleFonts.openSans(
-                                      color: Color(0xFF555555),
-                                    )),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Color(0xFF555555),
-                                  size: 30,
-                                )
                               ],
                             ),
-                          ),
-                        )
-                      : Container(
-                          padding: EdgeInsets.all(8),
-                          color: Colors.transparent,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  culums[index].name ?? '',
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 18.0,
-                                    color: Color(0xFF555555),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Text('${culums[index].persen ?? ''} %',
-                                  style: GoogleFonts.openSans(
-                                    color: Color(0xFF555555),
-                                  )),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Icon(
-                                Icons.keyboard_arrow_down,
-                                color: Color(0xFF555555),
-                                size: 30,
-                              )
-                            ],
-                          ),
-                        ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                Column(
-                  children: List.generate(
-                      culums[index].curriculums?.length ?? 0, (indexC) {
-                    final curriculums = culums[index].curriculums?[indexC];
-                    return (isSwitch == false)
-                        ? Card(
-                            color: Colors.white,
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  widget.callImage(curriculums?.avatar ?? '');
-                                });
-                                if (curriculums?.type == 'YOUTUBE') {
-                                  // String callUrl = widget.callUrl("http://www.thapra.lib.su.ac.th/m-talk/attachments/article/75/ebook.pdf");
-                                  setState(() {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => YouTubeScreen()),
-                                    );
-                                  });
-                                }else if(curriculums?.type == 'PDF'){
-                                  String callUrl = widget.callUrl("http://www.thapra.lib.su.ac.th/m-talk/attachments/article/75/ebook.pdf");
-                                  final Uri _url = Uri.parse(callUrl);
-                                  setState(() {
-                                    _launchURL(_url);
-                                  });
-                                }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Image.network(
-                                      curriculums?.avatar ?? '',
-                                      width: 110,
-                                      height: 100,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            curriculums?.name ?? '',
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 16.0,
-                                              color: Color(0xFF555555),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                          SizedBox(height: 8),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                (curriculums?.type == 'VIDEO')
-                                                    ? Icons
-                                                        .video_collection_outlined
-                                                    : (curriculums?.type ==
-                                                            'PDF')
-                                                        ? Icons
-                                                            .picture_as_pdf_outlined
-                                                        : Icons
-                                                            .ondemand_video_outlined,
-                                                color: Colors.amber,
-                                              ),
-                                              SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(
-                                                curriculums?.type ?? '',
-                                                style: GoogleFonts.openSans(
-                                                  fontSize: 14.0,
-                                                  color: Color(0xFF555555),
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 8),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                Icons.access_time,
-                                                color: Colors.amber,
-                                              ),
-                                              SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(
-                                                '0h 7m 7s',
-                                                style: GoogleFonts.openSans(
-                                                  color: Color(0xFF555555),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 8),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.people_alt_outlined,
-                                                      color: Colors.amber,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 4,
-                                                    ),
-                                                    Text(
-                                                      '0h 0m 8s',
-                                                      style:
-                                                          GoogleFonts.openSans(
-                                                        color:
-                                                            Color(0xFF555555),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.hourglass_bottom,
-                                                      color: Colors.amber,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 4,
-                                                    ),
-                                                    Text('8 %',
-                                                        style: GoogleFonts
-                                                            .openSans(
-                                                          color:
-                                                              Color(0xFF555555),
-                                                        ))
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Image.network(
+                                        topic.topicCover,
+                                        width: 110,
+                                        height: 100,
+                                        fit: BoxFit.cover,
                                       ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(2),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.black26,
+                                            // borderRadius:
+                                            // BorderRadius.circular(
+                                            //     10),
+                                          ),
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets.all(
+                                                4),
+                                            child: Text(
+                                              topic.topicButton,
+                                              style: GoogleFonts
+                                                  .openSans(
+                                                fontSize: 12.0,
+                                                color: Colors.white,
+                                              ),
+                                              overflow: TextOverflow
+                                                  .ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          topic.topicName,
+                                          style: GoogleFonts.openSans(
+                                            fontSize: 16.0,
+                                            color: Color(0xFF555555),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              (topic.topicType == 'Video')
+                                                  ? Icons
+                                                  .video_collection_outlined
+                                                  : (topic.topicType ==
+                                                  'PDF')
+                                                  ? Icons
+                                                  .picture_as_pdf_outlined
+                                                  : Icons
+                                                  .ondemand_video_outlined,
+                                              color: Colors.amber,
+                                            ),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              topic.topicType,
+                                              style: GoogleFonts.openSans(
+                                                fontSize: 14.0,
+                                                color: Color(0xFF555555),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.access_time,
+                                              color: Colors.amber,
+                                            ),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              topic.topicDuration,
+                                              style: GoogleFonts.openSans(
+                                                color: Color(0xFF555555),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.people_alt_outlined,
+                                                    color: Colors.amber,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 4,
+                                                  ),
+                                                  Text(
+                                                    topic.topicView,
+                                                    style:
+                                                    GoogleFonts.openSans(
+                                                      color:
+                                                      Color(0xFF555555),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.hourglass_bottom,
+                                                    color: Colors.amber,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 4,
+                                                  ),
+                                                  Text(topic.topicPercent,
+                                                      style: GoogleFonts
+                                                          .openSans(
+                                                        color:
+                                                        Color(0xFF555555),
+                                                      ))
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
-                          )
-                        : Container();
-                  }),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-              ],
-            );
-          }),
+                          ),
+                        ),
+                      )
+                          : Container();
+                    }),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                ],
+              );
+            }),
+          ),
         ),
       ),
     );
   }
 
-  late Future<CourseCurriculum?> _curriculum;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // เรียกฟังก์ชัน getAcademy และส่ง URL ของ API
-  //   _academy = getCurriculum();
-  // }
-
 }
 
-class CourseCurriculum {
-  final String page;
-  final List<String> courseName;
-  final List<String> courseCode;
-  final List<CurriculumDetails>? curriculum;
+class CurriculumData {
+  bool status;
+  int curriculumExp;
+  List<Course> curriculumData;
 
-  CourseCurriculum({
-    required this.page,
-    required this.courseName,
-    required this.courseCode,
-    required this.curriculum,
+  CurriculumData({
+    required this.status,
+    required this.curriculumExp,
+    required this.curriculumData,
   });
 
-  factory CourseCurriculum.fromJson(Map<String, dynamic> json) {
-    return CourseCurriculum(
-      page: json['page'],
-      courseName: List<String>.from(json['course_name']),
-      courseCode: List<String>.from(json['course_code']),
-      curriculum: json['curriculum'] != null
-          ? (json['curriculum'] as List)
-          .map((item) => CurriculumDetails.fromJson(item))
-          .toList()
-          : null,
+  // ฟังก์ชันสำหรับแปลงจาก JSON เป็น Dart Object
+  factory CurriculumData.fromJson(Map<String, dynamic> json) {
+    return CurriculumData(
+      status: json['status'],
+      curriculumExp: json['curriculum_exp'],
+      curriculumData: (json['curriculum_data'] as List)
+          .map((course) => Course.fromJson(course))
+          .toList(),
     );
+  }
+
+  // ฟังก์ชันสำหรับแปลงจาก Dart Object เป็น JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'status': status,
+      'curriculum_exp': curriculumExp,
+      'curriculum_data': curriculumData.map((course) => course.toJson()).toList(),
+    };
   }
 }
 
-class CurriculumDetails {
-  final String topicId;
-  final String topicNo;
-  final String topicName;
-  final String topicOption;
-  final String balance;
-  final String learnFlag;
-  final String topicButton;
-  final String topicCover;
-  final String topicDuration;
-  final String topicIcon;
-  final String topicItem;
-  final String topicPercent;
-  final String topicRequire;
-  final String topicTile;
-  final String topicViews;
+class Course {
+  String courseId;
+  String courseSubject;
+  String coursePercent;
+  List<Topic> tcopicData;
 
-  CurriculumDetails({
+  Course({
+    required this.courseId,
+    required this.courseSubject,
+    required this.coursePercent,
+    required this.tcopicData,
+  });
+
+  factory Course.fromJson(Map<String, dynamic> json) {
+    return Course(
+      courseId: json['course_id'],
+      courseSubject: json['course_subject'],
+      coursePercent: json['course_percent'],
+      tcopicData: (json['tcopic_data'] as List)
+          .map((topic) => Topic.fromJson(topic))
+          .toList(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'course_id': courseId,
+      'course_subject': courseSubject,
+      'course_percent': coursePercent,
+      'tcopic_data': tcopicData.map((topic) => topic.toJson()).toList(),
+    };
+  }
+}
+
+class Topic {
+  String topicId;
+  String topicNo;
+  String topicName;
+  String topicOption;
+  String topicCover;
+  String topicType;
+  String topicDuration;
+  String topicView;
+  String topicPercent;
+  String topicButton;
+  String topicOpen;
+
+  Topic({
     required this.topicId,
     required this.topicNo,
     required this.topicName,
     required this.topicOption,
-    required this.balance,
-    required this.learnFlag,
-    required this.topicButton,
     required this.topicCover,
+    required this.topicType,
     required this.topicDuration,
-    required this.topicIcon,
-    required this.topicItem,
+    required this.topicView,
     required this.topicPercent,
-    required this.topicRequire,
-    required this.topicTile,
-    required this.topicViews,
+    required this.topicButton,
+    required this.topicOpen,
   });
 
-  factory CurriculumDetails.fromJson(Map<String, dynamic> json) {
-    return CurriculumDetails(
+  factory Topic.fromJson(Map<String, dynamic> json) {
+    return Topic(
       topicId: json['topic_id'],
       topicNo: json['topic_no'],
       topicName: json['topic_name'],
       topicOption: json['topic_option'],
-      balance: json['balance'],
-      learnFlag: json['learn_flag'],
-      topicButton: json['topic_button'],
       topicCover: json['topic_cover'],
+      topicType: json['topic_type'],
       topicDuration: json['topic_duration'],
-      topicIcon: json['topic_icon'],
-      topicItem: json['topic_item'],
+      topicView: json['topic_view'],
       topicPercent: json['topic_percent'],
-      topicRequire: json['topic_require'],
-      topicTile: json['topic_tile'],
-      topicViews: json['topic_views'],
+      topicButton: json['topic_button'],
+      topicOpen: json['topic_open'],
     );
   }
 
@@ -414,45 +554,13 @@ class CurriculumDetails {
       'topic_no': topicNo,
       'topic_name': topicName,
       'topic_option': topicOption,
-      'balance': balance,
-      'learn_flag': learnFlag,
-      'topic_button': topicButton,
       'topic_cover': topicCover,
+      'topic_type': topicType,
       'topic_duration': topicDuration,
-      'topic_icon': topicIcon,
-      'topic_item': topicItem,
+      'topic_view': topicView,
       'topic_percent': topicPercent,
-      'topic_require': topicRequire,
-      'topic_tile': topicTile,
-      'topic_views': topicViews,
+      'topic_button': topicButton,
+      'topic_open': topicOpen,
     };
   }
-}
-
-class Culums {
-  final int? number;
-  final String? name;
-  final String? persen;
-  final List<Curriculums>? curriculums;
-
-  Culums({
-    this.number,
-    this.name,
-    this.persen,
-    this.curriculums,
-  });
-}
-
-class Curriculums {
-  final int? number;
-  final String? avatar;
-  final String? name;
-  final String? type;
-
-  Curriculums({
-    this.number,
-    this.avatar,
-    this.name,
-    this.type,
-  });
 }

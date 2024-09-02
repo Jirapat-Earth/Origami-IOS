@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:origami_ios/setting_translate.dart';
+import 'package:origami_ios/trandar_shop/trandar_shop.dart';
 import '../language/translate.dart';
 import '../login/login.dart';
 import 'academy/academy.dart';
@@ -44,45 +45,36 @@ class _OrigamiPageState extends State<OrigamiPage> {
     "$logout",
   ];
 
+  DateTime? lastPressed;
   bool isNeed = false;
   Widget build(BuildContext context) {
     double drawerWidth = MediaQuery.of(context).size.width * 0.6;
     return WillPopScope(
       onWillPop: () async {
-        return await showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                elevation: 0,
-                title: Text(
-                  '$ExitApp',
-                  style: GoogleFonts.openSans(
-                    fontSize: 16,
-                    color: Color(0xFF555555),
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: Text(
-                      '$NotNow',
-                      style: GoogleFonts.openSans(
-                        color: Color(0xFF555555),
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: Text(
-                      '$Ok',
-                      style: GoogleFonts.openSans(
-                        color: Color(0xFF555555),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ) ??
-            false;
+        // เช็คว่ามีการกดปุ่มย้อนกลับครั้งล่าสุดหรือไม่ และเวลาห่างจากปัจจุบันมากกว่า 2 วินาทีหรือไม่
+        final now = DateTime.now();
+        final maxDuration = Duration(seconds: 2);
+        final isWarning = lastPressed == null || now.difference(lastPressed!) > maxDuration;
+
+        if (isWarning) {
+          // ถ้ายังไม่ได้กดสองครั้งภายในเวลาที่กำหนด ให้แสดง SnackBar แจ้งเตือน
+          lastPressed = DateTime.now();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+
+            SnackBar(
+              content: Text('Press back again to exit',
+                style: GoogleFonts.openSans(
+                color: Colors.white,
+              ),),
+              duration: maxDuration,
+            ),
+          );
+          return false; // ไม่ออกจากแอป
+        }
+
+        // ถ้ากดปุ่มย้อนกลับสองครั้งภายในเวลาที่กำหนด ให้ออกจากแอป
+        return true;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -94,10 +86,20 @@ class _OrigamiPageState extends State<OrigamiPage> {
                 fontWeight: FontWeight.bold, color: Colors.white),
           ),
           actions: <Widget>[
-            Container(
-              width: 40,
-              child: Image.network(
-                widget.employee.comp_logo ?? '',
+            InkWell(
+              onTap:(){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                    builder: (context) => TrandarShop(),
+                ),
+                );
+              },
+              child: Container(
+                width: 40,
+                child: Image.network(
+                  widget.employee.comp_logo ?? '',
+                ),
               ),
             ),
           ],

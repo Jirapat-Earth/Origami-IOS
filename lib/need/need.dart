@@ -382,15 +382,15 @@ class _NeedsViewState extends State<NeedsView> {
           color: Colors.white,
           child: Column(
             children: [
-              IconButton(onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TrandarShop(
-
-                      )),
-                );
-              }, icon: Icon(Icons.telegram),),
+              // IconButton(onPressed: (){
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => TrandarShop(
+              //
+              //         )),
+              //   );
+              // }, icon: Icon(Icons.telegram),),
               Container(
                 padding: EdgeInsets.all(8),
                 child: Row(

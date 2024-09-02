@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import '../../../language/translate.dart';
 import '../../login/login.dart';
+import '../academy.dart';
 import 'Announcements/announcements.dart';
 import 'attach_file/attach_file.dart';
 import 'certification/certification.dart';
@@ -17,9 +18,14 @@ import 'discussion/discussion.dart';
 import 'instructors/instructors.dart';
 
 class EvaluateModule extends StatefulWidget {
-  EvaluateModule({super.key, required this.id, required this.employee,});
-  final String id;
+  EvaluateModule({
+    super.key,
+    required this.employee,
+    required this.academy, required this.callback,
+  });
   final Employee employee;
+  final AcademyRespond academy;
+  final VoidCallback callback;
 
   @override
   _EvaluateModuleState createState() => _EvaluateModuleState();
@@ -28,10 +34,16 @@ class EvaluateModule extends StatefulWidget {
 class _EvaluateModuleState extends State<EvaluateModule>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  TextEditingController _commentControllerA = TextEditingController();
+  TextEditingController _commentControllerB = TextEditingController();
+  
   bool isScrollable = true;
   bool showNextIcon = false;
   bool showBackIcon = false;
   bool _isClick = false;
+  String _commentA = "";
+  String _commentB = "";
+
 
   String URL = '';
   String imageUrl = '';
@@ -49,7 +61,16 @@ class _EvaluateModuleState extends State<EvaluateModule>
   @override
   void initState() {
     super.initState();
+    getAllAcademyData();
     _tabController = TabController(length: _tabs.length, vsync: this);
+    _commentControllerA.addListener(() {
+      _commentA = _commentControllerA.text;
+      print("Current text: ${_commentControllerA.text}");
+    });
+    _commentControllerB.addListener(() {
+      _commentB = _commentControllerB.text;
+      print("Current text: ${_commentControllerB.text}");
+    });
   }
 
   @override
@@ -61,12 +82,12 @@ class _EvaluateModuleState extends State<EvaluateModule>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         foregroundColor: Colors.white,
         backgroundColor: Colors.orange,
         title: Text(
-          'Academy',
+          '$academy',
           style: GoogleFonts.openSans(
             fontSize: 24,
             color: Colors.white,
@@ -74,274 +95,471 @@ class _EvaluateModuleState extends State<EvaluateModule>
           ),
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    'Allable On Boarding',
-                    style: GoogleFonts.openSans(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF555555),
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                Stack(
+      body: FutureBuilder<Map<String, dynamic>>(
+        future: getAllAcademyData(), // รอการโหลดข้อมูลจาก API
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // แสดงตัวโหลดข้อมูล
+            return Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Card(
-                      color: Colors.white,
-                      elevation: 2,
-                      child: InkWell(
-                        onTap: () {
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            children: [
-                              Image.network(
-                                (callImage != '')
-                                    ? callImage
-                                    : culums[0].curriculums?[0].avatar ?? '',
-                                width: 90,
-                                height: 80,
-                                fit: BoxFit.fill,
-                              ),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Watched ',
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 14.0,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            '0h 41m 33s',
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 14.0,
-                                              color: Colors.amber,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        Text(
-                                          ' Of ',
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 14.0,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            '0h 44m 12s',
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 14.0,
-                                              color: Colors.amber,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 8),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'You have passed ',
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 14.0,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          '94 %',
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 14.0,
-                                            color: Colors.amber,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            ' of the class',
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 14.0,
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 8),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Start ",
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 14.0,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          "07/05/2024",
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 14.0,
-                                            color: Colors.amber,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          " End ",
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 14.0,
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          "31/07/2024",
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 14.0,
-                                            color: Colors.amber,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 8),
-                                  ],
+                    CircularProgressIndicator(
+                      color: Colors.orange,
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Text(
+                      '$Loading...',
+                      style: GoogleFonts.openSans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF555555),
+                      ),
+                    ),
+                  ],
+                ));
+          } else if (snapshot.hasError) {
+            // แสดงข้อความเมื่อมีข้อผิดพลาด
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            // เมื่อโหลดข้อมูลสำเร็จ
+            HeaderData headerData = snapshot.data!['headerData'];
+            FastView fastView = snapshot.data!['fastView'];
+
+            return _Head(headerData,fastView);
+          } else {
+            return Center(child: Text('No data found.'));
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _Head(HeaderData headerData, FastView fastView){
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Text(
+                      'Allable On Boarding',
+                      style: GoogleFonts.openSans(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF555555),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 4),
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          widget.callback();
+                          (_isClick == true)
+                              ? _isClick = false
+                              : _isClick = true;
+                        });
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: (_isClick != false || widget.academy.favorite == 1)
+                              ? Colors.red.shade100
+                              : Color(0xFFE5E5E5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.favorite,
+                              color: (_isClick != false || widget.academy.favorite == 1)
+                                  ? Colors.red
+                                  : Colors.grey,
+                            ),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(2),
+                              child: Text(
+                                "Favorite",
+                                style: GoogleFonts.openSans(
+                                  color: (_isClick != false || widget.academy.favorite == 1)
+                                      ? Colors.red
+                                      : Colors.grey,
                                 ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Card(
+                color: Colors.white,
+                elevation: 2,
+                child: InkWell(
+                  onTap: _showDialogA,
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 90,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10), // กำหนดความโค้งของขอบ
+                            image: DecorationImage(
+                              image: NetworkImage("${fastView.fastview_cover}"),
+                              fit: BoxFit.cover, // กำหนดให้รูปภาพครอบคลุมเต็มพื้นที่
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${fastView.fastview_text??''}",
+                                style: GoogleFonts.openSans(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Start : ",
+                                    style: GoogleFonts.openSans(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    fastView.fastview_exp??'',
+                                    style: GoogleFonts.openSans(
+                                      fontSize: 12,
+                                      color: Colors.amber,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Status : ",
+                                    style: GoogleFonts.openSans(
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    fastView.fastview_button??'',
+                                    style: GoogleFonts.openSans(
+                                      fontSize: 12,
+                                      color: Colors.orange,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                    Positioned(
-                      bottom: 4,
-                      right: 4,
-                      child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            (_isClick == true)
-                                ? _isClick = false
-                                : _isClick = true;
-                          });
-                        },
-                        icon: Icon(
-                          Icons.favorite,
-                          color: (_isClick == false) ? Colors.grey : Colors.red,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8 ,right: 8),
+                child: Row(
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.people_alt_outlined,
-                          color: Colors.amber,
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(
+                              Icons.people_alt_outlined,
+                              color: Colors.amber,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              '${headerData.student_number} student',
+                              style: GoogleFonts.openSans(
+                                color: Color(0xFF555555),
+                              ),
+                            )
+                          ],
                         ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          '7 Students',
-                          style: GoogleFonts.openSans(
-                            color: Color(0xFF555555),
-                          ),
-                        )
-                      ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.access_time,
-                          color: Colors.amber,
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(
+                              Icons.access_time,
+                              color: Colors.amber,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              '${headerData.video_number} Video : ${headerData.video_time}',
+                              style: GoogleFonts.openSans(
+                                color: Color(0xFF555555),
+                              ),
+                            )
+                          ],
                         ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          '1 Video : 0h 7m 7s',
-                          style: GoogleFonts.openSans(
-                            color: Color(0xFF555555),
-                          ),
-                        )
-                      ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.bookmark_border,
-                          color: Colors.amber,
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(
+                              Icons.bookmark_border,
+                              color: Colors.amber,
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              headerData.category_name??'',
+                              style: GoogleFonts.openSans(
+                                color: Color(0xFF555555),
+                              ),
+                            )
+                          ],
                         ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          'Allable Academy',
-                          style: GoogleFonts.openSans(
-                            color: Color(0xFF555555),
-                          ),
-                        )
-                      ],
+                      ),
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          Column(
-            children: [
-              TabBar(
-                onTap: (index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                  print(_selectedIndex);
-                },
-                controller: _tabController,
-                isScrollable: true,
-                tabs: _tabs.map((tab) => Tab(text: tab)).toList(),
               ),
             ],
           ),
-          Expanded(child: _bodyAcademy()),
-        ],
-      ),
+        ),
+        Column(
+          children: [
+            TabBar(
+              onTap: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+                print(_selectedIndex);
+              },
+              controller: _tabController,
+              isScrollable: true,
+              tabs: _tabs.map((tab) => Tab(text: tab)).toList(),
+            ),
+          ],
+        ),
+        Expanded(child: _bodyAcademy()),
+      ],
+    );
+  }
+
+  void _showDialogA() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          title: Column(
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.file_copy_outlined),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    'Enroll form',
+                    style: GoogleFonts.openSans(
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF555555),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: const Color(0xFF555555),
+                    width: 1.0,
+                  ),
+                ),
+                child: TextFormField(
+                  minLines: 3,
+                  maxLines: null,
+                  keyboardType: TextInputType.text,
+                  controller: _commentControllerA,
+                  style: GoogleFonts.openSans(
+                      color: const Color(0xFF555555), fontSize: 14),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: '$Request_reason...',
+                    hintStyle: GoogleFonts.openSans(
+                        fontSize: 14, color: const Color(0xFF555555)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  onChanged: (value) {},
+                ),
+              ),
+            ],
+          ),
+          content: InkWell(
+            onTap: _showDialogB,
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'History request',
+                  style: GoogleFonts.openSans(
+                    decoration: TextDecoration.underline,
+                    // fontWeight: FontWeight.bold,
+                    // color: Color(0xFF555555),
+                  ),
+                ),
+                const Icon(Icons.arrow_drop_down),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                '$Cancel',
+                style: GoogleFonts.openSans(
+                  color: const Color(0xFF555555),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: Text(
+                'Enroll',
+                style: GoogleFonts.openSans(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  // fetchApprovelMassage(setApprovel?.mny_request_id,"N",_commentN);
+                });
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDialogB() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          title: Column(
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.history),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    'History request',
+                    style: GoogleFonts.openSans(
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF555555),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                'No data available in table',
+                style: GoogleFonts.openSans(
+                  color: const Color(0xFF555555),
+                  fontSize:14,
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                '$Cancel',
+                style: GoogleFonts.openSans(
+                  color: const Color(0xFF555555),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -352,41 +570,20 @@ class _EvaluateModuleState extends State<EvaluateModule>
   Widget _bodyAcademy() {
     switch (_selectedIndex) {
       case 0:
-        return Description(
-        );
+        return Description(employee: widget.employee, academy: widget.academy,);
       case 1:
         return Curriculum(
-          culums: culums,
-          callImage: (String value) {
-            setState(() {
-              callImage = value;
-            });
-            print("Image URL: $value");
-            return callImage;
-          },
-          callUrl: (String value) {
-            setState(() {
-              callUrl = value;
-            });
-            print("Video URL: $value");
-            return callUrl;
-          },
-        );
+          employee: widget.employee, academy: widget.academy,);
       case 2:
-        return Instructors(
-        );
+        return Instructors();
       case 3:
-        return Discussion(
-        );
+        return Discussion();
       case 4:
-        return Announcements(
-        );
+        return Announcements();
       case 5:
-        return AttachFile(
-        );
+        return AttachFile();
       case 6:
-        return Certification(
-        );
+        return Certification();
       default:
         return Container(
           alignment: Alignment.center,
@@ -404,97 +601,146 @@ class _EvaluateModuleState extends State<EvaluateModule>
     }
   }
 
-  List<Culums> culums = [
-    Culums(
-      number: 0,
-      name: 'Subject Origami',
-      persen: '8',
-      curriculums: [
-        Curriculums(
-          number: 0,
-          avatar:
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ1HWZtXfc2IbUyn8h13AoP1rOrKZ6v_Lry7cRWPH4E5ntBFpKW5lcxWhS9NOdEjiTK2U&usqp=CAU',
-          name: 'Origami.life',
-          type: 'VIDEO',
-        ),
-      ],
-    ),
-    Culums(
-      number: 1,
-      name: 'Subject Trandar',
-      persen: '30',
-      curriculums: [
-        Curriculums(
-          number: 0,
-          avatar:
-              'https://i0.wp.com/toptotravel.com/wp-content/uploads/2018/11/Trandar-AMF-125.jpg?ssl=1',
-          name: 'นวัตกรรมฝ้าอะคูสติก “Trandar AMF”',
-          type: 'YOUTUBE',
-        ),
-        Curriculums(
-          number: 0,
-          avatar:
-              'https://i0.wp.com/toptotravel.com/wp-content/uploads/2018/11/Trandar-AMF-125.jpg?ssl=1',
-          name: 'Office Building Grade A',
-          type: 'YOUTUBE',
-        ),
-      ],
-    ),
-    Culums(
-      number: 2,
-      name: 'Subject Netizen',
-      persen: '80',
-      curriculums: [
-        Curriculums(
-          number: 0,
-          avatar: 'http://www.allaboutthailand2018.com/photo/2192.jpg',
-          name: 'หัวเว่ย คลาวด์ 1',
-          type: 'PDF',
-        ),
-        Curriculums(
-          number: 0,
-          avatar: 'http://www.allaboutthailand2018.com/photo/2192.jpg',
-          name: 'หัวเว่ย คลาวด์ 2',
-          type: 'PDF',
-        ),
-        Curriculums(
-          number: 0,
-          avatar: 'http://www.allaboutthailand2018.com/photo/2192.jpg',
-          name: 'หัวเว่ย คลาวด์ 3',
-          type: 'PDF',
-        ),
-      ],
-    ),
-  ];
-
   // evaluate
-  List<CourseData> courseData = [
-    CourseData(
-        cover:
-            "https://www.origami.life/uploads/photo/trn_picture_title_20230511151925.jpg",
-        enroll: "Enroll",
-        balance: "-92",
-        count: "2494.00",
-        course: "15424",
-        exp: "Start 07/05/2024 End 31/07/2024",
-        id: "7005",
-        item: "5058",
-        no: "1",
-        option: "0",
-        text:
-            "Watched text-orange 0h 41m 34s Of  0h 44m 12s\nYou have passed 94.04% of the class "),
-  ];
 
+  Future<Map<String, dynamic>> getAllAcademyData() async {
+    try {
+      final uri =
+          Uri.parse("https://www.origami.life/api/origami/academy/academy.php");
+      final response = await http.post(
+        uri,
+        body: {
+          'comp_id': widget.employee.comp_id,
+          'emp_id': widget.employee.emp_id,
+          'academy_id': widget.academy.academy_id,
+          'academy_type': widget.academy.academy_type,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // แปลงข้อมูล JSON เป็น Map
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+        // ดึงข้อมูลจาก JSON
+        HeaderData headerData =
+            HeaderData.fromJson(jsonResponse['header_data']);
+        FastView fastView = FastView.fromJson(jsonResponse['fastview_data']);
+
+        // ส่งข้อมูลกลับเป็น Map
+        return {
+          'headerData': headerData,
+          'fastView': fastView,
+        };
+      } else {
+        print('Failed to load academy data');
+        throw Exception('Failed to load academies');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
+    }
+  }
 
 }
 
+class IDPlan {
+  final bool plan_update;
+
+  IDPlan({
+    required this.plan_update,
+  });
+
+  // สร้างฟังก์ชันเพื่อแปลง JSON ไปเป็น Object ของ Academy
+  factory IDPlan.fromJson(Map<String, dynamic> json) {
+    return IDPlan(
+      plan_update: json['plan_update'],
+    );
+  }
+}
+
+class HeaderData {
+  final String academy_name;
+  final String academy_description;
+  final String category_name;
+  final String video_time;
+  final String video_number;
+  final String student_number;
+  final String announce_number;
+  final int favorite_status;
+  final String academy_link;
+
+  HeaderData({
+    required this.academy_name,
+    required this.academy_description,
+    required this.category_name,
+    required this.video_time,
+    required this.video_number,
+    required this.student_number,
+    required this.announce_number,
+    required this.favorite_status,
+    required this.academy_link,
+  });
+
+  // สร้างฟังก์ชันเพื่อแปลง JSON ไปเป็น Object ของ Academy
+  factory HeaderData.fromJson(Map<String, dynamic> json) {
+    return HeaderData(
+      academy_name: json['academy_name'],
+      academy_description: json['academy_description'],
+      category_name: json['category_name'],
+      video_time: json['video_time'],
+      video_number: json['video_number'],
+      student_number: json['student_number'],
+      announce_number: json['announce_number'],
+      favorite_status: json['favorite_status'],
+      academy_link: json['academy_link'],
+    );
+  }
+}
+
+class FastView {
+  final String? fastview_cover;
+  final String? course_id;
+  final String? course_option;
+  final String? item_id;
+  final String? topic_no;
+  final String? topic_id;
+  final String? fastview_button;
+  final String? fastview_exp;
+  final String? fastview_text;
+
+  FastView({
+    required this.fastview_cover,
+    required this.course_id,
+    required this.course_option,
+    required this.item_id,
+    required this.topic_no,
+    required this.topic_id,
+    required this.fastview_button,
+    required this.fastview_exp,
+    required this.fastview_text,
+  });
+
+  // สร้างฟังก์ชันเพื่อแปลง JSON ไปเป็น Object ของ Academy
+  factory FastView.fromJson(Map<String, dynamic> json) {
+    return FastView(
+      fastview_cover: json['fastview_cover'],
+      course_id: json['course_id'],
+      course_option: json['course_option'],
+      item_id: json['item_id'],
+      topic_no: json['topic_no'],
+      topic_id: json['topic_id'],
+      fastview_button: json['fastview_button'],
+      fastview_exp: json['fastview_exp'],
+      fastview_text: json['fastview_text'],
+    );
+  }
+}
+
 class CourseData {
-  final String cover;
-  final String enroll;
-  final String balance;
+  final String fastview_cover;
   final String count;
   final String course;
-  final String exp;
+  final String fastview_exp;
   final String id;
   final String item;
   final String no;
@@ -502,12 +748,10 @@ class CourseData {
   final String text;
 
   CourseData({
-    required this.cover,
-    required this.enroll,
-    required this.balance,
+    required this.fastview_cover,
     required this.count,
     required this.course,
-    required this.exp,
+    required this.fastview_exp,
     required this.id,
     required this.item,
     required this.no,
@@ -517,73 +761,15 @@ class CourseData {
 
   factory CourseData.fromJson(Map<String, dynamic> json) {
     return CourseData(
-      cover: json['cover'],
-      enroll: json['enroll'],
-      balance: json['balance'],
+      fastview_cover: json['fastview_cover'],
       count: json['count'],
       course: json['course'],
-      exp: json['exp'],
+      fastview_exp: json['fastview_exp'],
       id: json['id'],
       item: json['item'],
       no: json['no'],
       option: json['option'],
       text: json['text'],
     );
-  }
-}
-
-class TopicData {
-  final String topicName;
-  final String topicDescription;
-  final String metaImage;
-  final String mataLink;
-  final String category;
-  final String countAnnounce;
-  final int favorite;
-  final String student;
-  final String videoCount;
-  final String videoTime;
-
-  TopicData({
-    required this.topicName,
-    required this.topicDescription,
-    required this.metaImage,
-    required this.mataLink,
-    required this.category,
-    required this.countAnnounce,
-    required this.favorite,
-    required this.student,
-    required this.videoCount,
-    required this.videoTime,
-  });
-
-  factory TopicData.fromJson(Map<String, dynamic> json) {
-    return TopicData(
-      topicName: json['topic_name'],
-      topicDescription: json['topic_description'],
-      metaImage: json['meta_image'],
-      mataLink: json['mata_link'],
-      category: json['category'],
-      countAnnounce: json['count_announce'],
-      favorite: json['favorite'],
-      student: json['student'],
-      videoCount: json['video_count'],
-      videoTime: json['video_time'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'topic_name': topicName,
-      'topic_description': topicDescription,
-      'meta_image': metaImage,
-      'mata_link': mataLink,
-      'category': category,
-      'count_announce': countAnnounce,
-      'favorite': favorite,
-      'student': student,
-      'video_count': videoCount,
-      'video_time': videoTime,
-    };
   }
 }

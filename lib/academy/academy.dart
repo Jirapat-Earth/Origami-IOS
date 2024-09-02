@@ -25,38 +25,260 @@ class AcademyPage extends StatefulWidget {
 class _AcademyPageState extends State<AcademyPage> {
   TextEditingController _commentController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-  int _itemCountChallenge = 3;
   var _isDesktop;
   var _isMobile;
-  bool _isClick = false;
-
-  void filterSearchResults(String query) {
-    // if (query.isEmpty) {
-    //   setState(() {
-    //     _academy = filteredAcademyData;
-    //   });
-    // } else {
-    //   setState(() {
-    //     _academy = filteredAcademyData
-    //         .where((academy) =>
-    //         academy.academy_date.toLowerCase().contains(query.toLowerCase()))
-    //         .toList();
-    //   });
-    // }
-  }
+  String _searchA = '';
+  String _comment = '';
 
   @override
   void initState() {
     super.initState();
-    futureLoadData = loadData();
-    fetchAcademy();
-    filteredAcademyData = _academy;
+    fetchAcademies();
     _searchController.addListener(() {
-      // ฟังก์ชันนี้จะถูกเรียกทุกครั้งเมื่อข้อความใน _searchController เปลี่ยนแปลง
+      _searchA = _searchController.text;
       print("Current text: ${_searchController.text}");
+      fetchAcademies();
+    });
+    _commentController.addListener(() {
+      _comment = _commentController.text;
+      print("Current text: ${_commentController.text}");
     });
     // fetchAcademy();
   }
+
+  void _showDialogA() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          title: Column(
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.file_copy_outlined),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    'Enroll form',
+                    style: GoogleFonts.openSans(
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF555555),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: const Color(0xFF555555),
+                    width: 1.0,
+                  ),
+                ),
+                child: TextFormField(
+                  minLines: 3,
+                  maxLines: null,
+                  keyboardType: TextInputType.text,
+                  controller: _commentController,
+                  style: GoogleFonts.openSans(
+                      color: const Color(0xFF555555), fontSize: 14),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: '$Request_reason...',
+                    hintStyle: GoogleFonts.openSans(
+                        fontSize: 14, color: const Color(0xFF555555)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  onChanged: (value) {},
+                ),
+              ),
+            ],
+          ),
+          content: InkWell(
+            onTap: () {},
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'History request',
+                  style: GoogleFonts.openSans(
+                    decoration: TextDecoration.underline,
+                    // fontWeight: FontWeight.bold,
+                    // color: Color(0xFF555555),
+                  ),
+                ),
+                const Icon(Icons.arrow_drop_down),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                '$Cancel',
+                style: GoogleFonts.openSans(
+                  color: const Color(0xFF555555),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: Text(
+                'Enroll',
+                style: GoogleFonts.openSans(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  // fetchApprovelMassage(setApprovel?.mny_request_id,"N",_commentN);
+                });
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDialogB() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          title: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.file_copy_outlined),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      'Enroll form',
+                      style: GoogleFonts.openSans(
+                        fontWeight: FontWeight.bold,
+                        color: const Color(0xFF555555),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                      color: const Color(0xFF555555),
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Text("No data available in table",
+                    style: GoogleFonts.openSans(
+                      decoration: TextDecoration.underline,
+                      // fontWeight: FontWeight.bold,
+                      color: Color(0xFF555555),
+                    ),),
+                ),
+              ],
+            ),
+          ),
+          content: InkWell(
+            onTap: () {},
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'History request',
+                  style: GoogleFonts.openSans(
+                    decoration: TextDecoration.underline,
+                    // fontWeight: FontWeight.bold,
+                    // color: Color(0xFF555555),
+                  ),
+                ),
+                const Icon(Icons.arrow_drop_down),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                '$Cancel',
+                style: GoogleFonts.openSans(
+                  color: const Color(0xFF555555),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: Text(
+                'Enroll',
+                style: GoogleFonts.openSans(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  // fetchApprovelMassage(setApprovel?.mny_request_id,"N",_commentN);
+                });
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<List<AcademyRespond>> fetchAcademies() async {
+    final uri =
+        Uri.parse("https://www.origami.life/api/origami/academy/course.php");
+    final response = await http.post(
+      uri,
+      body: {
+        'comp_id': widget.employee.comp_id,
+        'emp_id': widget.employee.emp_id,
+        'pages': page,
+        'search': _searchA,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      // เข้าถึงข้อมูลในคีย์ 'academy_data'
+      final List<dynamic> academiesJson = jsonResponse['academy_data'];
+      // แปลงข้อมูลจาก JSON เป็น List<AcademyRespond>
+      return academiesJson
+          .map((json) => AcademyRespond.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load academies');
+    }
+  }
+
+
 
   @override
   void dispose() {
@@ -80,13 +302,22 @@ class _AcademyPageState extends State<AcademyPage> {
       } else if (index == 4) {
         page = "enroll";
       }
-      fetchAcademy();
+      fetchAcademies();
     });
   }
 
+  // Future<void> _refreshData() async {
+  //   // Call the fetchAcademies() function to refresh the data
+  //
+  //   await Future.delayed(
+  //     const Duration(seconds:1),
+  //   );
+  //   setState(() {fetchAcademies();});
+  // }
+
   Widget loading() {
-    return FutureBuilder<String>(
-      future: futureLoadData,
+    return FutureBuilder<List<AcademyRespond>>(
+      future: fetchAcademies(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -109,8 +340,12 @@ class _AcademyPageState extends State<AcademyPage> {
               ),
             ],
           ));
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('No academies found'));
         } else {
-          return condition(_isMobile, _isDesktop);
+          return condition(snapshot.data!);
         }
       },
     );
@@ -118,37 +353,28 @@ class _AcademyPageState extends State<AcademyPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Determine the screen size
-    double screenSize = MediaQuery.of(context).size.shortestSide;
-    // Define a threshold to distinguish between mobile and desktop
-    _isDesktop = screenSize <= 900;
-    _isMobile = screenSize <= 600;
-    if (screenSize <= 600) {
-      _isMobile == true;
-      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    }
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: Colors.white,
       body: loading(),
       bottomNavigationBar: BottomBarInspiredInside(
         items: [
-          TabItem(
+          const TabItem(
             icon: Icons.account_balance,
             title: 'My Learning',
           ),
-          TabItem(
+          const TabItem(
             icon: Icons.star_border_purple500_rounded,
             title: 'My Challenge',
           ),
-          TabItem(
+          const TabItem(
             icon: Icons.list_alt,
             title: 'Catalog',
           ),
-          TabItem(
+          const TabItem(
             icon: Icons.favorite,
             title: 'Favorite',
           ),
-          TabItem(
+          const TabItem(
             icon: Icons.school,
             title: 'Coach Course',
           ),
@@ -166,1317 +392,694 @@ class _AcademyPageState extends State<AcademyPage> {
     );
   }
 
-  Widget condition(bool _isMobile, bool _isDesktop) {
-    return (_selectedIndex == 0)
-        ? _learning(_isMobile, _isDesktop)
-        : (_selectedIndex == 1)
-            ? _challenge(_isMobile, _isDesktop)
-            : (_selectedIndex == 2)
-                ? _CATALOG(_isMobile, _isDesktop)
-                : (_selectedIndex == 3)
-                    ? _FAVORITE(_isMobile, _isDesktop)
-                    : _COURSE();
+  Widget condition(List<AcademyRespond> _academy) {
+    // Determine the screen size
+    double screenSize = MediaQuery.of(context).size.shortestSide;
+    // Define a threshold to distinguish between mobile and desktop
+    _isDesktop = screenSize <= 900;
+    _isMobile = screenSize <= 600;
+    if (screenSize <= 600) {
+      _isMobile == true;
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    }
+    return SafeArea(child: _Learning(_isMobile, _isDesktop, _academy));
   }
 
   bool _isMenu = false;
+  bool _isFavorite = false;
 
-  Widget _learning(bool _isMobile, bool _isDesktop) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 8,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Row(
+  Widget _Learning(_isMobile, _isDesktop, List<AcademyRespond> _academy) {
+    return (_academy.length != 0)
+        ? SingleChildScrollView(
+            child: Column(
               children: [
-                Expanded(
-                  child: Container(
-                    height: 48,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      border: Border.all(
-                        color: Colors.orange,
-                        width: 1.0,
-                      ),
-                    ),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: '$Search...',
-                        hintStyle: GoogleFonts.openSans(
-                          color: Color(0xFF555555),
-                        ),
-                        labelStyle: GoogleFonts.openSans(
-                          color: Color(0xFF555555),
-                        ),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.orange,
-                        ),
-                        border: InputBorder.none,
-                        suffixIcon: Container(
-                          alignment: Alignment.centerRight,
-                          width: 80,
-                          child: Center(
-                            child: IconButton(
-                                onPressed: () {
-                                  _searchController.clear();
-                                },
-                                icon: Icon(Icons.close),
+                const SizedBox(
+                  height: 8,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 48,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                              color: Colors.orange,
+                              width: 1.0,
+                            ),
+                          ),
+                          child: TextField(
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                              hintText: '$Search...',
+                              hintStyle: GoogleFonts.openSans(
+                                color: const Color(0xFF555555),
+                              ),
+                              labelStyle: GoogleFonts.openSans(
+                                color: const Color(0xFF555555),
+                              ),
+                              prefixIcon: const Icon(
+                                Icons.search,
                                 color: Colors.orange,
-                                iconSize: 18),
+                              ),
+                              border: InputBorder.none,
+                              suffixIcon: Container(
+                                alignment: Alignment.centerRight,
+                                width: 80,
+                                child: Center(
+                                  child: IconButton(
+                                      onPressed: () {
+                                        _searchController.clear();
+                                      },
+                                      icon: const Icon(Icons.close),
+                                      color: Colors.orange,
+                                      iconSize: 16),
+                                ),
+                              ),
+                            ),
+                            onChanged: (value) {},
                           ),
                         ),
                       ),
-                      onChanged: filterSearchResults,
-                    ),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            (_isMenu == false)
+                                ? _isMenu = true
+                                : _isMenu = false;
+                          });
+                        },
+                        icon: Container(
+                            // padding: EdgeInsets.only(right: 8),
+                            alignment: Alignment.centerRight,
+                            child: const Icon(
+                              Icons.filter_list,
+                              size: 36,
+                            )),
+                      ),
+                    ],
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      (_isMenu == false) ? _isMenu = true : _isMenu = false;
-                    });
-                  },
-                  icon: Container(
-                      // padding: EdgeInsets.only(right: 8),
-                      alignment: Alignment.centerRight,
-                      child: Icon(Icons.table_rows_rounded)),
-                ),
-              ],
-            ),
-          ),
-          (_isMenu == true)
-              ? Column(
-                  children: [
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Column(
-                      children: List.generate(_academy.length ?? 0, (indexI) {
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8.0, right: 8.0, top: 8.0),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => EvaluateModule(
-                                          id: '5',
-                                          employee: widget.employee,
-                                        )),
-                              );
-                            },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(
-                                        '${_academy[indexI].academy_image}',
-                                        width: 40,
-                                        height: 40,
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 16,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          _academy[indexI].academy_subject ??
-                                              '',
-                                          style: GoogleFonts.openSans(
-                                            color: Color(0xFF555555),
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        (_academy[indexI].academy_date ==
-                                                "Time Out")
-                                            ? Text(
-                                                '${_academy[indexI].academy_date ?? ''}',
-                                                style: GoogleFonts.openSans(
-                                                  color: Colors.red,
-                                                ),
-                                              )
-                                            : Text(
-                                                '$Start : ${_academy[indexI].academy_date ?? ''}',
-                                                style: GoogleFonts.openSans(
-                                                  color: Color(0xFF555555),
-                                                ),
-                                              ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                Divider()
-                              ],
-                            ),
+                (_isMenu == true)
+                    ? Column(
+                        children: [
+                          const SizedBox(
+                            height: 8,
                           ),
-                        );
-                      }),
-                    ),
-                  ],
-                )
-              : GridView.builder(
-                  padding: EdgeInsets.all(10),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: _isMobile
-                        ? 2
-                        : _isDesktop
-                            ? 4
-                            : 2,
-                    childAspectRatio: _isMobile
-                        ? 0.7
-                        : _isDesktop
-                            ? 0.7
-                            : 1.5 / 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                  ),
-                  itemCount: _academy.length ?? 0,
-                  itemBuilder: (BuildContext context, int index) {
-                    // String _startDate = formatDate(academyRespond[index].academy_start_date??'');
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EvaluateModule(
-                                    id: '5',
-                                    employee: widget.employee,
-                                  )),
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          children: [
-                            Stack(
-                              children: [
-                                Card(
-                                  elevation: 0,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.network(
-                                      '${_academy[index].academy_image}',
-                                      width: double.infinity,
-                                      height: 120,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 4,
-                                  left: 4,
-                                  child: Card(
-                                    color: Colors.black26,
-                                    child: Padding(
-                                      padding: EdgeInsets.all(2),
-                                      child: Text(
-                                        _academy[index].academy_category ?? '',
-                                        style: GoogleFonts.openSans(
-                                          fontSize: 12.0,
-                                          color: Colors.white,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 4,
-                                  left: 4,
-                                  child: Card(
-                                    color: Colors.black26,
-                                    child: Padding(
-                                      padding: EdgeInsets.all(2),
-                                      child: Text(
-                                        _academy[index].academy_type ?? '',
-                                        style: GoogleFonts.openSans(
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 4, right: 4),
-                                    child: Text(
-                                      _academy[index].academy_subject ?? '',
-                                      style: GoogleFonts.openSans(
-                                        fontSize: 18.0,
-                                        color: Color(0xFF555555),
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                  Column(
-                                    children: List.generate(
-                                        (_academy[index]
-                                                        .academy_coach_data
-                                                        ?.length ??
-                                                    0) >
-                                                2
-                                            ? 2
-                                            : _academy[index]
-                                                    .academy_coach_data
-                                                    ?.length ??
-                                                0, (indexII) {
-                                      final coach_data =
-                                          _academy[index].academy_coach_data;
-                                      return Padding(
-                                        padding: EdgeInsets.all(4),
+                          Column(
+                            children: List.generate(_academy.length, (indexI) {
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, right: 8.0, top: 8.0),
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => EvaluateModule(
+                                              employee: widget.employee,
+                                              academy: _academy[indexI], callback: () {
+                                              favorite(
+                                                  _academy[indexI]
+                                                      .academy_id,
+                                                  _academy[indexI]
+                                                      .academy_type
+                                              );
+                                            },
+
+                                            )),
+                                      );
+                                    });
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
                                         child: Row(
                                           children: [
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
                                             ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(50),
                                               child: Image.network(
-                                                '${coach_data?[indexII].avatar ?? ''}',
-                                                height: 40,
+                                                '${_academy[indexI].academy_image}',
                                                 width: 40,
-                                                fit: BoxFit.fitHeight,
+                                                height: 40,
+                                                fit: BoxFit.fill,
                                               ),
                                             ),
-                                            SizedBox(
-                                              width: 8,
+                                            const SizedBox(
+                                              width: 16,
                                             ),
-                                            Expanded(
-                                              child: Text(
-                                                (coach_data?[indexII].name ==
-                                                        '')
-                                                    ? ""
-                                                    : coach_data?[indexII]
-                                                            .name ??
-                                                        '',
-                                                style: GoogleFonts.openSans(
-                                                  color: Color(0xFF555555),
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ((_academy[index].academy_coach_data?.length ??
-                                        0) >=
-                                    2)
-                                ? Container()
-                                : Expanded(child: SizedBox()),
-                            Expanded(
-                              child: Container(
-                                alignment: Alignment.bottomLeft,
-                                padding: const EdgeInsets.all(8.0),
-                                child:
-                                    (_academy[index].academy_date == "Time Out")
-                                        ? Text(
-                                            '${_academy[index].academy_date ?? ''}',
-                                            style: GoogleFonts.openSans(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        : Text(
-                                            '$Start : ${_academy[index].academy_date ?? ''}',
-                                            style: GoogleFonts.openSans(
-                                              color: Color(0xFF555555),
-                                            ),
-                                          ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  // Set the grid view to shrink wrap its contents.
-                  shrinkWrap: true,
-                  // Disable scrolling in the grid view.
-                  physics: NeverScrollableScrollPhysics(),
-                ),
-        ],
-      ),
-    );
-  }
-
-  Widget _challenge(bool _isMobile, bool _isDesktop) {
-    return SingleChildScrollView(
-      child: GridView.builder(
-        padding: EdgeInsets.all(10),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: _isMobile
-              ? 2
-              : _isDesktop
-                  ? 4
-                  : 2,
-          childAspectRatio: _isMobile
-              ? 0.7
-              : _isDesktop
-                  ? 0.7
-                  : 1.5 / 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemCount: _itemCountChallenge,
-        itemBuilder: (BuildContext context, int index) {
-          return InkWell(
-            onTap: () {},
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: Card(
-                      elevation: 0,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          'https://www.origami.life/uploads/challenge/5/1137/logo/20242322068108.png',
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 4, right: 4),
-                        child: Text(
-                          'Test new sqli (writing)',
-                          style: GoogleFonts.openSans(
-                            fontSize: 16.0,
-                            color: Color(0xFF555555),
-                            fontWeight: FontWeight.bold,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                      ),
-                      Column(
-                        children: List.generate(1, (index) {
-                          return Padding(
-                            padding: EdgeInsets.all(4),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.check_box_outlined,
-                                      color: Colors.amber,
-                                    ),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        '0/0',
-                                        style: GoogleFonts.openSans(
-                                          color: Color(0xFF555555),
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                    ),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        '0/0',
-                                        style: GoogleFonts.openSans(
-                                          color: Color(0xFF555555),
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.ac_unit_rounded,
-                                      size: 20.0,
-                                      color: Colors.amber,
-                                    ),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        ' - ',
-                                        style: GoogleFonts.openSans(
-                                          color: Color(0xFF555555),
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.access_time,
-                                      color: Colors.amber,
-                                    ),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        '00:00:00',
-                                        style: GoogleFonts.openSans(
-                                          color: Color(0xFF555555),
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              '04/06/2024 - 30/06/2034',
-                                              style: GoogleFonts.openSans(
-                                                color: Color(0xFF555555),
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 4),
-                ],
-              ),
-            ),
-          );
-        },
-        // Set the grid view to shrink wrap its contents.
-        shrinkWrap: true,
-        // Disable scrolling in the grid view.
-        physics: NeverScrollableScrollPhysics(),
-      ),
-    );
-  }
-
-  String _comment = '';
-  Widget _CATALOG(_isMobile, _isDesktop) {
-    return SingleChildScrollView(
-      child: GridView.builder(
-        padding: EdgeInsets.all(10),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: _isMobile
-              ? 2
-              : _isDesktop
-                  ? 4
-                  : 2,
-          childAspectRatio: _isMobile
-              ? 0.68
-              : _isDesktop
-                  ? 0.68
-                  : 1.5 / 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemCount: _academy.length,
-        itemBuilder: (BuildContext context, int index) {
-          return InkWell(
-            onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //       builder: (context) => EvaluateModule(
-              //             id: '5',
-              //             employee: widget.employee,
-              //           )),
-              // );
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: [
-                  Stack(
-                    children: [
-                      Card(
-                        elevation: 0,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.network(
-                            '${_academy[index].academy_image}',
-                            width: double.infinity,
-                            height: 120,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 4,
-                        left: 4,
-                        child: Card(
-                          color: Colors.black26,
-                          child: Padding(
-                            padding: EdgeInsets.all(2),
-                            child: Text(
-                              _academy[index].academy_category ?? '',
-                              style: GoogleFonts.openSans(
-                                fontSize: 12.0,
-                                color: Colors.white,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 4,
-                        left: 4,
-                        child: Card(
-                          color: Colors.black26,
-                          child: Padding(
-                            padding: EdgeInsets.all(2),
-                            child: Text(
-                              _academy[index].academy_type ?? '',
-                              style: GoogleFonts.openSans(
-                                fontSize: 14,
-                                color: Colors.white,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 4, right: 4),
-                          child: Text(
-                            _academy[index].academy_subject ?? '',
-                            style: GoogleFonts.openSans(
-                              fontSize: 18.0,
-                              color: Color(0xFF555555),
-                              fontWeight: FontWeight.bold,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                        ),
-                        Column(
-                          children: List.generate(
-                              (_academy[index].academy_coach_data?.length ??
-                                          0) >
-                                      2
-                                  ? 2
-                                  : _academy[index]
-                                          .academy_coach_data
-                                          ?.length ??
-                                      0, (indexII) {
-                            final coach_data =
-                                _academy[index].academy_coach_data;
-                            return Padding(
-                              padding: EdgeInsets.all(4),
-                              child: Row(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: Image.network(
-                                      '${coach_data?[indexII].avatar ?? ''}',
-                                      height: 40,
-                                      width: 40,
-                                      fit: BoxFit.fitHeight,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      (coach_data?[indexII].name == '')
-                                          ? ""
-                                          : coach_data?[indexII].name ?? '',
-                                      style: GoogleFonts.openSans(
-                                        color: Color(0xFF555555),
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
-                        ),
-                      ],
-                    ),
-                  ),
-                  ((_academy[index].academy_coach_data?.length ?? 0) >= 2)
-                      ? Container()
-                      : Expanded(child: SizedBox()),
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (BuildContext dialogContext) {
-                                    return AlertDialog(
-                                      elevation: 0,
-                                      backgroundColor: Colors.white,
-                                      title: Row(
-                                        children: [
-                                          Icon(Icons.file_copy_outlined),
-                                          SizedBox(
-                                            width: 4,
-                                          ),
-                                          Text(
-                                            'Enroll form',
-                                            style: GoogleFonts.openSans(
-                                              fontWeight: FontWeight.bold,
-                                              color: Color(0xFF555555),
-                                            ),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
-                                      content: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          border: Border.all(
-                                            color: Color(0xFF555555),
-                                            width: 1.0,
-                                          ),
-                                        ),
-                                        child: TextFormField(
-                                          minLines: 3,
-                                          maxLines: null,
-                                          keyboardType: TextInputType.text,
-                                          controller: _commentController,
-                                          style: GoogleFonts.openSans(
-                                              color: Color(0xFF555555),
-                                              fontSize: 14),
-                                          decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor: Colors.white,
-                                            hintText: '$Request_reason...',
-                                            hintStyle: GoogleFonts.openSans(
-                                                fontSize: 14,
-                                                color: Color(0xFF555555)),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              borderSide: BorderSide.none,
-                                            ),
-                                          ),
-                                          onChanged: (value) {
-                                            _comment = value;
-                                          },
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: Text(
-                                            '$Cancel',
-                                            style: GoogleFonts.openSans(
-                                              color: Color(0xFF555555),
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              _comment = "";
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: Text(
-                                            '$Ok',
-                                            style: GoogleFonts.openSans(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.green,
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              // fetchApprovelMassage(setApprovel?.mny_request_id,"N",_commentN);
-                                            });
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  // border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(6),
-                                  child: Text(
-                                    '$Enroll',
-                                    style: GoogleFonts.openSans(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  (_academy[index].favorite == 0)
-                                      ? _academy[index].favorite == 1
-                                      : _academy[index].favorite == 0;
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: (_academy[index].favorite == 1)
-                                      ? Colors.red.shade100
-                                      : Color(0xFFE5E5E5),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.favorite,
-                                      color: (_academy[index].favorite == 1)
-                                          ? Colors.red
-                                          : Colors.grey,
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(2),
-                                      child: Text(
-                                        'Favorite',
-                                        style: GoogleFonts.openSans(
-                                          color: (_academy[index].favorite == 1)
-                                              ? Colors.red
-                                              : Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-        // Set the grid view to shrink wrap its contents.
-        shrinkWrap: true,
-        // Disable scrolling in the grid view.
-        physics: NeverScrollableScrollPhysics(),
-      ),
-    );
-  }
-
-  Widget _FAVORITE(_isMobile, _isDesktop) {
-    return SingleChildScrollView(
-      child: GridView.builder(
-        padding: EdgeInsets.all(10),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: _isMobile
-              ? 2
-              : _isDesktop
-                  ? 4
-                  : 2,
-          childAspectRatio: _isMobile
-              ? 0.68
-              : _isDesktop
-                  ? 0.68
-                  : 1.5 / 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemCount: _academy.length,
-        itemBuilder: (BuildContext context, int index) {
-          return (_academy[index].favorite == 1)
-              ? InkWell(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      children: [
-                        Stack(
-                          children: [
-                            Card(
-                              elevation: 0,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Image.network(
-                                  '${_academy[index].academy_image}',
-                                  width: double.infinity,
-                                  height: 120,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              top: 4,
-                              left: 4,
-                              child: Card(
-                                color: Colors.black26,
-                                child: Padding(
-                                  padding: EdgeInsets.all(2),
-                                  child: Text(
-                                    _academy[index].academy_category ?? '',
-                                    style: GoogleFonts.openSans(
-                                      fontSize: 12.0,
-                                      color: Colors.white,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 4,
-                              left: 4,
-                              child: Card(
-                                color: Colors.black26,
-                                child: Padding(
-                                  padding: EdgeInsets.all(2),
-                                  child: Text(
-                                    _academy[index].academy_type ?? '',
-                                    style: GoogleFonts.openSans(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(left: 4, right: 4),
-                                child: Text(
-                                  _academy[index].academy_subject ?? '',
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 18.0,
-                                    color: Color(0xFF555555),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                              ),
-                              Column(
-                                children: List.generate(
-                                    (_academy[index]
-                                                    .academy_coach_data
-                                                    ?.length ??
-                                                0) >
-                                            2
-                                        ? 2
-                                        : _academy[index]
-                                                .academy_coach_data
-                                                ?.length ??
-                                            0, (indexII) {
-                                  final coach_data =
-                                      _academy[index].academy_coach_data;
-                                  return Padding(
-                                    padding: EdgeInsets.all(4),
-                                    child: Row(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          child: Image.network(
-                                            '${coach_data?[indexII].avatar ?? ''}',
-                                            height: 40,
-                                            width: 40,
-                                            fit: BoxFit.fitHeight,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            (coach_data?[indexII].name == '')
-                                                ? ""
-                                                : coach_data?[indexII].name ??
-                                                    '',
-                                            style: GoogleFonts.openSans(
-                                              color: Color(0xFF555555),
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }),
-                              ),
-                            ],
-                          ),
-                        ),
-                        ((_academy[index].academy_coach_data?.length ?? 0) >= 2)
-                            ? Container()
-                            : Expanded(child: SizedBox()),
-                        Expanded(
-                          child: Container(
-                            alignment: Alignment.bottomLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.all(4),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (BuildContext dialogContext) {
-                                          return AlertDialog(
-                                            elevation: 0,
-                                            backgroundColor: Colors.white,
-                                            title: Row(
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Icon(Icons.file_copy_outlined),
-                                                SizedBox(
-                                                  width: 4,
-                                                ),
                                                 Text(
-                                                  'Enroll form',
+                                                  _academy[indexI]
+                                                      .academy_subject,
                                                   style: GoogleFonts.openSans(
+                                                    color:
+                                                        const Color(0xFF555555),
                                                     fontWeight: FontWeight.bold,
-                                                    color: Color(0xFF555555),
                                                   ),
-                                                  maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                ),
+                                                (_academy[indexI]
+                                                            .academy_date ==
+                                                        "Time Out")
+                                                    ? Text(
+                                                        _academy[indexI]
+                                                            .academy_date,
+                                                        style: GoogleFonts
+                                                            .openSans(
+                                                          color: Colors.red,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                      )
+                                                    : Text(
+                                                        '$Start : ${_academy[indexI].academy_date}',
+                                                        style: GoogleFonts
+                                                            .openSans(
+                                                          color: const Color(
+                                                              0xFF555555),
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                      ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      const Divider()
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ],
+                      )
+                    : GridView.builder(
+                        padding: const EdgeInsets.all(10),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: _isMobile
+                              ? 2
+                              : _isDesktop
+                                  ? 4
+                                  : 2,
+                          childAspectRatio: _isMobile
+                              ? 0.7
+                              : _isDesktop
+                                  ? 0.7
+                                  : 1.5 / 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                        ),
+                        itemCount: _academy.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (_academy[index].favorite == 0) {
+                            _isFavorite = true;
+                          } else {
+                            _isFavorite =
+                                false; // _academy[index].favorite = 0;
+                          }
+                          return InkWell(
+                            onTap: () {
+                              setState(() {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EvaluateModule(
+                                        employee: widget.employee,
+                                        academy: _academy[index],
+                                        callback: () {
+                                          favorite(
+                                              _academy[index]
+                                                  .academy_id,
+                                              _academy[index]
+                                                  .academy_type
+                                          );
+                                        },
+                                      )),
+                                );
+                              });
+                            },
+                            child: Card(
+                              // elevation: 0,
+                              color: Color(0xFFF5F5F5),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 0,
+                                      blurRadius: 2,
+                                      offset: Offset(0, 3), // x, y
+                                    ),
+                                  ],
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Stack(
+                                        children: [
+                                          Card(
+                                            elevation: 0,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              child: Image.network(
+                                                '${_academy[index].academy_image}',
+                                                width: double.infinity,
+                                                height: 120,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(4),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black26,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4),
+                                                      child: Text(
+                                                        _academy[index]
+                                                            .academy_category,
+                                                        style: GoogleFonts
+                                                            .openSans(
+                                                          fontSize: 12.0,
+                                                          color: Colors.white,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        maxLines: 1,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: SizedBox(),
                                                 ),
                                               ],
                                             ),
-                                            content: Container(
+                                          ),
+                                          Positioned(
+                                            bottom: 4,
+                                            left: 4,
+                                            child: Container(
                                               decoration: BoxDecoration(
+                                                color: Colors.black26,
                                                 borderRadius:
-                                                    BorderRadius.circular(15),
-                                                border: Border.all(
-                                                  color: Color(0xFF555555),
-                                                  width: 1.0,
-                                                ),
+                                                    BorderRadius.circular(10),
                                               ),
-                                              child: TextFormField(
-                                                minLines: 3,
-                                                maxLines: null,
-                                                keyboardType:
-                                                    TextInputType.text,
-                                                controller: _commentController,
-                                                style: GoogleFonts.openSans(
-                                                    color: Color(0xFF555555),
-                                                    fontSize: 14),
-                                                decoration: InputDecoration(
-                                                  filled: true,
-                                                  fillColor: Colors.white,
-                                                  hintText:
-                                                      '$Request_reason...',
-                                                  hintStyle:
-                                                      GoogleFonts.openSans(
-                                                          fontSize: 14,
-                                                          color: Color(
-                                                              0xFF555555)),
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    borderSide: BorderSide.none,
-                                                  ),
-                                                ),
-                                                onChanged: (value) {
-                                                  _comment = value;
-                                                },
-                                              ),
-                                            ),
-                                            actions: <Widget>[
-                                              TextButton(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4),
                                                 child: Text(
-                                                  '$Cancel',
+                                                  _academy[index].academy_type,
                                                   style: GoogleFonts.openSans(
-                                                    color: Color(0xFF555555),
+                                                    fontSize: 12.0,
+                                                    color: Colors.white,
                                                   ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 1,
                                                 ),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    _comment = "";
-                                                  });
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: Text(
-                                                  '$Ok',
-                                                  style: GoogleFonts.openSans(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.green,
-                                                  ),
-                                                ),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    // fetchApprovelMassage(setApprovel?.mny_request_id,"N",_commentN);
-                                                  });
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.green,
-                                        // border: Border.all(color: Colors.grey),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(6),
-                                        child: Text(
-                                          '$Enroll',
-                                          style: GoogleFonts.openSans(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        (_academy[index].favorite == 0)
-                                            ? _academy[index].favorite == 1
-                                            : _academy[index].favorite == 0;
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: (_academy[index].favorite == 1)
-                                            ? Colors.red.shade100
-                                            : Color(0xFFE5E5E5),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.favorite,
-                                            color:
-                                                (_academy[index].favorite == 1)
-                                                    ? Colors.red
-                                                    : Colors.grey,
-                                          ),
-                                          SizedBox(
-                                            width: 2,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(2),
-                                            child: Text(
-                                              'Favorite',
-                                              style: GoogleFonts.openSans(
-                                                color:
-                                                    (_academy[index].favorite ==
-                                                            1)
-                                                        ? Colors.red
-                                                        : Colors.grey,
                                               ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 4, right: 4),
+                                        child: Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            _academy[index].academy_subject ??
+                                                '',
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 16.0,
+                                              color: const Color(0xFF555555),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            children: List.generate(
+                                                _academy[index]
+                                                    .academy_coach_data
+                                                    .length, (indexII) {
+                                              final coach_data = _academy[index]
+                                                  .academy_coach_data;
+                                              return Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(4),
+                                                    child: Row(
+                                                      children: [
+                                                        ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(50),
+                                                          child: Image.network(
+                                                            '${coach_data?[indexII].avatar ?? ''}',
+                                                            height: 40,
+                                                            width: 40,
+                                                            fit: BoxFit
+                                                                .fitHeight,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 8,
+                                                        ),
+                                                        Expanded(
+                                                          child: Text(
+                                                            (coach_data[indexII]
+                                                                        .name ==
+                                                                    '')
+                                                                ? ""
+                                                                : coach_data[
+                                                                        indexII]
+                                                                    .name,
+                                                            style: GoogleFonts
+                                                                .openSans(
+                                                              color: const Color(
+                                                                  0xFF555555),
+                                                            ),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            maxLines: 1,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            }),
+                                          ),
+                                        ),
+                                      ),
+                                      (_selectedIndex == 0)
+                                          ? Expanded(
+                                              flex: 1,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: (_academy[index]
+                                                                .academy_date ==
+                                                            "Time Out")
+                                                        ? Text(
+                                                            '${_academy[index].academy_date ?? ''}',
+                                                            style: GoogleFonts
+                                                                .openSans(
+                                                              color: Colors.red,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          )
+                                                        : Text(
+                                                            '$Start : ${_academy[index].academy_date ?? ''}',
+                                                            style: GoogleFonts
+                                                                .openSans(
+                                                              color: const Color(
+                                                                  0xFF555555),
+                                                            ),
+                                                          ),
+                                                  ),
+                                                  (_academy[index]
+                                                              .academy_date ==
+                                                          "Time Out")
+                                                      ? Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 8.0),
+                                                          child: InkWell(
+                                                            onTap: _showDialogA,
+                                                            child: Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .green,
+                                                                // border: Border.all(color: Colors.grey),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(6),
+                                                                child: Text(
+                                                                  '$Enroll',
+                                                                  style: GoogleFonts
+                                                                      .openSans(
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : IconButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              (_isFavorite ==
+                                                                      true)
+                                                                  ? _isFavorite =
+                                                                      false
+                                                                  : _isFavorite =
+                                                                      true;
+                                                            });
+                                                            favorite(
+                                                                _academy[index]
+                                                                    .academy_id,
+                                                                _academy[index]
+                                                                    .academy_type);
+                                                          },
+                                                          icon: Icon(
+                                                              Icons.favorite,
+                                                              color:
+                                                                  (_isFavorite ==
+                                                                          true)
+                                                                      ? Colors
+                                                                          .grey
+                                                                      : Colors
+                                                                          .red),
+                                                        )
+                                                ],
+                                              ),
+                                            )
+                                          : Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                alignment: Alignment.bottomLeft,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: _showDialogA,
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.green,
+                                                            // border: Border.all(color: Colors.grey),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(6),
+                                                            child: Text(
+                                                              '$Enroll',
+                                                              style: GoogleFonts
+                                                                  .openSans(
+                                                                fontSize: 12,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            (_isFavorite ==
+                                                                    true)
+                                                                ? _isFavorite =
+                                                                    false
+                                                                : _isFavorite =
+                                                                    true;
+                                                          });
+                                                          favorite(
+                                                              _academy[index]
+                                                                  .academy_id,
+                                                              _academy[index]
+                                                                  .academy_type);
+                                                        },
+                                                        icon: Icon(
+                                                            Icons.favorite,
+                                                            color:
+                                                                (_isFavorite ==
+                                                                        true)
+                                                                    ? Colors
+                                                                        .grey
+                                                                    : Colors
+                                                                        .red),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              : Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'NOT FOUND FAVORITE',
-                    style: GoogleFonts.openSans(
-                      fontSize: 18.0,
-                      color: Color(0xFF555555),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                );
-        },
-        // Set the grid view to shrink wrap its contents.
-        shrinkWrap: true,
-        // Disable scrolling in the grid view.
-        physics: NeverScrollableScrollPhysics(),
-      ),
-    );
+                          );
+                        },
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                      ),
+              ],
+            ),
+          )
+        : Container(
+            alignment: Alignment.center,
+            child: Text(
+              'NOT FOUND COURSE',
+              style: GoogleFonts.openSans(
+                fontSize: 16.0,
+                color: const Color(0xFF555555),
+                fontWeight: FontWeight.bold,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          );
   }
 
-  Widget _COURSE() {
-    return Container(
-      alignment: Alignment.center,
-      child: Text(
-        'NOT FOUND COURSE',
-        style: GoogleFonts.openSans(
-          fontSize: 18.0,
-          color: Color(0xFF555555),
-          fontWeight: FontWeight.bold,
-        ),
-        overflow: TextOverflow.ellipsis,
-        maxLines: 1,
-      ),
-    );
-  }
 
-  List<AcademyRespond> _academy = [];
-  List<AcademyRespond> filteredAcademyData = [];
 
-  Future<void> fetchAcademy() async {
-    final uri =
-        Uri.parse('https://www.origami.life/api/origami/academy/course.php');
+  // bool isPlan = false;
+  // Future<void> fetchIDPlan(
+  //     String academyId, String academyType, AcademyRespond academy) async {
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse('https://www.origami.life/api/origami/academy/favorite.php'),
+  //       body: {
+  //         'comp_id': widget.employee.comp_id,
+  //         'emp_id': widget.employee.emp_id,
+  //         'academy_id': academyId,
+  //         'academy_type': academyType,
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       final jsonResponse = jsonDecode(response.body);
+  //       if (jsonResponse['status'] == true) {
+  //         Navigator.push(
+  //           context,
+  //           MaterialPageRoute(
+  //               builder: (context) => EvaluateModule(
+  //                     id: '5',
+  //                     employee: widget.employee,
+  //                     academy: academy,
+  //                   )),
+  //         );
+  //       } else {
+  //         isPlan = false;
+  //       }
+  //     } else {
+  //       throw Exception(
+  //           'Failed to load personal data: ${response.reasonPhrase}');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Failed to load personal data: $e');
+  //   }
+  // }
+
+  Future<void> favorite(
+      String academyId,
+      String academyType,
+      ) async {
     try {
       final response = await http.post(
-        uri,
+        Uri.parse('https://www.origami.life/api/origami/academy/favorite.php'),
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'pages': page,
+          'academy_id': academyId,
+          'academy_type': academyType,
         },
       );
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         if (jsonResponse['status'] == true) {
-          final List<dynamic> academyJson = jsonResponse['academy_data'];
-          setState(() {
-            _academy = academyJson
-                .map((json) => AcademyRespond.fromJson(json))
-                .toList();
-          });
-          print(_academy);
+          print("message: true");
         } else {
           throw Exception(
               'Failed to load personal data: ${jsonResponse['message']}');
@@ -1489,24 +1092,27 @@ class _AcademyPageState extends State<AcademyPage> {
       throw Exception('Failed to load personal data: $e');
     }
   }
+
 }
 
+
+
 class AcademyRespond {
-  final String? academy_id;
+  final String academy_id;
   final String academy_type;
   final String academy_subject;
   final String academy_image;
-  final String? academy_category;
+  final String academy_category;
   final String academy_date;
   final List<AcademyCoachData> academy_coach_data;
   final int favorite;
 
   AcademyRespond({
-    this.academy_id,
+    required this.academy_id,
     required this.academy_type,
     required this.academy_subject,
     required this.academy_image,
-    this.academy_category,
+    required this.academy_category,
     required this.academy_date,
     required this.academy_coach_data,
     required this.favorite,
@@ -1527,29 +1133,30 @@ class AcademyRespond {
       favorite: json['favorite'],
     );
   }
-  //
-  // // การแปลง Object ของ Academy กลับเป็น JSON
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'academy_id': academy_id,
-  //     'academy_type': academy_type,
-  //     'academy_subject': academy_subject,
-  //     'academy_image': academy_image,
-  //     'academy_category': academy_category,
-  //     'academy_date': academy_date,
-  //     'academy_coach_data': academy_coach_data?.map((item) => item.toJson()).toList(),
-  //     'favorite': favorite,
-  //   };
-  // }
+
+  // การแปลง Object ของ Academy กลับเป็น JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'academy_id': academy_id,
+      'academy_type': academy_type,
+      'academy_subject': academy_subject,
+      'academy_image': academy_image,
+      'academy_category': academy_category,
+      'academy_date': academy_date,
+      'academy_coach_data':
+          academy_coach_data?.map((item) => item.toJson()).toList(),
+      'favorite': favorite,
+    };
+  }
 }
 
 class AcademyCoachData {
-  final String? name;
-  final String? avatar;
+  final String name;
+  final String avatar;
 
   AcademyCoachData({
-    this.name,
-    this.avatar,
+    required this.name,
+    required this.avatar,
   });
 
   // ฟังก์ชันเพื่อแปลง JSON ไปเป็น Object ของ AcademyCoachData
@@ -1559,14 +1166,14 @@ class AcademyCoachData {
       avatar: json['avatar'],
     );
   }
-  //
-  // // การแปลง Object ของ AcademyCoachData กลับเป็น JSON
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'avatar': avatar,
-  //     'name': name,
-  //   };
-  // }
+
+  // การแปลง Object ของ AcademyCoachData กลับเป็น JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'avatar': avatar,
+      'name': name,
+    };
+  }
 }
 
 class Challenge {

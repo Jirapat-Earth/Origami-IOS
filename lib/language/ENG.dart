@@ -39,7 +39,7 @@ Future<void> ENG() async {
   Price_Unit = 'Price/Unit';
   Request = 'Request';
   Add_Item = 'Add Item';
-  Close_Item = 'Close Item';
+  Close_Item = 'Close';
   Error_Item = 'Please fill in all information before saving.';
   Close = 'Close';
   Error_Detail = 'Please specify the subject, date and Pay to before saving the data.';
