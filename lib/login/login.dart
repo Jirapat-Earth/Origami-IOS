@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../origami_view.dart';
 import '../setting_translate.dart';
+import '../trandar_shop/trandar_shop.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -84,6 +85,13 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => TrandarShop(),
+          //   ),
+          // );
+
         } else {
           // If login fails, show error message
           ScaffoldMessenger.of(context).showSnackBar(
@@ -333,6 +341,7 @@ class Employee {
   final String? dna_name;
   final String? dna_color;
   final String? dna_logo;
+  final String? auth_password;
 
   const Employee({
     this.emp_id,
@@ -348,6 +357,7 @@ class Employee {
     this.dna_name,
     this.dna_color,
     this.dna_logo,
+    this.auth_password,
   });
 
   factory Employee.fromJson(Map<String, dynamic> json) {
@@ -364,8 +374,10 @@ class Employee {
       dna_id: json['dna_id'] ?? '',
       dna_name: json['dna_name'] ?? '',
       dna_color: json['dna_color'] ?? '',
+      auth_password: json['auth_password'] ?? '',
       dna_logo: json['dna_logo'] ?? '',
     );
+
   }
 }
 

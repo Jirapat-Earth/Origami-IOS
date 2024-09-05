@@ -30,6 +30,7 @@ class _CurriculumState extends State<Curriculum> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
+        'auth_password': widget.employee.auth_password,
         'academy_id': widget.academy.academy_id,
         'academy_type': widget.academy.academy_type,
       },
@@ -49,7 +50,7 @@ class _CurriculumState extends State<Curriculum> {
   @override
   void initState() {
     super.initState();
-
+    fetchCurriculum();
     // กำหนดลิงค์วิดีโอที่ต้องการเล่น
     // _controller = YoutubePlayerController(
     //   initialVideoId: 'KpDQhbYzf4Y', // ใส่ Video ID ของ YouTube
@@ -116,13 +117,13 @@ class _CurriculumState extends State<Curriculum> {
   void _topic(Topic topic){
     if (topic.topicType == 'Youtube') {
       // String callUrl = widget.callUrl("http://www.thapra.lib.su.ac.th/m-talk/attachments/article/75/ebook.pdf");
-      setState(() {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => YouTubeScreen()),
-        );
-      });
+      // setState(() {
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => YouTubeScreen()),
+      //   );
+      // });
     }else if(topic.topicType == 'Document'){
       // String callUrl = widget.callUrl("http://www.thapra.lib.su.ac.th/m-talk/attachments/article/75/ebook.pdf");
       // final Uri _url = Uri.parse(callUrl);
@@ -244,11 +245,18 @@ class _CurriculumState extends State<Curriculum> {
                         color: Color(0xFFF5F5F5),
                         child: InkWell(
                           onTap: () {
-                            if(topic.topicOpen == "N"){
-                              return ;
-                            }else{
-                              return _topic(topic);
-                            }
+                            // if(topic.topicOpen == "N"){
+                            //   return ;
+                            // }else{
+                            //   return _topic(topic);
+                            // }
+                            setState(() {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => YouTubePlayerWidget(videoId: 'KpDQhbYzf4Y',)),
+                              );
+                            });
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -425,6 +433,10 @@ class _CurriculumState extends State<Curriculum> {
                           : Container();
                     }),
                   ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Divider(),
                   SizedBox(
                     height: 8,
                   ),

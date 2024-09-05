@@ -31,6 +31,7 @@ class _DescriptionState extends State<Description> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
+        'auth_password': widget.employee.auth_password,
         'academy_id': widget.academy.academy_id,
         'academy_type': widget.academy.academy_type,
       },

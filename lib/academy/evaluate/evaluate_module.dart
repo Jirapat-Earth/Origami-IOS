@@ -21,7 +21,8 @@ class EvaluateModule extends StatefulWidget {
   EvaluateModule({
     super.key,
     required this.employee,
-    required this.academy, required this.callback,
+    required this.academy,
+    required this.callback,
   });
   final Employee employee;
   final AcademyRespond academy;
@@ -36,14 +37,13 @@ class _EvaluateModuleState extends State<EvaluateModule>
   late TabController _tabController;
   TextEditingController _commentControllerA = TextEditingController();
   TextEditingController _commentControllerB = TextEditingController();
-  
+
   bool isScrollable = true;
   bool showNextIcon = false;
   bool showBackIcon = false;
   bool _isClick = false;
   String _commentA = "";
   String _commentB = "";
-
 
   String URL = '';
   String imageUrl = '';
@@ -63,6 +63,11 @@ class _EvaluateModuleState extends State<EvaluateModule>
     super.initState();
     getAllAcademyData();
     _tabController = TabController(length: _tabs.length, vsync: this);
+    if(widget.academy.favorite == 1){
+      _isClick = true;
+    }else{
+      _isClick = false;
+    }
     _commentControllerA.addListener(() {
       _commentA = _commentControllerA.text;
       print("Current text: ${_commentControllerA.text}");
@@ -102,24 +107,24 @@ class _EvaluateModuleState extends State<EvaluateModule>
             // แสดงตัวโหลดข้อมูล
             return Center(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(
-                      color: Colors.orange,
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Text(
-                      '$Loading...',
-                      style: GoogleFonts.openSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF555555),
-                      ),
-                    ),
-                  ],
-                ));
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  color: Colors.orange,
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+                Text(
+                  '$Loading...',
+                  style: GoogleFonts.openSans(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF555555),
+                  ),
+                ),
+              ],
+            ));
           } else if (snapshot.hasError) {
             // แสดงข้อความเมื่อมีข้อผิดพลาด
             return Center(child: Text('Error: ${snapshot.error}'));
@@ -128,7 +133,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
             HeaderData headerData = snapshot.data!['headerData'];
             FastView fastView = snapshot.data!['fastView'];
 
-            return _Head(headerData,fastView);
+            return _Head(headerData, fastView);
           } else {
             return Center(child: Text('No data found.'));
           }
@@ -137,7 +142,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
     );
   }
 
-  Widget _Head(HeaderData headerData, FastView fastView){
+  Widget _Head(HeaderData headerData, FastView fastView) {
     return Column(
       children: <Widget>[
         Padding(
@@ -166,6 +171,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                       onTap: () {
                         setState(() {
                           widget.callback();
+                          // widget.academy.favorite == 1
                           (_isClick == true)
                               ? _isClick = false
                               : _isClick = true;
@@ -175,7 +181,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: (_isClick != false || widget.academy.favorite == 1)
+                          color: (_isClick != false)
                               ? Colors.red.shade100
                               : Color(0xFFE5E5E5),
                           borderRadius: BorderRadius.circular(10),
@@ -184,7 +190,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                           children: [
                             Icon(
                               Icons.favorite,
-                              color: (_isClick != false || widget.academy.favorite == 1)
+                              color: (_isClick != false)
                                   ? Colors.red
                                   : Colors.grey,
                             ),
@@ -196,7 +202,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                               child: Text(
                                 "Favorite",
                                 style: GoogleFonts.openSans(
-                                  color: (_isClick != false || widget.academy.favorite == 1)
+                                  color: (_isClick != false)
                                       ? Colors.red
                                       : Colors.grey,
                                 ),
@@ -229,10 +235,12 @@ class _EvaluateModuleState extends State<EvaluateModule>
                           width: 90,
                           height: 80,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10), // กำหนดความโค้งของขอบ
+                            borderRadius: BorderRadius.circular(
+                                10), // กำหนดความโค้งของขอบ
                             image: DecorationImage(
                               image: NetworkImage("${fastView.fastview_cover}"),
-                              fit: BoxFit.cover, // กำหนดให้รูปภาพครอบคลุมเต็มพื้นที่
+                              fit: BoxFit
+                                  .cover, // กำหนดให้รูปภาพครอบคลุมเต็มพื้นที่
                             ),
                           ),
                         ),
@@ -245,7 +253,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${fastView.fastview_text??''}",
+                                "${fastView.fastview_text ?? ''}",
                                 style: GoogleFonts.openSans(
                                   fontSize: 12,
                                   color: Colors.grey,
@@ -263,7 +271,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                                     ),
                                   ),
                                   Text(
-                                    fastView.fastview_exp??'',
+                                    fastView.fastview_exp ?? '',
                                     style: GoogleFonts.openSans(
                                       fontSize: 12,
                                       color: Colors.amber,
@@ -283,7 +291,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                                     ),
                                   ),
                                   Text(
-                                    fastView.fastview_button??'',
+                                    fastView.fastview_button ?? '',
                                     style: GoogleFonts.openSans(
                                       fontSize: 12,
                                       color: Colors.orange,
@@ -301,7 +309,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8 ,right: 8),
+                padding: const EdgeInsets.only(left: 8, right: 8),
                 child: Row(
                   children: [
                     Expanded(
@@ -364,7 +372,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                               width: 4,
                             ),
                             Text(
-                              headerData.category_name??'',
+                              headerData.category_name ?? '',
                               style: GoogleFonts.openSans(
                                 color: Color(0xFF555555),
                               ),
@@ -445,7 +453,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: '$Request_reason...',
+                    hintText: 'Write something...',
                     hintStyle: GoogleFonts.openSans(
                         fontSize: 14, color: const Color(0xFF555555)),
                     border: OutlineInputBorder(
@@ -540,7 +548,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                 'No data available in table',
                 style: GoogleFonts.openSans(
                   color: const Color(0xFF555555),
-                  fontSize:14,
+                  fontSize: 14,
                 ),
               ),
             ],
@@ -570,20 +578,37 @@ class _EvaluateModuleState extends State<EvaluateModule>
   Widget _bodyAcademy() {
     switch (_selectedIndex) {
       case 0:
-        return Description(employee: widget.employee, academy: widget.academy,);
+        return Description(
+          employee: widget.employee,
+          academy: widget.academy,
+        );
       case 1:
         return Curriculum(
-          employee: widget.employee, academy: widget.academy,);
+          employee: widget.employee,
+          academy: widget.academy,
+        );
       case 2:
-        return Instructors();
+        return Instructors(
+          employee: widget.employee,
+          academy: widget.academy,
+        );
       case 3:
-        return Discussion();
+        return Discussion(
+          employee: widget.employee,
+          academy: widget.academy,
+        );
       case 4:
         return Announcements();
       case 5:
-        return AttachFile();
+        return AttachFile(
+          employee: widget.employee,
+          academy: widget.academy,
+        );
       case 6:
-        return Certification();
+        return Certification(
+          employee: widget.employee,
+          academy: widget.academy,
+        );
       default:
         return Container(
           alignment: Alignment.center,
@@ -612,6 +637,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'auth_password': widget.employee.auth_password,
           'academy_id': widget.academy.academy_id,
           'academy_type': widget.academy.academy_type,
         },
@@ -640,7 +666,6 @@ class _EvaluateModuleState extends State<EvaluateModule>
       throw Exception('Error: $e');
     }
   }
-
 }
 
 class IDPlan {

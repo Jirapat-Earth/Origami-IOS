@@ -7,7 +7,7 @@ Future<void> ENG() async {
   academy = "Academy";
   language = "Language";
   job = "Jobs";
-  logout = "Logout";
+  logout = "Log out";
   Search = 'Search';
   Date = 'Date';
   Amount = 'Amount';

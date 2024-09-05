@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:origami_ios/setting_translate.dart';
+import 'package:origami_ios/test_view/test_view.dart';
 import 'package:origami_ios/trandar_shop/trandar_shop.dart';
 import '../language/translate.dart';
 import '../login/login.dart';
@@ -43,6 +44,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
     "$academy",
     "$language",
     "$logout",
+    "LineDrawing",
   ];
 
   DateTime? lastPressed;
@@ -63,7 +65,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
           ScaffoldMessenger.of(context).showSnackBar(
 
             SnackBar(
-              content: Text('Press back again to exit',
+              content: Text('Press back again to exit the origami application.',
                 style: GoogleFonts.openSans(
                 color: Colors.white,
               ),),
@@ -291,17 +293,18 @@ class _OrigamiPageState extends State<OrigamiPage> {
                     '$logout',
                     style: GoogleFonts.openSans(color: (_index == 6)?Colors.orange:Color(0xFF555555)),
                   ),
-                  selected: _index == 6,
+                  selected: _index == 4,
                   onTap: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext dialogContext) {
                         return AlertDialog(
                           elevation: 0,
-                          title: Image.network(
-                            'https://cdn-icons-png.flaticon.com/512/5087/5087579.png',
-                            height: 180,
-                          ),
+                          title:Text('Do you want to log out?',style: GoogleFonts.openSans(
+                            fontSize:16,
+                            color: Color(0xFF555555),
+                            fontWeight: FontWeight.bold,
+                          ),),
                           actions: <Widget>[
                             TextButton(
                               child: Text(
@@ -343,6 +346,20 @@ class _OrigamiPageState extends State<OrigamiPage> {
                     );
                   },
                 ),
+                ListTile(
+                  trailing: Icon(Icons.language_outlined,color: (_index == 5)?Colors.orange:Color(0xFF555555)),
+                  title: Text(
+                    'LineDrawing',
+                    style: GoogleFonts.openSans(color:(_index == 5)?Colors.orange:Color(0xFF555555)),
+                  ),
+                  selected: _index == 5,
+                  onTap: () {
+                    setState(() {
+                      _index = 5;
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
               ],
             ),
           ),
@@ -361,6 +378,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
       2: AcademyPage(employee: widget.employee,),
       3: TranslatePage(employee: widget.employee),
       4: Text('Index 6: LogOut', style: optionStyle),
+      5: ChatPage(),
     };
     return pages[_index] ?? Container();
   }

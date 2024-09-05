@@ -9,7 +9,7 @@
     <application
         android:label="origami_ios"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_ogm">
         <activity
             android:name=".MainActivity"
             android:exported="true"

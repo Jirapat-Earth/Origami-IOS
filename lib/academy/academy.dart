@@ -92,7 +92,7 @@ class _AcademyPageState extends State<AcademyPage> {
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: '$Request_reason...',
+                    hintText: 'Write something...',
                     hintStyle: GoogleFonts.openSans(
                         fontSize: 14, color: const Color(0xFF555555)),
                     border: OutlineInputBorder(
@@ -260,6 +260,7 @@ class _AcademyPageState extends State<AcademyPage> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
+        'auth_password': widget.employee.auth_password,
         'pages': page,
         'search': _searchA,
       },
@@ -287,6 +288,7 @@ class _AcademyPageState extends State<AcademyPage> {
   }
 
   int _selectedIndex = 0;
+  int _testNum = 0;
   String page = "course";
   void _onItemTapped(int index) {
     setState(() {
@@ -406,7 +408,7 @@ class _AcademyPageState extends State<AcademyPage> {
   }
 
   bool _isMenu = false;
-  bool _isFavorite = false;
+  int _isFavorite = 0;
 
   Widget _Learning(_isMobile, _isDesktop, List<AcademyRespond> _academy) {
     return (_academy.length != 0)
@@ -502,12 +504,11 @@ class _AcademyPageState extends State<AcademyPage> {
                                             builder: (context) => EvaluateModule(
                                               employee: widget.employee,
                                               academy: _academy[indexI], callback: () {
-                                              favorite(
-                                                  _academy[indexI]
-                                                      .academy_id,
-                                                  _academy[indexI]
-                                                      .academy_type
-                                              );
+                                                setState(() {
+                                                  academyId = _academy[indexI].academy_id;
+                                                  academyType = _academy[indexI].academy_type;
+                                                  favorite();
+                                                });
                                             },
 
                                             )),
@@ -532,7 +533,7 @@ class _AcademyPageState extends State<AcademyPage> {
                                                 '${_academy[indexI].academy_image}',
                                                 width: 40,
                                                 height: 40,
-                                                fit: BoxFit.fill,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                             const SizedBox(
@@ -614,12 +615,7 @@ class _AcademyPageState extends State<AcademyPage> {
                         ),
                         itemCount: _academy.length,
                         itemBuilder: (BuildContext context, int index) {
-                          if (_academy[index].favorite == 0) {
-                            _isFavorite = true;
-                          } else {
-                            _isFavorite =
-                                false; // _academy[index].favorite = 0;
-                          }
+                          _isFavorite = _academy[index].favorite;
                           return InkWell(
                             onTap: () {
                               setState(() {
@@ -630,12 +626,11 @@ class _AcademyPageState extends State<AcademyPage> {
                                         employee: widget.employee,
                                         academy: _academy[index],
                                         callback: () {
-                                          favorite(
-                                              _academy[index]
-                                                  .academy_id,
-                                              _academy[index]
-                                                  .academy_type
-                                          );
+                                          academyId = _academy[index].academy_id;
+                                          academyType = _academy[index].academy_type;
+                                          setState(() {
+                                            favorite();
+                                          });
                                         },
                                       )),
                                 );
@@ -747,8 +742,7 @@ class _AcademyPageState extends State<AcademyPage> {
                                         child: Container(
                                           alignment: Alignment.centerLeft,
                                           child: Text(
-                                            _academy[index].academy_subject ??
-                                                '',
+                                            _academy[index].academy_subject,
                                             style: GoogleFonts.openSans(
                                               fontSize: 16.0,
                                               color: const Color(0xFF555555),
@@ -767,7 +761,7 @@ class _AcademyPageState extends State<AcademyPage> {
                                                 _academy[index]
                                                     .academy_coach_data
                                                     .length, (indexII) {
-                                              final coach_data = _academy[index]
+                                              final coachData = _academy[index]
                                                   .academy_coach_data;
                                               return Column(
                                                 children: [
@@ -781,7 +775,7 @@ class _AcademyPageState extends State<AcademyPage> {
                                                               BorderRadius
                                                                   .circular(50),
                                                           child: Image.network(
-                                                            '${coach_data?[indexII].avatar ?? ''}',
+                                                            coachData[indexII].avatar,
                                                             height: 40,
                                                             width: 40,
                                                             fit: BoxFit
@@ -793,11 +787,11 @@ class _AcademyPageState extends State<AcademyPage> {
                                                         ),
                                                         Expanded(
                                                           child: Text(
-                                                            (coach_data[indexII]
+                                                            (coachData[indexII]
                                                                         .name ==
                                                                     '')
                                                                 ? ""
-                                                                : coach_data[
+                                                                : coachData[
                                                                         indexII]
                                                                     .name,
                                                             style: GoogleFonts
@@ -838,7 +832,7 @@ class _AcademyPageState extends State<AcademyPage> {
                                                                 .academy_date ==
                                                             "Time Out")
                                                         ? Text(
-                                                            '${_academy[index].academy_date ?? ''}',
+                                                            _academy[index].academy_date,
                                                             style: GoogleFonts
                                                                 .openSans(
                                                               color: Colors.red,
@@ -847,81 +841,66 @@ class _AcademyPageState extends State<AcademyPage> {
                                                                       .bold,
                                                             ),
                                                           )
-                                                        : Text(
-                                                            '$Start : ${_academy[index].academy_date ?? ''}',
-                                                            style: GoogleFonts
-                                                                .openSans(
-                                                              color: const Color(
-                                                                  0xFF555555),
-                                                            ),
-                                                          ),
-                                                  ),
-                                                  (_academy[index]
-                                                              .academy_date ==
-                                                          "Time Out")
-                                                      ? Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  right: 8.0),
-                                                          child: InkWell(
-                                                            onTap: _showDialogA,
-                                                            child: Container(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .green,
-                                                                // border: Border.all(color: Colors.grey),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
+                                                        : Expanded(
+                                                          child: Text(
+                                                              '$Start : ${_academy[index].academy_date}',
+                                                              style: GoogleFonts
+                                                                  .openSans(
+                                                                color: const Color(
+                                                                    0xFF555555),
                                                               ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(6),
-                                                                child: Text(
-                                                                  '$Enroll',
-                                                                  style: GoogleFonts
-                                                                      .openSans(
-                                                                    fontSize:
-                                                                        12,
-                                                                    color: Colors
-                                                                        .white,
+                                                            ),
+                                                        ),
+                                                  ),
+                                                  Container(
+                                                    child: (_academy[index]
+                                                                .academy_date ==
+                                                            "Time Out")
+                                                        ? Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    right: 8.0),
+                                                            child: InkWell(
+                                                              onTap: _showDialogA,
+                                                              child: Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .green,
+                                                                  // border: Border.all(color: Colors.grey),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(6),
+                                                                  child: Text(
+                                                                    '$Enroll',
+                                                                    style: GoogleFonts
+                                                                        .openSans(
+                                                                      fontSize:
+                                                                          12,
+                                                                      color: Colors
+                                                                          .white,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
-                                                          ),
-                                                        )
-                                                      : IconButton(
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              (_isFavorite ==
-                                                                      true)
-                                                                  ? _isFavorite =
-                                                                      false
-                                                                  : _isFavorite =
-                                                                      true;
-                                                            });
-                                                            favorite(
-                                                                _academy[index]
-                                                                    .academy_id,
-                                                                _academy[index]
-                                                                    .academy_type);
-                                                          },
-                                                          icon: Icon(
-                                                              Icons.favorite,
-                                                              color:
-                                                                  (_isFavorite ==
-                                                                          true)
-                                                                      ? Colors
-                                                                          .grey
-                                                                      : Colors
-                                                                          .red),
-                                                        )
-                                                ],
+                                                          )
+                                                        : Expanded(
+                                                          child: IconButton(
+                                                              onPressed: () {},
+                                                              icon: Icon(
+                                                                  null,
+                                                            ),
+                                                        ),
+                                                  )
+                                                  ),],
                                               ),
                                             )
                                           : Expanded(
@@ -966,25 +945,21 @@ class _AcademyPageState extends State<AcademyPage> {
                                                       ),
                                                       IconButton(
                                                         onPressed: () {
+                                                          if(_isFavorite == 0 ){
+                                                            _isFavorite = 1;
+                                                          }else{
+                                                            _isFavorite = 0;
+                                                          }
+                                                          academyId = _academy[index].academy_id;
+                                                          academyType = _academy[index].academy_type;
                                                           setState(() {
-                                                            (_isFavorite ==
-                                                                    true)
-                                                                ? _isFavorite =
-                                                                    false
-                                                                : _isFavorite =
-                                                                    true;
+                                                            favorite();
                                                           });
-                                                          favorite(
-                                                              _academy[index]
-                                                                  .academy_id,
-                                                              _academy[index]
-                                                                  .academy_type);
                                                         },
                                                         icon: Icon(
                                                             Icons.favorite,
                                                             color:
-                                                                (_isFavorite ==
-                                                                        true)
+                                                                (_isFavorite == 0 )
                                                                     ? Colors
                                                                         .grey
                                                                     : Colors
@@ -1023,55 +998,17 @@ class _AcademyPageState extends State<AcademyPage> {
           );
   }
 
+  String academyId = "";
+  String academyType = "";
 
-
-  // bool isPlan = false;
-  // Future<void> fetchIDPlan(
-  //     String academyId, String academyType, AcademyRespond academy) async {
-  //   try {
-  //     final response = await http.post(
-  //       Uri.parse('https://www.origami.life/api/origami/academy/favorite.php'),
-  //       body: {
-  //         'comp_id': widget.employee.comp_id,
-  //         'emp_id': widget.employee.emp_id,
-  //         'academy_id': academyId,
-  //         'academy_type': academyType,
-  //       },
-  //     );
-  //     if (response.statusCode == 200) {
-  //       final jsonResponse = jsonDecode(response.body);
-  //       if (jsonResponse['status'] == true) {
-  //         Navigator.push(
-  //           context,
-  //           MaterialPageRoute(
-  //               builder: (context) => EvaluateModule(
-  //                     id: '5',
-  //                     employee: widget.employee,
-  //                     academy: academy,
-  //                   )),
-  //         );
-  //       } else {
-  //         isPlan = false;
-  //       }
-  //     } else {
-  //       throw Exception(
-  //           'Failed to load personal data: ${response.reasonPhrase}');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Failed to load personal data: $e');
-  //   }
-  // }
-
-  Future<void> favorite(
-      String academyId,
-      String academyType,
-      ) async {
+  Future<void> favorite() async {
     try {
       final response = await http.post(
         Uri.parse('https://www.origami.life/api/origami/academy/favorite.php'),
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'auth_password': widget.employee.auth_password,
           'academy_id': academyId,
           'academy_type': academyType,
         },
@@ -1144,7 +1081,7 @@ class AcademyRespond {
       'academy_category': academy_category,
       'academy_date': academy_date,
       'academy_coach_data':
-          academy_coach_data?.map((item) => item.toJson()).toList(),
+          academy_coach_data.map((item) => item.toJson()).toList(),
       'favorite': favorite,
     };
   }

@@ -1,69 +1,98 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class YouTubeScreen extends StatefulWidget {
+class YouTubePlayerWidget extends StatefulWidget {
+  final String videoId;
+
+  const YouTubePlayerWidget({Key? key, required this.videoId}) : super(key: key);
+
   @override
-  _YouTubeScreenState createState() => _YouTubeScreenState();
+  _YouTubePlayerWidgetState createState() => _YouTubePlayerWidgetState();
 }
 
-class _YouTubeScreenState extends State<YouTubeScreen> {
+class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
   late YoutubePlayerController _controller;
-  late String videoId = 'KpDQhbYzf4Y'; // Replace with your video ID
-  double _stoppedPosition = 0.0;
+  bool _isFullScreen = false;
+  late Duration _lastStopTime;
+  final Duration _startTime = Duration(seconds: 10); // Start Time เริ่มวินาทีที่ 10
+  Duration _currentPosition = Duration.zero; // Variable to store current position
 
   @override
   void initState() {
     super.initState();
-    _loadStoppedPosition(); // Load the saved position
     _controller = YoutubePlayerController(
-      initialVideoId: videoId,
+      initialVideoId: widget.videoId,
       flags: YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
       ),
     );
+
+    // Listen to player state changes to update the current time
     _controller.addListener(() {
+      if (_controller.value.isPlaying && _controller.value.isReady) {
+        setState(() {
+          _currentPosition = _controller.value.position;
+        });
+      }
+
+      // Save the stop time when video is paused or stopped
       if (!_controller.value.isPlaying) {
-        _saveStoppedPosition();
+        _lastStopTime = _controller.value.position;
+        // Save StopTime
+        print('Video stopped at: $_lastStopTime');
       }
     });
-  }
-
-  Future<void> _loadStoppedPosition() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _stoppedPosition = prefs.getDouble('stoppedPosition_$videoId') ?? 0.0;
-    _controller.seekTo(Duration(seconds: _stoppedPosition.toInt()));
-  }
-
-  Future<void> _saveStoppedPosition() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setDouble('stoppedPosition_$videoId', _controller.value.position.inSeconds.toDouble());
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: Text('YouTube Player')),
+      appBar: AppBar(
+        title: Text('YouTube Player'),
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.fullscreen),
+        //     onPressed: () {
+        //       setState(() {
+        //         _isFullScreen = !_isFullScreen;
+        //         if (_isFullScreen) {
+        //           Navigator.of(context).push(
+        //             MaterialPageRoute(
+        //               builder: (context) => FullScreenPlayer(controller: _controller),
+        //             ),
+        //           );
+        //         } else {
+        //           Navigator.of(context).pop();
+        //         }
+        //       });
+        //     },
+        //   ),
+        // ],
+      ),
       body: YoutubePlayerBuilder(
         player: YoutubePlayer(
           controller: _controller,
           showVideoProgressIndicator: true,
+          onReady: () {
+            print('Player is ready.');
+            // Seek to the start time when the player is ready
+            _controller.seekTo(_startTime);
+          },
         ),
         builder: (context, player) {
           return Column(
             children: [
               player,
+              SizedBox(height: 10),
+              // Display the current time of the video
+              Text(
+                'Current Time: ${_currentPosition.inMinutes}:${(_currentPosition.inSeconds % 60).toString().padLeft(2, '0')}',
+                style: TextStyle(fontSize: 16),
+              ),
               ElevatedButton(
                 onPressed: () {
                   if (_controller.value.isPlaying) {
-                    _saveStoppedPosition();
                     _controller.pause();
                   } else {
                     _controller.play();
@@ -75,6 +104,30 @@ class _YouTubeScreenState extends State<YouTubeScreen> {
             ],
           );
         },
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
+
+class FullScreenPlayer extends StatelessWidget {
+  final YoutubePlayerController controller;
+
+  const FullScreenPlayer({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: YoutubePlayer(
+          controller: controller,
+          showVideoProgressIndicator: true,
+        ),
       ),
     );
   }

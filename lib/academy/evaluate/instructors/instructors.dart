@@ -1,13 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 
-
+import '../../../language/translate.dart';
+import '../../../login/login.dart';
+import '../../academy.dart';
 
 class Instructors extends StatefulWidget {
-  Instructors({super.key, });
-
+  Instructors({super.key, required this.employee, required this.academy, });
+  final Employee employee;
+  final AcademyRespond academy;
 
   @override
   _InstructorsState createState() => _InstructorsState();
@@ -15,9 +20,37 @@ class Instructors extends StatefulWidget {
 
 class _InstructorsState extends State<Instructors> {
 
+  Future<List<Instructor>> fetchInstructors() async {
+    final uri = Uri.parse("https://www.origami.life/api/origami/academy/instructors.php");
+    final response = await http.post(
+      uri,
+      body: {
+        'comp_id': widget.employee.comp_id,
+        'emp_id': widget.employee.emp_id,
+        'auth_password': widget.employee.auth_password,
+        'academy_id': widget.academy.academy_id,
+        'academy_type': widget.academy.academy_type,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      // เข้าถึงข้อมูลในคีย์ 'instructors'
+      final List<dynamic> instructorsJson = jsonResponse['instructors'];
+      // แปลงข้อมูลจาก JSON เป็น List<Instructor>
+      return instructorsJson
+          .map((json) => Instructor.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load instructors');
+    }
+  }
+  
+
   @override
   void initState() {
     super.initState();
+    fetchInstructors();
   }
 
   @override
@@ -26,216 +59,224 @@ class _InstructorsState extends State<Instructors> {
   }
 
   Widget loading() {
-    return Container();
-    //   FutureBuilder<List<DescriptionData>>(
-    //   future: fetchDescription(),
-    //   builder: (context, snapshot) {
-    //     if (snapshot.connectionState == ConnectionState.waiting) {
-    //       return Center(
-    //           child: Row(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               CircularProgressIndicator(
-    //                 color: Colors.orange,
-    //               ),
-    //               SizedBox(
-    //                 width: 12,
-    //               ),
-    //               Text(
-    //                 '$Loading...',
-    //                 style: GoogleFonts.openSans(
-    //                   fontSize: 16,
-    //                   fontWeight: FontWeight.bold,
-    //                   color: Color(0xFF555555),
-    //                 ),
-    //               ),
-    //             ],
-    //           ));
-    //     } else if (snapshot.hasError) {
-    //       return Center(child: Text('Error: ${snapshot.error}'));
-    //     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-    //       return Center(child: Text('No academies found'));
-    //     } else {
-    //       return _getContentWidget(snapshot.data!);
-    //     }
-    //   },
-    // );
-  }
-
-  Widget _getContentWidget(){
-    return Container(
-      color: Colors.grey.shade50,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            children: List.generate(2, (index) {
-              return Column(
+    return FutureBuilder<List<Instructor>>(
+      future: fetchInstructors(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    color: Colors.transparent,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'HR Orientation ALB ${index + 1}',
-                            style: GoogleFonts.openSans(
-                              fontSize: 18.0,
-                              color: Color(0xFF555555),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    children: List.generate(1, (index) {
-                      return Card(
-                        color: Colors.white,
-                        child: InkWell(
-                          child: Container(
-                            padding: EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  'assets/images/person/19777.jpg',
-                                  width: 90,
-                                  fit: BoxFit.fill,
-                                ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Jirapat Jangsawang',
-                                        style: GoogleFonts.openSans(
-                                          fontSize: 18.0,
-                                          color: Color(0xFF555555),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.work,
-                                            color: Colors.amber,
-                                          ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            'Executive',
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 14.0,
-                                              color: Color(0xFF555555),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          FaIcon(
-                                            FontAwesomeIcons.building,
-                                            color: Colors.amber,
-                                            size: 20,
-                                          ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            'Allable Co.,Ltd.',
-                                            style: GoogleFonts.openSans(
-                                              color: Color(0xFF555555),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.people_alt_outlined,
-                                                    color: Colors.amber,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 4,
-                                                  ),
-                                                  Text(
-                                                    '19 Students',
-                                                    style: GoogleFonts.openSans(
-                                                      color: Color(0xFF555555),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.bookmark_border,
-                                                    color: Colors.amber,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 4,
-                                                  ),
-                                                  Text(
-                                                    '2 Courses',
-                                                    style: GoogleFonts.openSans(
-                                                      color: Color(0xFF555555),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
+                  CircularProgressIndicator(
+                    color: Colors.orange,
                   ),
                   SizedBox(
-                    height: 8,
+                    width: 12,
                   ),
-                  Divider(),
-                  SizedBox(
-                    height: 8,
+                  Text(
+                    '$Loading...',
+                    style: GoogleFonts.openSans(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF555555),
+                    ),
                   ),
                 ],
-              );
-            }),
+              ));
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('No instructors found'));
+        } else {
+          return _getContentWidget(snapshot.data!);
+        }
+      },
+    );
+  }
+
+  Widget _getContentWidget(List<Instructor> instructor){
+    return SafeArea(
+      child: Container(
+        color: Colors.grey.shade50,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(
+              children: List.generate(instructor.length, (index) {
+                return Column(
+                  children: [
+                    Container(
+                      color: Colors.transparent,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              instructor[index].courseSubject,
+                              style: GoogleFonts.openSans(
+                                fontSize: 18.0,
+                                color: Color(0xFF555555),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(
+                      children: List.generate(instructor[index].coachData.length, (indexI) {
+                        final coachData = instructor[index].coachData[indexI];
+                        return Card(
+                          color: Colors.white,
+                          child: InkWell(
+                            child: Container(
+                              padding: EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                children: [
+                                  // Image.asset(
+                                  //   coachData.coach_image,
+                                  //   width: 90,
+                                  //   fit: BoxFit.cover,
+                                  // ),
+                                  Image.network(
+                                    coachData.coach_image,
+                                    // width: 110,
+                                    height: 100,
+                                    fit: BoxFit.fill,
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          coachData.coach_name,
+                                          style: GoogleFonts.openSans(
+                                            fontSize: 18.0,
+                                            color: Color(0xFF555555),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.work,
+                                              color: Colors.amber,
+                                            ),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              coachData.coach_department,
+                                              style: GoogleFonts.openSans(
+                                                fontSize: 14.0,
+                                                color: Color(0xFF555555),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            FaIcon(
+                                              FontAwesomeIcons.building,
+                                              color: Colors.amber,
+                                              size: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              coachData.coach_comapny,
+                                              style: GoogleFonts.openSans(
+                                                color: Color(0xFF555555),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: SingleChildScrollView(
+                                                scrollDirection: Axis.horizontal,
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.people_alt_outlined,
+                                                      color: Colors.amber,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 4,
+                                                    ),
+                                                    Text(
+                                                      '${coachData.count_trainee} Students',
+                                                      style: GoogleFonts.openSans(
+                                                        color: Color(0xFF555555),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: SingleChildScrollView(
+                                                scrollDirection: Axis.horizontal,
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.bookmark_border,
+                                                      color: Colors.amber,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 4,
+                                                    ),
+                                                    Text(
+                                                      '${coachData.coach_course} Courses',
+                                                      style: GoogleFonts.openSans(
+                                                        color: Color(0xFF555555),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Divider(),
+                    SizedBox(
+                      height: 8,
+                    ),
+                  ],
+                );
+              }),
+            ),
           ),
         ),
       ),
@@ -243,54 +284,47 @@ class _InstructorsState extends State<Instructors> {
   }
 }
 
-class CourseInstructors {
-  final String page;
-  final List<String> courseDesc;
-  final List<String> courseCode;
+class Instructor {
+  final String courseSubject;
+  final List<InstructorsData> coachData;
 
-  CourseInstructors({
-    required this.page,
-    required this.courseDesc,
-    required this.courseCode,
-  });
+  Instructor({required this.courseSubject, required this.coachData});
 
-  factory CourseInstructors.fromJson(Map<String, dynamic> json) {
-    return CourseInstructors(
-      page: json['page'],
-      courseDesc: List<String>.from(json['course_desc']),
-      courseCode: List<String>.from(json['course_code']),
+  factory Instructor.fromJson(Map<String, dynamic> json) {
+    return Instructor(
+      courseSubject: json['course_subject'],
+      coachData: (json['coach_data'] as List)
+          .map((statusJson) => InstructorsData.fromJson(statusJson))
+          .toList(),
     );
   }
 }
 
-class CoachInstructors {
-  final String coachCode;
-  final String coachComp;
-  final int coachCourse;
-  final String coachDept;
-  final String coachImg;
-  final String coachName;
-  final int coachTrainee;
+class InstructorsData {
+  final String count_trainee;
+  final String coach_course;
+  final String coach_comapny;
+  final String coach_name;
+  final String coach_image;
+  final String coach_department;
 
-  CoachInstructors({
-    required this.coachCode,
-    required this.coachComp,
-    required this.coachCourse,
-    required this.coachDept,
-    required this.coachImg,
-    required this.coachName,
-    required this.coachTrainee,
+  InstructorsData({
+    required this.count_trainee,
+    required this.coach_course,
+    required this.coach_comapny,
+    required this.coach_name,
+    required this.coach_image,
+    required this.coach_department,
   });
 
-  factory CoachInstructors.fromJson(Map<String, dynamic> json) {
-    return CoachInstructors(
-      coachCode: json['coach_code'],
-      coachComp: json['coach_comp'],
-      coachCourse: json['coach_course'],
-      coachDept: json['coach_dept'],
-      coachImg: json['coach_img'],
-      coachName: json['coach_name'],
-      coachTrainee: json['coach_trainee'],
+  factory InstructorsData.fromJson(Map<String, dynamic> json) {
+    return InstructorsData(
+      count_trainee: json['count_trainee'],
+      coach_course: json['coach_course'],
+      coach_comapny: json['coach_comapny'],
+      coach_name: json['coach_name'],
+      coach_image: json['coach_image'],
+      coach_department: json['coach_department'],
     );
   }
 }
