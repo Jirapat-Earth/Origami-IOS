@@ -8,6 +8,7 @@ import 'package:origami_ios/trandar_shop/trandar_shop.dart';
 import '../language/translate.dart';
 import '../login/login.dart';
 import 'academy/academy.dart';
+import 'chat/chat.dart';
 import 'need/need.dart';
 import 'need/need_approve.dart';
 
@@ -44,7 +45,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
     "$academy",
     "$language",
     "$logout",
-    "LineDrawing",
+    "ChatView",
   ];
 
   DateTime? lastPressed;
@@ -347,9 +348,9 @@ class _OrigamiPageState extends State<OrigamiPage> {
                   },
                 ),
                 ListTile(
-                  trailing: Icon(Icons.language_outlined,color: (_index == 5)?Colors.orange:Color(0xFF555555)),
+                  trailing: Icon(Icons.mark_chat_unread_outlined,color: (_index == 5)?Colors.orange:Color(0xFF555555)),
                   title: Text(
-                    'LineDrawing',
+                    'ChatView',
                     style: GoogleFonts.openSans(color:(_index == 5)?Colors.orange:Color(0xFF555555)),
                   ),
                   selected: _index == 5,
@@ -378,7 +379,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
       2: AcademyPage(employee: widget.employee,),
       3: TranslatePage(employee: widget.employee),
       4: Text('Index 6: LogOut', style: optionStyle),
-      5: ChatPage(),
+      5: ChatView(employee: widget.employee),
     };
     return pages[_index] ?? Container();
   }

@@ -22,11 +22,12 @@ class EvaluateModule extends StatefulWidget {
     super.key,
     required this.employee,
     required this.academy,
-    required this.callback,
+    this.callback, this.selectedPage,
   });
   final Employee employee;
   final AcademyRespond academy;
-  final VoidCallback callback;
+  final VoidCallback? callback;
+  final int? selectedPage;
 
   @override
   _EvaluateModuleState createState() => _EvaluateModuleState();
@@ -45,6 +46,45 @@ class _EvaluateModuleState extends State<EvaluateModule>
   String _commentA = "";
   String _commentB = "";
 
+  Future<Map<String, dynamic>> getAllAcademyData() async {
+    try {
+      final uri =
+      Uri.parse("https://www.origami.life/api/origami/academy/academy.php");
+      final response = await http.post(
+        uri,
+        body: {
+          'comp_id': widget.employee.comp_id,
+          'emp_id': widget.employee.emp_id,
+          'auth_password': widget.employee.auth_password,
+          'academy_id': widget.academy.academy_id,
+          'academy_type': widget.academy.academy_type,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // แปลงข้อมูล JSON เป็น Map
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+        // ดึงข้อมูลจาก JSON
+        HeaderData headerData =
+        HeaderData.fromJson(jsonResponse['header_data']);
+        FastView fastView = FastView.fromJson(jsonResponse['fastview_data']);
+
+        // ส่งข้อมูลกลับเป็น Map
+        return {
+          'headerData': headerData,
+          'fastView': fastView,
+        };
+      } else {
+        print('Failed to load academy data');
+        throw Exception('Failed to load academies');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw Exception('Error: $e');
+    }
+  }
+
   String URL = '';
   String imageUrl = '';
 
@@ -61,6 +101,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
   @override
   void initState() {
     super.initState();
+    _selectedIndex = widget.selectedPage??0;
     getAllAcademyData();
     _tabController = TabController(length: _tabs.length, vsync: this);
     if(widget.academy.favorite == 1){
@@ -170,7 +211,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                     child: InkWell(
                       onTap: () {
                         setState(() {
-                          widget.callback();
+                          widget.callback!();
                           // widget.academy.favorite == 1
                           (_isClick == true)
                               ? _isClick = false
@@ -626,46 +667,6 @@ class _EvaluateModuleState extends State<EvaluateModule>
     }
   }
 
-  // evaluate
-
-  Future<Map<String, dynamic>> getAllAcademyData() async {
-    try {
-      final uri =
-          Uri.parse("https://www.origami.life/api/origami/academy/academy.php");
-      final response = await http.post(
-        uri,
-        body: {
-          'comp_id': widget.employee.comp_id,
-          'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
-          'academy_id': widget.academy.academy_id,
-          'academy_type': widget.academy.academy_type,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        // แปลงข้อมูล JSON เป็น Map
-        final Map<String, dynamic> jsonResponse = json.decode(response.body);
-
-        // ดึงข้อมูลจาก JSON
-        HeaderData headerData =
-            HeaderData.fromJson(jsonResponse['header_data']);
-        FastView fastView = FastView.fromJson(jsonResponse['fastview_data']);
-
-        // ส่งข้อมูลกลับเป็น Map
-        return {
-          'headerData': headerData,
-          'fastView': fastView,
-        };
-      } else {
-        print('Failed to load academy data');
-        throw Exception('Failed to load academies');
-      }
-    } catch (e) {
-      print('Error: $e');
-      throw Exception('Error: $e');
-    }
-  }
 }
 
 class IDPlan {

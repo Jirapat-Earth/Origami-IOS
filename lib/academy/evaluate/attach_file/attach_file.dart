@@ -86,28 +86,7 @@ class _AttachFileState extends State<AttachFile> {
     return FutureBuilder<List<AttachFileData>>(
       future: fetchAttach(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(
-                    color: Colors.orange,
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Text(
-                    '$Loading...',
-                    style: GoogleFonts.openSans(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF555555),
-                    ),
-                  ),
-                ],
-              ));
-        } else if (snapshot.hasError) {
+        if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(child: Text('No instructors found'));

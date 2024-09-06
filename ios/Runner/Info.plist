@@ -51,5 +51,20 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>lineauth</string>
+        <string>line</string>
+    </array>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>line3rdp.2006248746</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>

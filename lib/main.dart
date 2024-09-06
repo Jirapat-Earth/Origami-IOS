@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_line_sdk/flutter_line_sdk.dart';
 import 'login/login.dart';
 
 void main() {
-  runApp(const MyApp());
+  // ตั้งค่า LINE SDK โดยใช้ Channel ID ของคุณ
+  LineSDK.instance.setup('2006248746').then((_) {
+    print('LINE SDK is Prepared');
+  });
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -13,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
