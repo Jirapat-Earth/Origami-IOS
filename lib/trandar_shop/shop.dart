@@ -9,6 +9,7 @@ import '../language/translate.dart';
 import 'card_monny.dart';
 import 'package:badges/badges.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:url_launcher/url_launcher.dart';
 
 class ShopPage extends StatefulWidget {
   @override
@@ -309,6 +310,15 @@ class _CategoryItemsScreenState extends State<CategoryItemsScreen> {
     super.initState();
   }
 
+  void _launchWhatsApp() async {
+    const url = 'https://wa.me/0656257183'; // แทนที่ด้วยหมายเลขโทรศัพท์ของคุณ
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not open WhatsApp';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -316,7 +326,9 @@ class _CategoryItemsScreenState extends State<CategoryItemsScreen> {
         title: Text('Chairs'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            _launchWhatsApp();
+          },
         ),
         actions: [
           _shoppingCartBadge(),

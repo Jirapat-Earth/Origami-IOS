@@ -53,6 +53,7 @@
         <string>lineauth</string>
         <string>line</string>
     </array>
+
     <key>CFBundleURLTypes</key>
     <array>
         <dict>
@@ -68,6 +69,7 @@
     <key>NSMicrophoneUsageDescription</key>
     <string>We need to use your microphone for audio input</string>
 
-
+    <key>FirebaseAppDelegateProxyEnabled</key>
+    <false/>
 </dict>
 </plist>
