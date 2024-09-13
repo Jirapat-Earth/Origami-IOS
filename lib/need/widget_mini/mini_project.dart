@@ -48,7 +48,7 @@ class _MiniProjectState extends State<MiniProject> {
             child: Column(
               children: [
                 Card(elevation:0,color: Colors.transparent,child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8)),),
-                Card(color: Colors.orange.shade500,child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8)),),
+                Card(color: Colors.orange,child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8)),),
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: Container(
@@ -56,7 +56,7 @@ class _MiniProjectState extends State<MiniProject> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       border: Border.all(
-                        color: Colors.orange.shade500,
+                        color: Colors.orange,
                         width: 1.0,
                       ),
                     ),
@@ -69,7 +69,7 @@ class _MiniProjectState extends State<MiniProject> {
                           hintStyle: GoogleFonts.openSans(color: Color(0xFF555555),),
                           labelStyle: GoogleFonts.openSans(color: Color(0xFF555555),),
                           border: InputBorder.none,
-                          icon: Icon(Icons.search,color: Colors.orange.shade500,),
+                          icon: Icon(Icons.search,color: Colors.orange,),
                           suffixIcon: Card(
                             elevation: 0,
                             color: Colors.orange,

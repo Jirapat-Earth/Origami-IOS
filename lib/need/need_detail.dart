@@ -437,7 +437,7 @@ class _NeedDetailState extends State<NeedDetail> {
                         borderRadius: BorderRadius.circular(15),
                         color: Colors.white,
                         border: Border.all(
-                          color: Colors.orange.shade500,
+                          color: Colors.orange,
                           width: 1.0,
                         ),
                       ),
@@ -488,7 +488,7 @@ class _NeedDetailState extends State<NeedDetail> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(
-                        color: Colors.orange.shade500,
+                        color: Colors.orange,
                         width: 1.0,
                       ),
                     ),
@@ -564,7 +564,7 @@ class _NeedDetailState extends State<NeedDetail> {
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.white,
                             border: Border.all(
-                              color: Colors.orange.shade500,
+                              color: Colors.orange,
                               width: 1.0,
                             ),
                           ),
@@ -615,7 +615,7 @@ class _NeedDetailState extends State<NeedDetail> {
                                   borderRadius: BorderRadius.circular(15),
                                   color: Colors.white,
                                   border: Border.all(
-                                    color: Colors.orange.shade500,
+                                    color: Colors.orange,
                                     width: 1.0,
                                   ),
                                 ),
@@ -850,7 +850,7 @@ class _NeedDetailState extends State<NeedDetail> {
                   }
                 },
                 child: Card(
-                  color: Colors.orange.shade500,
+                  color: Colors.orange,
                   child: Container(
                     width: double.infinity,
                     height: 50,
@@ -890,7 +890,7 @@ class _NeedDetailState extends State<NeedDetail> {
         borderRadius: BorderRadius.circular(15),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange.shade500,
+          color: Colors.orange,
           width: 1.0,
         ),
       ),
@@ -1415,7 +1415,7 @@ class _NeedDetailState extends State<NeedDetail> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
-                              backgroundColor: Colors.orange.shade500,
+                              backgroundColor: Colors.orange,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
@@ -1546,7 +1546,7 @@ class _NeedDetailState extends State<NeedDetail> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
-                              backgroundColor: Colors.orange.shade500,
+                              backgroundColor: Colors.orange,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
@@ -1641,7 +1641,7 @@ class _NeedDetailState extends State<NeedDetail> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                   border: Border.all(
-                    color: Colors.orange.shade500,
+                    color: Colors.orange,
                     width: 1.0,
                   ),
                 ),
@@ -1698,7 +1698,7 @@ class _NeedDetailState extends State<NeedDetail> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                   border: Border.all(
-                    color: Colors.orange.shade500,
+                    color: Colors.orange,
                     width: 1.0,
                   ),
                 ),
@@ -1759,7 +1759,7 @@ class _NeedDetailState extends State<NeedDetail> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15.0),
                         border: Border.all(
-                          color: Colors.orange.shade500,
+                          color: Colors.orange,
                           width: 1.0,
                         ),
                       ),
@@ -1840,7 +1840,7 @@ class _NeedDetailState extends State<NeedDetail> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(
-                    color: Colors.orange.shade500,
+                    color: Colors.orange,
                     width: 1.0,
                   ),
                 ),
@@ -1907,7 +1907,7 @@ class _NeedDetailState extends State<NeedDetail> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: Colors.orange.shade500,
+                                color: Colors.orange,
                                 width: 1.0,
                               ),
                             ),
@@ -1926,7 +1926,7 @@ class _NeedDetailState extends State<NeedDetail> {
                                       style: GoogleFonts.openSans(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.orange.shade500,
+                                        color: Colors.orange,
                                       ),
                                     ),
                                   ],
@@ -2515,12 +2515,12 @@ class _NeedDetailState extends State<NeedDetail> {
                                         borderRadius:
                                             BorderRadius.circular(10),
                                         color: (index == indexImage)
-                                            ? Colors.orange.shade500
+                                            ? Colors.orange
                                             : Colors.transparent,
                                         border: Border.all(
                                           color: (index == indexImage)
-                                              ? Colors.orange.shade500
-                                              : Colors.orange.shade500,
+                                              ? Colors.orange
+                                              : Colors.orange,
                                           width: 1.0,
                                         ),
                                       ),
@@ -2575,7 +2575,7 @@ class _NeedDetailState extends State<NeedDetail> {
                 child: Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: Card(
-                    color: Colors.orange.shade500,
+                    color: Colors.orange,
                     child: Container(
                       width: double.infinity,
                       height: 50,
@@ -2605,7 +2605,7 @@ class _NeedDetailState extends State<NeedDetail> {
                 child: Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: Card(
-                    color: Colors.orange.shade500,
+                    color: Colors.orange,
                     child: Container(
                       width: double.infinity,
                       height: 50,

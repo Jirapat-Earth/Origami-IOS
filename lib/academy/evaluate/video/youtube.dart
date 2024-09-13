@@ -69,14 +69,15 @@ class _YouTubePlayerWidgetState extends State<YouTubePlayerWidget> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => EvaluateModule(
-                        employee: widget.employee,
-                        academy: widget.academy,
-                        selectedPage: 1)),
-              );
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(
+              //       builder: (context) => EvaluateModule(
+              //           employee: widget.employee,
+              //           academy: widget.academy,
+              //           selectedPage: 1)),
+              // );
+              Navigator.pop(context);
             },
           ),
         ),

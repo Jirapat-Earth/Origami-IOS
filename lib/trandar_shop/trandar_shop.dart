@@ -145,43 +145,43 @@ class _TrandarShopState extends State<TrandarShop> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 8, right: 16),
-                  //   child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         Text(
-                  //           'Item',
-                  //           style: GoogleFonts.openSans(
-                  //               fontSize: 16, fontWeight: FontWeight.bold),
-                  //         ),
-                  //         GridView.builder(
-                  //           gridDelegate:
-                  //               SliverGridDelegateWithFixedCrossAxisCount(
-                  //             crossAxisCount: 5,
-                  //             crossAxisSpacing: 10.0,
-                  //             mainAxisSpacing: 10.0,
-                  //           ),
-                  //           shrinkWrap: true,
-                  //           physics: const NeverScrollableScrollPhysics(),
-                  //           itemCount: 9, // Number of items to display
-                  //           itemBuilder: (context, index) {
-                  //             return const Padding(
-                  //               padding: EdgeInsets.only(right: 8),
-                  //               child: CircleAvatar(
-                  //                 radius: 25,
-                  //                 backgroundImage: NetworkImage(
-                  //                     'https://www.thaihealth.or.th/data/content/26220/cms/e_bcdijkluwyz2.jpg'),
-                  //                 backgroundColor: Colors.transparent,
-                  //               ),
-                  //             );
-                  //           },
-                  //         )
-                  //       ]),
-                  // ),
-                  // SizedBox(
-                  //   height: 16,
-                  // ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 16),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Item',
+                            style: GoogleFonts.openSans(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 5,
+                              crossAxisSpacing: 10.0,
+                              mainAxisSpacing: 10.0,
+                            ),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: 9, // Number of items to display
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(right: 8),
+                                child: CircleAvatar(
+                                  radius: 25,
+                                  backgroundImage: NetworkImage(
+                                      'https://www.thaihealth.or.th/data/content/26220/cms/e_bcdijkluwyz2.jpg'),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                              );
+                            },
+                          )
+                        ]),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8, right: 16),
                     child: Column(

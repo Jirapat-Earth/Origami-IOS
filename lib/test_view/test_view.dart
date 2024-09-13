@@ -18,9 +18,9 @@ class _ChatScreenState extends State<ChatScreen> {
           imageUrl: null, // ใส่ URL ของภาพโปรไฟล์ที่นี่ถ้าต้องการ
         ));
         _messages.add(ChatMessage(
-          text: 'Received: $text',
+          text: 'Line Message: $text',
           isMe: false,
-          imageUrl: 'https://www.origami.life/uploads/employee/5/employee/19777.jpg', // ตัวอย่าง URL ของภาพโปรไฟล์
+          imageUrl: 'https://dev.origami.life/uploads/employee/185_20170727151718.png', // ตัวอย่าง URL ของภาพโปรไฟล์
         ));
       });
       _controller.clear();
@@ -30,7 +30,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Chat')),
       body: Column(
         children: <Widget>[
           Expanded(

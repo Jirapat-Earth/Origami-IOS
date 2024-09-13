@@ -16,6 +16,8 @@ import 'curriculum/curriculum.dart';
 import 'description/description.dart';
 import 'discussion/discussion.dart';
 import 'instructors/instructors.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:html/parser.dart' show parse;
 
 class EvaluateModule extends StatefulWidget {
   EvaluateModule({
@@ -142,7 +144,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
         ),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
-        future: getAllAcademyData(), // รอการโหลดข้อมูลจาก API
+        future: getAllAcademyData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             // แสดงตัวโหลดข้อมูล
@@ -183,7 +185,11 @@ class _EvaluateModuleState extends State<EvaluateModule>
     );
   }
 
+
+
   Widget _Head(HeaderData headerData, FastView fastView) {
+    final document = parse(headerData.academy_description);
+    final plainText = parse(document.body?.text ?? '').documentElement?.text ?? '';
     return Column(
       children: <Widget>[
         Padding(
@@ -191,6 +197,15 @@ class _EvaluateModuleState extends State<EvaluateModule>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Html(
+              //   data: "${headerData.academy_description}",
+              // ),
+              // Text(
+              //   '${headerData.academy_description.replaceAll(RegExp(r'</?p>'), '')}',
+              //   style: GoogleFonts.openSans(
+              //     color: Color(0xFF555555),
+              //   ),
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -73,7 +73,7 @@ Future<void> TH() async {
   CertificationT = 'ใบรับรอง';
   Start = 'เริ่มต้น';
   End = 'สิ้นสุด';
-  Enroll = 'ลงทะเบียน';
+  Enroll = 'Enroll';
   Includes = 'หลักสูตรนี้ประกอบด้วย';
   Videos = 'วิดีโอ';
   Documents = 'เอกสาร';

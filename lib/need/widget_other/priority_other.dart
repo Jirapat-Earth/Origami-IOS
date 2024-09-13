@@ -35,7 +35,7 @@ class PriorityOtherState extends State<PriorityOther> {
         borderRadius: BorderRadius.circular(15),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange.shade500,
+          color: Colors.orange,
           width: 1.0,
         ),
       ),

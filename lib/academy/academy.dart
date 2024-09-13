@@ -174,12 +174,14 @@ class _AcademyPageState extends State<AcademyPage> {
                       width: 1.0,
                     ),
                   ),
-                  child: Text("No data available in table",
+                  child: Text(
+                    "No data available in table",
                     style: GoogleFonts.openSans(
                       decoration: TextDecoration.underline,
                       // fontWeight: FontWeight.bold,
                       color: Color(0xFF555555),
-                    ),),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -284,7 +286,7 @@ class _AcademyPageState extends State<AcademyPage> {
   }
 
   int _selectedIndex = 0;
-  int _testNum = 0;
+
   String page = "course";
   void _onItemTapped(int index) {
     setState(() {
@@ -330,9 +332,21 @@ class _AcademyPageState extends State<AcademyPage> {
             ],
           ));
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Center(
+              child: Text(
+            'Error: ${snapshot.error}',
+            style: GoogleFonts.openSans(
+              color: const Color(0xFF555555),
+            ),
+          ));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No academies found'));
+          return Center(
+              child: Text(
+            'No academies found',
+            style: GoogleFonts.openSans(
+              color: const Color(0xFF555555),
+            ),
+          ));
         } else {
           return condition(snapshot.data!);
         }
@@ -368,6 +382,7 @@ class _AcademyPageState extends State<AcademyPage> {
             title: 'Coach Course',
           ),
         ],
+        titleStyle: GoogleFonts.openSans(),
         elevation: 10,
         colorSelected: Colors.white,
         backgroundColor: Colors.white,
@@ -382,7 +397,6 @@ class _AcademyPageState extends State<AcademyPage> {
   }
 
   Widget condition(List<AcademyRespond> _academy) {
-
     // แนวตั้ง
     // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return SafeArea(child: _Learning(_academy));
@@ -394,14 +408,16 @@ class _AcademyPageState extends State<AcademyPage> {
   Widget _Learning(List<AcademyRespond> _academy) {
     // ใช้ MediaQuery เพื่อตรวจสอบขนาดของหน้าจอ
     final mediaQuery = MediaQuery.of(context); // ตรวจสอบการหมุนของหน้าจอ
-    final isPortrait = mediaQuery.orientation == Orientation.portrait; // หน้าจอเป็นแนวตั้ง
+    final isPortrait =
+        mediaQuery.orientation == Orientation.portrait; // หน้าจอเป็นแนวตั้ง
     final screenWidth = mediaQuery.size.width; // ความกว้าง
 
     // ตัวแปร A
     int A;
     if (isPortrait && screenWidth <= 640) {
       A = 2;
-    } else if (!isPortrait && screenWidth >= 640) {  // ! หน้าจอไม่ใช่แนวตั้ง
+    } else if (!isPortrait && screenWidth >= 640) {
+      // ! หน้าจอไม่ใช่แนวตั้ง
       A = 4;
     } else {
       A = 0; // ค่าปริยายในกรณีที่ไม่ตรงเงื่อนไข
@@ -497,17 +513,22 @@ class _AcademyPageState extends State<AcademyPage> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => EvaluateModule(
-                                              employee: widget.employee,
-                                              academy: _academy[indexI], callback: () {
-                                                setState(() {
-                                                  academyId = _academy[indexI].academy_id;
-                                                  academyType = _academy[indexI].academy_type;
-                                                  favorite();
-                                                });
-                                            },
-
-                                            )),
+                                            builder: (context) =>
+                                                EvaluateModule(
+                                                  employee: widget.employee,
+                                                  academy: _academy[indexI],
+                                                  callback: () {
+                                                    setState(() {
+                                                      academyId =
+                                                          _academy[indexI]
+                                                              .academy_id;
+                                                      academyType =
+                                                          _academy[indexI]
+                                                              .academy_type;
+                                                      favorite();
+                                                    });
+                                                  },
+                                                )),
                                       );
                                     });
                                   },
@@ -596,9 +617,8 @@ class _AcademyPageState extends State<AcademyPage> {
                     : GridView.builder(
                         padding: const EdgeInsets.all(10),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: (isPortrait || screenWidth <= 640)
-                              ? 2
-                              : 4,
+                          crossAxisCount:
+                              (isPortrait || screenWidth <= 640) ? 2 : 4,
                           childAspectRatio: (!isPortrait && screenWidth > 640)
                               ? 0.7
                               : 1.5 / 2,
@@ -615,320 +635,363 @@ class _AcademyPageState extends State<AcademyPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => EvaluateModule(
-                                        employee: widget.employee,
-                                        academy: _academy[index],
-                                        callback: () {
-                                          academyId = _academy[index].academy_id;
-                                          academyType = _academy[index].academy_type;
-                                          setState(() {
-                                            favorite();
-                                          });
-                                        },
-                                      )),
+                                            employee: widget.employee,
+                                            academy: _academy[index],
+                                            callback: () {
+                                              academyId =
+                                                  _academy[index].academy_id;
+                                              academyType =
+                                                  _academy[index].academy_type;
+                                              setState(() {
+                                                favorite();
+                                              });
+                                            },
+                                          )),
                                 );
                               });
                             },
-                            child: Card(
-                              // elevation: 0,
-                              color: Color(0xFFF5F5F5),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 0,
-                                      blurRadius: 2,
-                                      offset: Offset(0, 3), // x, y
-                                    ),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Stack(
-                                        children: [
-                                          Card(
-                                            elevation: 0,
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              child: Image.network(
-                                                '${_academy[index].academy_image}',
-                                                width: double.infinity,
-                                                height: 120,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(4),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.black26,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              4),
-                                                      child: Text(
-                                                        _academy[index]
-                                                            .academy_category,
-                                                        style: GoogleFonts
-                                                            .openSans(
-                                                          fontSize: 12.0,
-                                                          color: Colors.white,
-                                                        ),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        maxLines: 1,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: SizedBox(),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Positioned(
-                                            bottom: 4,
-                                            left: 4,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.black26,
+                            child: IntrinsicHeight(
+                              child: Card(
+                                // elevation: 0,
+                                color: Color(0xFFF5F5F5),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 0,
+                                        blurRadius: 2,
+                                        offset: Offset(0, 3), // x, y
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Stack(
+                                          children: [
+                                            Card(
+                                              elevation: 0,
+                                              child: ClipRRect(
                                                 borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4),
-                                                child: Text(
-                                                  _academy[index].academy_type,
-                                                  style: GoogleFonts.openSans(
-                                                    fontSize: 12.0,
-                                                    color: Colors.white,
-                                                  ),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 1,
+                                                    BorderRadius.circular(8.0),
+                                                child: Image.network(
+                                                  '${_academy[index].academy_image}',
+                                                  width: double.infinity,
+                                                  height: 120,
+                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 4, right: 4),
-                                        child: Container(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            _academy[index].academy_subject,
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 16.0,
-                                              color: const Color(0xFF555555),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: SingleChildScrollView(
-                                          child: Column(
-                                            children: List.generate(
-                                                _academy[index]
-                                                    .academy_coach_data
-                                                    .length, (indexII) {
-                                              final coachData = _academy[index]
-                                                  .academy_coach_data;
-                                              return Column(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(4),
-                                                    child: Row(
-                                                      children: [
-                                                        ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(50),
-                                                          child: Image.network(
-                                                            coachData[indexII].avatar,
-                                                            height: 40,
-                                                            width: 40,
-                                                            fit: BoxFit
-                                                                .fitHeight,
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 8,
-                                                        ),
-                                                        Expanded(
-                                                          child: Text(
-                                                            (coachData[indexII]
-                                                                        .name ==
-                                                                    '')
-                                                                ? ""
-                                                                : coachData[
-                                                                        indexII]
-                                                                    .name,
-                                                            style: GoogleFonts
-                                                                .openSans(
-                                                              color: const Color(
-                                                                  0xFF555555),
-                                                            ),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            maxLines: 1,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            }),
-                                          ),
-                                        ),
-                                      ),
-                                      (_selectedIndex == 0)
-                                          ? Expanded(
-                                              flex: 1,
+                                            Padding(
+                                              padding: const EdgeInsets.all(4),
                                               child: Row(
                                                 children: [
                                                   Expanded(
-                                                    flex:3,
                                                     child: Container(
-                                                      alignment:
-                                                          Alignment.bottomLeft,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.black26,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                                4),
+                                                        child: Text(
+                                                          _academy[index]
+                                                              .academy_category,
+                                                          style: GoogleFonts
+                                                              .openSans(
+                                                            fontSize: 12.0,
+                                                            color: Colors.white,
+                                                          ),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 1,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: SizedBox(),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Positioned(
+                                              bottom: 4,
+                                              left: 4,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black26,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4),
+                                                  child: Text(
+                                                    _academy[index].academy_type,
+                                                    style: GoogleFonts.openSans(
+                                                      fontSize: 12.0,
+                                                      color: Colors.white,
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 4, right: 4),
+                                          child: Container(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              _academy[index].academy_subject,
+                                              style: GoogleFonts.openSans(
+                                                fontSize: 16.0,
+                                                color: const Color(0xFF555555),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: List.generate(
+                                                  _academy[index]
+                                                      .academy_coach_data
+                                                      .length, (indexII) {
+                                                final coachData = _academy[index]
+                                                    .academy_coach_data;
+                                                return Column(
+                                                  children: [
+                                                    Padding(
                                                       padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: (_academy[index]
-                                                                  .academy_date ==
-                                                              "Time Out")
-                                                          ? Text(
-                                                              _academy[index].academy_date,
-                                                              style: GoogleFonts
-                                                                  .openSans(
-                                                                color: Colors.red,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                            )
-                                                          : Text(
-                                                              '$Start : ${_academy[index].academy_date}',
+                                                          const EdgeInsets.all(4),
+                                                      child: Row(
+                                                        children: [
+                                                          ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(50),
+                                                            child: Image.network(
+                                                              coachData[indexII]
+                                                                  .avatar,
+                                                              height: 40,
+                                                              width: 40,
+                                                              fit: BoxFit
+                                                                  .fitHeight,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            width: 8,
+                                                          ),
+                                                          Expanded(
+                                                            child: Text(
+                                                              (coachData[indexII]
+                                                                          .name ==
+                                                                      '')
+                                                                  ? ""
+                                                                  : coachData[
+                                                                          indexII]
+                                                                      .name,
                                                               style: GoogleFonts
                                                                   .openSans(
                                                                 color: const Color(
                                                                     0xFF555555),
                                                               ),
-                                                            overflow:
-                                                            TextOverflow.ellipsis,
-                                                            maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 1,
                                                             ),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Expanded(
-                                                    flex:2,
-                                                    child: Container(
-                                                      child: (_academy[index]
-                                                                  .academy_date ==
-                                                              "Time Out")
-                                                          ? Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      right: 8.0),
-                                                              child: InkWell(
-                                                                onTap: _showDialogA,
-                                                                child: Container(
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: Colors
-                                                                        .green,
-                                                                    // border: Border.all(color: Colors.grey),
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(
-                                                                                10),
-                                                                  ),
-                                                                  child: Padding(
+                                                  ],
+                                                );
+                                              }),
+                                            ),
+                                          ),
+                                        ),
+                                        (_selectedIndex == 0)
+                                            ? Expanded(
+                                                flex: 1,
+                                                child: Row(
+                                                  children: [
+                                                    (_academy[index]
+                                                                .academy_date ==
+                                                            "Time Out")
+                                                        ? Expanded(
+                                                            flex: 3,
+                                                            child:
+                                                                SingleChildScrollView(
+                                                              scrollDirection:
+                                                                  Axis.horizontal,
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .bottomLeft,
+                                                                      padding:
+                                                                          const EdgeInsets
+                                                                              .all(
+                                                                              8.0),
+                                                                      child: Text(
+                                                                        _academy[
+                                                                                index]
+                                                                            .academy_date,
+                                                                        style: GoogleFonts
+                                                                            .openSans(
+                                                                          color: Colors
+                                                                              .red,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Expanded(
+                                                            flex: 10,
+                                                            child:
+                                                                SingleChildScrollView(
+                                                              scrollDirection:
+                                                                  Axis.horizontal,
+                                                              child: Row(
+                                                                children: [
+                                                                  Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .bottomLeft,
                                                                     padding:
                                                                         const EdgeInsets
-                                                                            .all(6),
+                                                                            .all(
+                                                                            8.0),
                                                                     child: Text(
-                                                                      '$Enroll',
+                                                                      '$Start: ${_academy[index].academy_date}',
                                                                       style: GoogleFonts
                                                                           .openSans(
-                                                                        fontSize:
-                                                                            12,
+                                                                        color: const Color(
+                                                                            0xFF555555),
+                                                                      ),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      maxLines: 1,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: (_academy[index]
+                                                                      .academy_date ==
+                                                                  "Time Out")
+                                                              ? Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          right:
+                                                                              8.0),
+                                                                  child: InkWell(
+                                                                    onTap:
+                                                                        _showDialogA,
+                                                                    child:
+                                                                        Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
                                                                         color: Colors
-                                                                            .white,
+                                                                            .green,
+                                                                        // border: Border.all(color: Colors.grey),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                10),
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            EdgeInsets.all(
+                                                                                6),
+                                                                        child:
+                                                                            Text(
+                                                                          '$Enroll',
+                                                                          style: GoogleFonts
+                                                                              .openSans(
+                                                                            fontSize:
+                                                                                12,
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              ),
-                                                            )
-                                                          : Expanded(
-                                                            child: IconButton(
-                                                                onPressed: () {},
-                                                                icon: Icon(
-                                                                    null,
-                                                              ),
-                                                          ),
-                                                    )
+                                                                )
+                                                              : Expanded(
+                                                                  child:
+                                                                      IconButton(
+                                                                    onPressed:
+                                                                        () {},
+                                                                    icon: Icon(
+                                                                      null,
+                                                                    ),
+                                                                  ),
+                                                                )),
                                                     ),
-                                                  ),],
-                                              ),
-                                            )
-                                          : Expanded(
-                                              flex: 1,
-                                              child: Container(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(4),
-                                                  child: InkWell(
-                                                    onTap: _showDialogA,
-                                                    child: Container(
-                                                      decoration:
-                                                      BoxDecoration(
-                                                        color: Colors.green,
-                                                        // border: Border.all(color: Colors.grey),
-                                                        borderRadius:
-                                                        BorderRadius
-                                                            .circular(
-                                                            10),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                        const EdgeInsets
-                                                            .all(6),
-                                                        child: Text(
-                                                          '$Enroll',
-                                                          style: GoogleFonts
-                                                              .openSans(
-                                                            fontSize: 12,
-                                                            color: Colors
-                                                                .white,
+                                                  ],
+                                                ),
+                                              )
+                                            : Expanded(
+                                                flex: 1,
+                                                child: Container(
+                                                  alignment: Alignment.bottomLeft,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(4),
+                                                    child: InkWell(
+                                                      onTap: _showDialogA,
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.green,
+                                                          // border: Border.all(color: Colors.grey),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(6),
+                                                          child: Text(
+                                                            '$Enroll',
+                                                            style: GoogleFonts
+                                                                .openSans(
+                                                              fontSize: 12,
+                                                              color: Colors.white,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
@@ -936,8 +999,8 @@ class _AcademyPageState extends State<AcademyPage> {
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -953,7 +1016,7 @@ class _AcademyPageState extends State<AcademyPage> {
         : Container(
             alignment: Alignment.center,
             child: Text(
-              'NOT FOUND COURSE',
+              'NOT FOUND DATA',
               style: GoogleFonts.openSans(
                 fontSize: 16.0,
                 color: const Color(0xFF555555),
@@ -996,10 +1059,7 @@ class _AcademyPageState extends State<AcademyPage> {
       throw Exception('Failed to load personal data: $e');
     }
   }
-
 }
-
-
 
 class AcademyRespond {
   final String academy_id;

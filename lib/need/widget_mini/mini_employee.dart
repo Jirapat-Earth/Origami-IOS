@@ -47,7 +47,7 @@ class _MiniEmployeeState extends State<MiniEmployee> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Card(color: Colors.orange.shade500,child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8)),),
+                Card(color: Colors.orange,child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8)),),
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: Container(
@@ -55,7 +55,7 @@ class _MiniEmployeeState extends State<MiniEmployee> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       border: Border.all(
-                        color: Colors.orange.shade500,
+                        color: Colors.orange,
                         width: 1.0,
                       ),
                     ),
@@ -68,7 +68,7 @@ class _MiniEmployeeState extends State<MiniEmployee> {
                           hintStyle: GoogleFonts.openSans(color: Color(0xFF555555),),
                           labelStyle: GoogleFonts.openSans(color: Color(0xFF555555),),
                           border: InputBorder.none,
-                          icon: Icon(Icons.search,color: Colors.orange.shade500,),
+                          icon: Icon(Icons.search,color: Colors.orange,),
                           suffixIcon: Card(
                             elevation: 0,
                             color: Colors.orange,

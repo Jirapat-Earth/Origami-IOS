@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,16 +39,16 @@ class _LoginPageState extends State<LoginPage> {
     _saveCredentials(username, password);
     if (username.isEmpty && password.isEmpty) {
       // Show error message if username or password is empty
-      if (_formKey.currentState!.validate()) {
-        String email = _usernameController.text;
-        String password = _passwordController.text;
-        Fluttertoast.showToast(msg: 'Logged in as $email');
-      }
+      // if (_formKey.currentState!.validate()) {
+      //   String email = _usernameController.text;
+      //   String password = _passwordController.text;
+      //   Fluttertoast.showToast(msg: 'Logged in as $email');
+      // }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please enter both email and password.',
               style: GoogleFonts.openSans(
-                color: Color(0xFF555555),
+                color: Colors.white,
               )),
         ),
       );
@@ -99,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                 content: Text(
               'Username not found!',
               style: GoogleFonts.openSans(
-                color: Color(0xFF555555),
+                color: Colors.white,
               ),
             )
                 // 'Email or Password is incorrect, please try again',),
@@ -111,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
           SnackBar(
             content: Text('Login failed. Please try again.',
                 style: GoogleFonts.openSans(
-                  color: Color(0xFF555555),
+                  color: Colors.white,
                 )),
           ),
         );
@@ -127,30 +128,150 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _loadCredentials() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    // if(widget.num != 0){
+    //   showModalBottomSheet<void>(
+    //     barrierColor: Colors.black87,
+    //     backgroundColor: Colors.transparent,
+    //     context: context,
+    //     isScrollControlled: true,
+    //     isDismissible: false,
+    //     enableDrag: false,
+    //     builder: (BuildContext context) {
+    //       return _listItem();
+    //     },
+    //   );
+    // }
+
     if (widget.num == 1) {
       prefs.clear();
     }
     String username = prefs.getString('username') ?? '';
     String password = prefs.getString('password') ?? '';
-
     setState(() {
       _usernameController.text = username;
       _passwordController.text = password;
     });
-
     if (username.isNotEmpty && password.isNotEmpty) {
-      if (widget.num == 1) {
-        prefs.clear();
-      } else if (widget.num == 0) {
+      if (widget.num == 0) {
         _login();
+      }else{
+        prefs.clear();
       }
+
     }
+
   }
+
+  Widget _listItem() {
+    return FractionallySizedBox(
+      heightFactor: 1,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: Colors.black12,
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(child: SizedBox()),
+                      Container(
+                        width: 150,
+                        height: 150,
+                        child: Image.asset(
+                          'assets/images/logoOrigami/ogm_logo.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Text(
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                        style: GoogleFonts.openSans(color: Color(0xFF555555),),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Center(
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orange,
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 60,
+                                right: 60,
+                                bottom: 16,
+                                top: 16),
+                            child: Text(
+                              'Log in',
+                              style: GoogleFonts.openSans(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16,),
+                        ElevatedButton(
+                          onPressed: _login,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 60,
+                                right: 60,
+                                bottom: 16,
+                                top: 16),
+                            child: Text(
+                              'Contact',
+                              style: GoogleFonts.openSans(
+                                color: Color(0xFF555555),
+                                fontSize:18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16,bottom: 16,left: 30,right: 30),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                            "https://t3.ftcdn.net/jpg/02/92/36/80/360_F_292368014_9EgJRdKkquD0THERDS3ZqEj94WsSoHAo.jpg",height: 160,width: double.infinity,fit: BoxFit.fill,),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
 
   _loadSelectedRadio() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      selectedRadio = prefs.getInt('selectedRadio') ?? 1;
+      selectedRadio = prefs.getInt('selectedRadio') ?? 2;
       Translate();
     });
   }
@@ -164,7 +285,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   DateTime? lastPressed;
-  
+  bool isPass = true;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -179,7 +300,9 @@ class _LoginPageState extends State<LoginPage> {
           lastPressed = DateTime.now();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Press back again to exit'),
+              content: Text('Press back again to exit',style: GoogleFonts.openSans(
+                color: Colors.white,
+              ),),
               duration: maxDuration,
             ),
           );
@@ -190,7 +313,7 @@ class _LoginPageState extends State<LoginPage> {
         return true;
       },
       child: Scaffold(
-          backgroundColor: Colors.orange.shade500,
+          backgroundColor: Colors.transparent,
           body: Stack(
             alignment: Alignment.bottomRight,
             children: [
@@ -251,17 +374,11 @@ class _LoginPageState extends State<LoginPage> {
                                               color: Color(0xFF555555),
                                             ),
                                           ),
-                                          validator: (value) {
-                                            // if (value == null || value.isEmpty) {
-                                            //   return 'Please enter your email';
-                                            // }
-                                            return null;
-                                          },
                                         ),
                                         SizedBox(height: 16.0),
                                         TextFormField(
                                           controller: _passwordController,
-                                          obscureText: true,
+                                          obscureText: isPass,
                                           decoration: InputDecoration(
                                             labelText: 'Password',
                                             labelStyle: GoogleFonts.openSans(
@@ -274,13 +391,22 @@ class _LoginPageState extends State<LoginPage> {
                                               Icons.lock,
                                               color: Color(0xFF555555),
                                             ),
+                                            suffixIcon: Container(
+                                              alignment: Alignment.centerRight,
+                                              width: 80,
+                                              child: Center(
+                                                child: IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        (isPass == true)?isPass = false:isPass = true;
+                                                      });
+                                                    },
+                                                    icon: Icon(isPass?Icons.remove_red_eye:Icons.remove_red_eye_outlined),
+                                                    color: Color(0xFF555555),
+                                                    iconSize: 18),
+                                              ),
+                                            ),
                                           ),
-                                          validator: (value) {
-                                            // if (value == null || value.isEmpty) {
-                                            //   return 'Please enter your password';
-                                            // }
-                                            return null;
-                                          },
                                         ),
                                         SizedBox(height: 16.0),
                                         ElevatedButton(

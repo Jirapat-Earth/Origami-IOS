@@ -21,7 +21,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-
+import 'package:flutter_html/flutter_html.dart';
+import 'package:html/parser.dart' show parse;
 
 class NeedsView extends StatefulWidget {
   const NeedsView({
@@ -55,6 +56,9 @@ class _NeedsViewState extends State<NeedsView> {
   @override
   void initState() {
     super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _showMyDialog();
+    // });
     Day();
     futureLoadData = loadData();
     fetchProject(project_number, project_name);
@@ -65,18 +69,106 @@ class _NeedsViewState extends State<NeedsView> {
     fetchTypeItemRespond();
     _searchController.addListener(() {
       // ฟังก์ชันนี้จะถูกเรียกทุกครั้งเมื่อข้อความใน _searchController เปลี่ยนแปลง
+      searchText = _searchController.text;
+      fetchNeedResponse();
       print("Current text: ${_searchController.text}");
     });
-    fetchNeedRespond(
-      typeName,
-      status_id,
-      searchText,
-      firstDay,
-      lastDay,
-      priorityId,
-      departmentId,
-      projectId,
-      ownerId,
+    // fetchNeedRespond(
+    //   typeName,
+    //   status_id,
+    //   searchText,
+    //   firstDay,
+    //   lastDay,
+    //   priorityId,
+    //   departmentId,
+    //   projectId,
+    //   ownerId,
+    // );
+  }
+
+  Future<List<AnnounceData>> fetchAnnounce() async {
+    final uri = Uri.parse("https://www.origami.life/api/origami/announce/announce.php");
+    final response = await http.post(
+      uri,
+      body: {
+        'comp_id': widget.employee.comp_id,
+        'emp_id': widget.employee.emp_id,
+        'auth_password': widget.employee.auth_password,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      // เข้าถึงข้อมูลในคีย์ 'instructors'
+      final List<dynamic> instructorsJson = jsonResponse['announce_data'];
+      // แปลงข้อมูลจาก JSON เป็น List<Instructor>
+      return instructorsJson
+          .map((json) => AnnounceData.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load instructors');
+    }
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // User must tap a button to close the dialog
+      builder: (BuildContext context) {
+        return FutureBuilder<List<AnnounceData>>(
+          future: fetchAnnounce(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else {
+              final _Announce = snapshot.data![0];
+              return AlertDialog(
+                title: Text(_Announce.announce_subject),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Html(
+                        data: "${_Announce.announce_description}",
+                        style: {
+                          'p': Style(
+                            fontFamily: GoogleFonts.openSans().fontFamily,
+                            fontSize: FontSize(16),
+                            color: Color(0xFF555555),
+                          ),
+                          'h1': Style(
+                            fontFamily: GoogleFonts.openSans().fontFamily,
+                            fontSize: FontSize(24),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                          'b': Style(
+                            fontFamily: GoogleFonts.openSans().fontFamily,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                          'i': Style(
+                            fontFamily: GoogleFonts.openSans().fontFamily,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.green,
+                          ),
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text(_Announce.announce_button),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                  ),
+                ],
+              );
+            }
+          },
+        );
+      },
     );
   }
 
@@ -98,33 +190,68 @@ class _NeedsViewState extends State<NeedsView> {
 
   int indexI = 0;
 
-  Widget loading() {
-    return FutureBuilder<String>(
-      future: futureLoadData,
+  // Widget loading() {
+  //   return FutureBuilder<String>(
+  //     future: futureLoadData,
+  //     builder: (context, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.waiting) {
+  //         return Center(
+  //             child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: [
+  //             CircularProgressIndicator(
+  //               color: Colors.orange,
+  //             ),
+  //             SizedBox(
+  //               width: 12,
+  //             ),
+  //             Text(
+  //               '$Loading...',
+  //               style: GoogleFonts.openSans(
+  //                 fontSize: 16,
+  //                 fontWeight: FontWeight.bold,
+  //                 color: Color(0xFF555555),
+  //               ),
+  //             ),
+  //           ],
+  //         ));
+  //       } else {
+  //         return _getContentWidget();
+  //       }
+  //     },
+  //   );
+  // }
+
+  Widget _loading(){
+    return FutureBuilder<List<NeedRespond>>(
+      future: fetchNeedResponse(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
               child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(
-                color: Colors.orange,
-              ),
-              SizedBox(
-                width: 12,
-              ),
-              Text(
-                '$Loading...',
-                style: GoogleFonts.openSans(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF555555),
-                ),
-              ),
-            ],
-          ));
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    color: Colors.orange,
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    '$Loading...',
+                    style: GoogleFonts.openSans(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF555555),
+                    ),
+                  ),
+                ],
+              ));
+        }
+        else if(snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
         } else {
-          return _getContentWidget();
+          return _getContentWidget(snapshot.data!);
         }
       },
     );
@@ -205,7 +332,7 @@ class _NeedsViewState extends State<NeedsView> {
           );
         }),
       ),
-      body: loading(),
+      body: _loading(),
     );
   }
 
@@ -217,7 +344,7 @@ class _NeedsViewState extends State<NeedsView> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Card(color: Colors.orange.shade500,child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8,)),),
+              // Card(color: Colors.orange,child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8,)),),
               SizedBox(
                 height: 8,
               ),
@@ -337,23 +464,24 @@ class _NeedsViewState extends State<NeedsView> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Colors.orange.shade500,
+                  backgroundColor: Colors.orange,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                 ),
                 onPressed: () {
-                  fetchNeedRespond(
-                    typeName,
-                    status_id,
-                    searchText,
-                    firstDay,
-                    lastDay,
-                    priorityId,
-                    departmentId,
-                    projectId,
-                    ownerId,
-                  );
+                  fetchNeedResponse();
+                  // fetchNeedRespond(
+                  //   typeName,
+                  //   status_id,
+                  //   searchText,
+                  //   firstDay,
+                  //   lastDay,
+                  //   priorityId,
+                  //   departmentId,
+                  //   projectId,
+                  //   ownerId,
+                  // );
                   Navigator.pop(context);
                 },
                 child: Container(
@@ -375,22 +503,13 @@ class _NeedsViewState extends State<NeedsView> {
 
   int? _selectcolor = 0;
   int? _inde = 0;
-  Widget _getContentWidget() {
+  Widget _getContentWidget(List<NeedRespond> needList) {
     return Column(
       children: [
         Container(
           color: Colors.white,
           child: Column(
             children: [
-              // IconButton(onPressed: (){
-              //   Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => TrandarShop(
-              //
-              //         )),
-              //   );
-              // }, icon: Icon(Icons.telegram),),
               Container(
                 padding: EdgeInsets.all(8),
                 child: Row(
@@ -434,22 +553,7 @@ class _NeedsViewState extends State<NeedsView> {
                               ),
                             ),
                           ),
-                          onChanged: (value) {
-                            // setState(() {
-                            searchText = value;
-                            fetchNeedRespond(
-                              typeName,
-                              status_id,
-                              searchText,
-                              firstDay,
-                              lastDay,
-                              priorityId,
-                              departmentId,
-                              projectId,
-                              ownerId,
-                            );
-                            // });
-                          },
+                          onChanged: (value) {},
                         ),
                       ),
                     ),
@@ -497,22 +601,22 @@ class _NeedsViewState extends State<NeedsView> {
                     children: List.generate(NeedTypeOption.length, (index) {
                       return InkWell(
                         onTap: () {
-                          // setState(() {
                           _selectcolor = index;
                           typeName =
                               NeedTypeOption[_selectcolor ?? 0].typeId ?? '';
-                          fetchNeedRespond(
-                            typeName,
-                            status_id,
-                            searchText,
-                            firstDay,
-                            lastDay,
-                            priorityId,
-                            departmentId,
-                            projectId,
-                            ownerId,
-                          );
-                          // });
+                          fetchNeedResponse();
+                          // fetchNeedRespond(
+                          //   typeName,
+                          //   status_id,
+                          //   searchText,
+                          //   firstDay,
+                          //   lastDay,
+                          //   priorityId,
+                          //   departmentId,
+                          //   projectId,
+                          //   ownerId,
+                          // );
+
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(1),
@@ -529,14 +633,10 @@ class _NeedsViewState extends State<NeedsView> {
                             child: Container(
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(25),
                                 color: (index == _selectcolor)
-                                    ? Colors.orange[500]
-                                    : Colors.grey.shade200,
-                                // border: Border.all(
-                                //   color: Colors.orange,
-                                //   width: 0.5,
-                                // ),
+                                    ? Colors.orange
+                                    : Colors.grey.shade100,
                               ),
                               child: Padding(
                                 padding: EdgeInsets.only(
@@ -573,17 +673,18 @@ class _NeedsViewState extends State<NeedsView> {
                                     .typeStatus?[index]
                                     .statusId ??
                                 '';
-                            fetchNeedRespond(
-                              typeName,
-                              status_id,
-                              searchText,
-                              firstDay,
-                              lastDay,
-                              priorityId,
-                              departmentId,
-                              projectId,
-                              ownerId,
-                            );
+                            fetchNeedResponse();
+                            // fetchNeedRespond(
+                            //   typeName,
+                            //   status_id,
+                            //   searchText,
+                            //   firstDay,
+                            //   lastDay,
+                            //   priorityId,
+                            //   departmentId,
+                            //   projectId,
+                            //   ownerId,
+                            // );
                             // });
                           },
                           child: Padding(
@@ -596,8 +697,8 @@ class _NeedsViewState extends State<NeedsView> {
                                 height: 34,
                                 // width: 150,
                                 color: (index == _inde)
-                                    ? Colors.orange[500]
-                                    : Colors.grey.shade200,
+                                    ? Colors.orange
+                                    : Colors.grey.shade100,
                                 child: Center(
                                     child: Padding(
                                   padding: EdgeInsets.only(left: 8, right: 16),
@@ -859,7 +960,7 @@ class _NeedsViewState extends State<NeedsView> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          color: Colors.orange.shade500,
+          color: Colors.orange,
           width: 1.0,
         ),
       ),
@@ -917,7 +1018,7 @@ class _NeedsViewState extends State<NeedsView> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          color: Colors.orange.shade500,
+          color: Colors.orange,
           width: 1.0,
         ),
       ),
@@ -975,7 +1076,7 @@ class _NeedsViewState extends State<NeedsView> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          color: Colors.orange.shade500,
+          color: Colors.orange,
           width: 1.0,
         ),
       ),
@@ -1097,62 +1198,98 @@ class _NeedsViewState extends State<NeedsView> {
     }
   }
 
-  List<NeedRespond> needList = [];
+  // List<NeedRespond> needList = [];
   var departm;
-  Future<void> fetchNeedRespond(
-      need_type,
-      need_status,
-      search,
-      firstDay,
-      lastDay,
-      filter_Priority,
-      filter_Department,
-      filter_Project,
-      filter_Owner) async {
-    final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/need.php?need_type=$need_type&need_status=$need_status&search=$search');
-    try {
-      final response = await http.post(
-        uri,
-        body: {
-          'comp_id': widget.employee.comp_id,
-          'emp_id': widget.employee.emp_id,
-          'start_date': "$firstDay",
-          'end_date': "$lastDay",
-          'filter_priority': "$filter_Priority",
-          'filter_department': "$filter_Department",
-          'filter_project': "$filter_Project",
-          'filter_owner': "$filter_Owner",
-          'need_type': "$need_type",
-          'need_status': "$need_status",
-        },
-      );
+  String need_type = "";
+  String need_status = "";
+  String search = "";
+  Future<List<NeedRespond>> fetchNeedResponse() async {
+    final uri = Uri.parse("https://www.origami.life/api/origami/need/need.php?need_type=$need_type&need_status=$need_status&search=$search");
+    final response = await http.post(
+      uri,
+      body: {
+        'comp_id': widget.employee.comp_id,
+        'emp_id': widget.employee.emp_id,
+        'start_date': firstDay,
+        'end_date': lastDay,
+        'filter_priority': filter_Priority,
+        'filter_department': filter_Department,
+        'filter_project': filter_Project,
+        'filter_owner': filter_Owner,
+        'need_type': need_type,
+        'need_status': need_status,
+      },
+    );
 
-      if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        if (jsonResponse['status'] == true) {
-          // _loadMoreNews();
-          // setState(() {
-          departm = jsonResponse['need_data'];
-          // });
-          final List<dynamic> NeedRespondDataJson = jsonResponse['need_data'];
-          setState(() {
-            needList =
-                NeedRespondDataJson.map((json) => NeedRespond.fromJson(json))
-                    .toList();
-          });
-        } else {
-          throw Exception(
-              'Failed to load personal data: ${jsonResponse['message']}');
-        }
-      } else {
-        throw Exception(
-            'Failed to load personal data: ${response.reasonPhrase}');
-      }
-    } catch (e) {
-      throw Exception('Failed to load personal data: $e');
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      // เข้าถึงข้อมูลในคีย์ 'instructors'
+      final List<dynamic> needJson = jsonResponse['need_data'];
+      departm = jsonResponse['need_data'];
+      // แปลงข้อมูลจาก JSON เป็น List<Instructor>
+      return needJson
+          .map((json) => NeedRespond.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load instructors');
     }
   }
+
+  // Future<void> fetchNeedRespond(
+  //     need_type,
+  //     need_status,
+  //     search,
+  //     firstDay,
+  //     lastDay,
+  //     filter_Priority,
+  //     filter_Department,
+  //     filter_Project,
+  //     filter_Owner,
+  //     ) async {
+  //   final uri = Uri.parse(
+  //       'https://www.origami.life/api/origami/need/need.php?need_type=$need_type&need_status=$need_status&search=$search');
+  //   try {
+  //     final response = await http.post(
+  //       uri,
+  //       body: {
+  //         'comp_id': widget.employee.comp_id,
+  //         'emp_id': widget.employee.emp_id,
+  //         'start_date': "$firstDay",
+  //         'end_date': "$lastDay",
+  //         'filter_priority': "$filter_Priority",
+  //         'filter_department': "$filter_Department",
+  //         'filter_project': "$filter_Project",
+  //         'filter_owner': "$filter_Owner",
+  //         'need_type': "$need_type",
+  //         'need_status': "$need_status",
+  //       },
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       final jsonResponse = jsonDecode(response.body);
+  //       if (jsonResponse['status'] == true) {
+  //         // _loadMoreNews();
+  //         // setState(() {
+  //         departm = jsonResponse['need_data'];
+  //         // });
+  //         final List<dynamic> NeedRespondDataJson = jsonResponse['need_data'];
+  //         setState(() {
+  //           needList =
+  //               NeedRespondDataJson.map((json) => NeedRespond.fromJson(json))
+  //                   .toList();
+  //         });
+  //       } else {
+  //         throw Exception(
+  //             'Failed to load personal data: ${jsonResponse['message']}');
+  //       }
+  //     } else {
+  //       throw Exception(
+  //           'Failed to load personal data: ${response.reasonPhrase}');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Failed to load personal data: $e');
+  //   }
+  // }
 
   // PriorityRespond
   List<PriorityData> priorityOption = [];
@@ -1761,6 +1898,35 @@ class NeedTypeItemRespond {
       type_name: json['type_name'],
       type_color: json['type_color'],
       type_image: json['type_image'],
+    );
+  }
+}
+
+class AnnounceData {
+  final String announce_id;
+  final String announce_subject;
+  final String announce_description;
+  final String announce_date;
+  final String announce_accept;
+  final String announce_button;
+
+  AnnounceData({
+    required this.announce_id,
+    required this.announce_subject,
+    required this.announce_description,
+    required this.announce_date,
+    required this.announce_accept,
+    required this.announce_button,
+  });
+
+  factory AnnounceData.fromJson(Map<String, dynamic> json) {
+    return AnnounceData(
+      announce_id: json['announce_id'],
+      announce_subject: json['announce_subject'],
+      announce_description: json['announce_description'],
+      announce_date: json['announce_date'],
+      announce_accept: json['announce_accept'],
+      announce_button: json['announce_button'],
     );
   }
 }
