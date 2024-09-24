@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:origami_ios/need/widget_other/dropdown_need.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../../language/translate.dart';
-import '../../login/login.dart';
-import 'need_detail.dart';
+import '../../../login/login.dart';
+import '../../../language/translate.dart';
 import 'need.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class NeedDetailApprove extends StatefulWidget {
-  const NeedDetailApprove({
+import 'need_detail.dart';
+
+class NeedDetailNoneEdit extends StatefulWidget {
+  const NeedDetailNoneEdit({
     super.key,
     required this.employee,
     required this.request_id,
@@ -23,10 +24,10 @@ class NeedDetailApprove extends StatefulWidget {
   // final ApprovelData approvelList;
 
   @override
-  _NeedDetailApproveState createState() => _NeedDetailApproveState();
+  _NeedDetailNoneEditState createState() => _NeedDetailNoneEditState();
 }
 
-class _NeedDetailApproveState extends State<NeedDetailApprove> {
+class _NeedDetailNoneEditState extends State<NeedDetailNoneEdit> {
 
   static var optionStyle = GoogleFonts.openSans(
       fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF555555));
@@ -137,7 +138,7 @@ class _NeedDetailApproveState extends State<NeedDetailApprove> {
                 Text(
                   '$Loading...',
                   style: GoogleFonts.openSans(
-                      fontSize: 16, fontWeight: FontWeight.bold,color: Color(0xFF555555),),
+                    fontSize: 16, fontWeight: FontWeight.bold,color: Color(0xFF555555),),
                 ),
               ],
             ));
@@ -664,267 +665,267 @@ class _NeedDetailApproveState extends State<NeedDetailApprove> {
             ),
             body: (saveItemList.length == 0)
                 ? Center(
-                    child: Container(
-                      child: Text(
-                        '$Empty',
-                        style: GoogleFonts.openSans(
-                          fontSize: 24,
-                          color: Colors.orange,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                      ),
-                    ),
-                  )
+              child: Container(
+                child: Text(
+                  '$Empty',
+                  style: GoogleFonts.openSans(
+                    fontSize: 24,
+                    color: Colors.orange,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                ),
+              ),
+            )
                 : SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        children: List.generate(
-                          saveItemList.length,
-                          (index) {
-                            return Column(
-                              children: [
-                                Card(
-                                  elevation: 0,
-                                  color: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: ListTile(
-                                    // title: Text(
-                                    //   saveItem[index].itemItem ?? '',
-                                    //   style: GoogleFonts.openSans(
-                                    //     fontSize: 18.0,
-                                    //     color: Colors.orange,
-                                    //     fontWeight: FontWeight.bold,
-                                    //   ),
-                                    //   overflow: TextOverflow.ellipsis,
-                                    //   maxLines: 1,
-                                    // ),
-                                    subtitle: Row(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  children: List.generate(
+                    saveItemList.length,
+                        (index) {
+                      return Column(
+                        children: [
+                          Card(
+                            elevation: 0,
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: ListTile(
+                              // title: Text(
+                              //   saveItem[index].itemItem ?? '',
+                              //   style: GoogleFonts.openSans(
+                              //     fontSize: 18.0,
+                              //     color: Colors.orange,
+                              //     fontWeight: FontWeight.bold,
+                              //   ),
+                              //   overflow: TextOverflow.ellipsis,
+                              //   maxLines: 1,
+                              // ),
+                              subtitle: Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                       children: [
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              (saveItemList[index].itemName ==
-                                                      '')
-                                                  ? Container()
-                                                  : Column(
-                                                      children: [
-                                                        SizedBox(height: 8),
-                                                        Text(
-                                                          saveItemList[index]
-                                                                  .itemName ??
-                                                              '',
-                                                          style: GoogleFonts
-                                                              .openSans(
-                                                            fontSize: 18.0,
-                                                            color:
-                                                                Colors.orange,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          maxLines: 1,
-                                                        ),
-                                                      ],
-                                                    ),
-                                              SizedBox(height: 8),
-                                              (saveItemList[index].itemDate ==
-                                                      '')
-                                                  ? Container()
-                                                  : Column(
-                                                      children: [
-                                                        Text(
-                                                          '$Date : ${saveItemList[index].itemDate ?? ''}',
-                                                          style: GoogleFonts
-                                                              .openSans(
-                                                            fontSize: 14.0,
-                                                            color: Color(
-                                                                0xFF555555),
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        SizedBox(height: 8),
-                                                      ],
-                                                    ),
-                                              Text(
-                                                "$Detail : ${(saveItemList[index].itemNote == '') ? '-' : saveItemList[index].itemNote ?? ''}",
-                                                style: GoogleFonts.openSans(
-                                                  fontSize: 14.0,
-                                                  color: Color(0xFF555555),
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 2,
-                                              ),
-                                              SizedBox(height: 8),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "$Quantity : ${(saveItemList[index].itemQuantity == '') ? '0' : saveItemList[index].itemQuantity} ",
-                                                    style: GoogleFonts.openSans(
-                                                      fontSize: 14.0,
-                                                      color: Color(0xFF555555),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 8,
-                                                  ),
-                                                  Text(
-                                                    "$Price : ${(saveItemList[index].itemPrice == '') ? '0' : saveItemList[index].itemPrice} $Baht",
-                                                    style: GoogleFonts.openSans(
-                                                      fontSize: 14.0,
-                                                      color: Color(0xFF555555),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 8),
-                                              Text(
-                                                "$Total_price : ${(saveItemList[index].itemPrice == '' || saveItemList[index].itemQuantity == '') ? '0' : "${double.parse(saveItemList[index].itemPrice ?? '') * double.parse(saveItemList[index].itemQuantity ?? '')}"} "
-                                                "${(saveItemList[index].unitCode == '') ? '$Baht/$Unit' : " $Baht/${saveItemList[index].unitDesc ?? ''}"}",
-                                                style: GoogleFonts.openSans(
-                                                  fontSize: 14.0,
-                                                  color: Color(0xFF555555),
-                                                ),
-                                              ),
-                                              SizedBox(height: 8),
-                                            ],
-                                          ),
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                        (saveItemList[index].itemName ==
+                                            '')
+                                            ? Container()
+                                            : Column(
                                           children: [
-                                            Container(
-                                                height: 25,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                                child: Icon(
-                                                  null,color: Color(0xFF555555),
-                                                  size: 30,
-                                                )),
-                                            SizedBox(
-                                              height: 8,
+                                            SizedBox(height: 8),
+                                            Text(
+                                              saveItemList[index]
+                                                  .itemName ??
+                                                  '',
+                                              style: GoogleFonts
+                                                  .openSans(
+                                                fontSize: 18.0,
+                                                color:
+                                                Colors.orange,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                              ),
+                                              overflow: TextOverflow
+                                                  .ellipsis,
+                                              maxLines: 1,
                                             ),
-                                            Container(
-                                                height: 25,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                                child: Icon(
-                                                  null,color: Color(0xFF555555),
-                                                  size: 30,
-                                                )),
-                                            SizedBox(
-                                              height: 8,
-                                            ),
-                                            // InkWell(
-                                            //     borderRadius:
-                                            //     BorderRadius.circular(20),
-                                            //     splashColor: Colors.black12,
-                                            //     onTap: () {
-                                            //       // setState(() {
-                                            //       //   saveItemList
-                                            //       //       .removeAt(index);
-                                            //       //   Navigator.pop(context);
-                                            //       // });
-                                            //     },
-                                            //     child: Container(
-                                            //         alignment:
-                                            //         Alignment.bottomRight,
-                                            //         height: 25,
-                                            //         decoration: BoxDecoration(
-                                            //           borderRadius:
-                                            //           BorderRadius.circular(
-                                            //               20),
-                                            //         ),
-                                            //         child: Icon(
-                                            //           Icons.delete_outline,
-                                            //           color: Colors.redAccent,
-                                            //           size: 32,
-                                            //         ))),
                                           ],
                                         ),
+                                        SizedBox(height: 8),
+                                        (saveItemList[index].itemDate ==
+                                            '')
+                                            ? Container()
+                                            : Column(
+                                          children: [
+                                            Text(
+                                              '$Date : ${saveItemList[index].itemDate ?? ''}',
+                                              style: GoogleFonts
+                                                  .openSans(
+                                                fontSize: 14.0,
+                                                color: Color(
+                                                    0xFF555555),
+                                                fontWeight:
+                                                FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8),
+                                          ],
+                                        ),
+                                        Text(
+                                          "$Detail : ${(saveItemList[index].itemNote == '') ? '-' : saveItemList[index].itemNote ?? ''}",
+                                          style: GoogleFonts.openSans(
+                                            fontSize: 14.0,
+                                            color: Color(0xFF555555),
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "$Quantity : ${(saveItemList[index].itemQuantity == '') ? '0' : saveItemList[index].itemQuantity} ",
+                                              style: GoogleFonts.openSans(
+                                                fontSize: 14.0,
+                                                color: Color(0xFF555555),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
+                                            Text(
+                                              "$Price : ${(saveItemList[index].itemPrice == '') ? '0' : saveItemList[index].itemPrice} $Baht",
+                                              style: GoogleFonts.openSans(
+                                                fontSize: 14.0,
+                                                color: Color(0xFF555555),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          "$Total_price : ${(saveItemList[index].itemPrice == '' || saveItemList[index].itemQuantity == '') ? '0' : "${double.parse(saveItemList[index].itemPrice ?? '') * double.parse(saveItemList[index].itemQuantity ?? '')}"} "
+                                              "${(saveItemList[index].unitCode == '') ? '$Baht/$Unit' : " $Baht/${saveItemList[index].unitDesc ?? ''}"}",
+                                          style: GoogleFonts.openSans(
+                                            fontSize: 14.0,
+                                            color: Color(0xFF555555),
+                                          ),
+                                        ),
+                                        SizedBox(height: 8),
                                       ],
                                     ),
-                                    // Add more details as needed
                                   ),
-                                ),
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: List.generate(
-                                      saveItemList[index].itemImage!.length,
-                                      (indexI) {
-                                        return Padding(
-                                          padding: EdgeInsets.only(right: 8),
-                                          child: InkWell(
-                                            onTap: () {
-                                              final Uri _url = Uri.parse(
-                                                  saveItemList[index]
-                                                      .itemImage![indexI]);
-                                              setState(() {
-                                                _launchUrl(_url);
-                                              });
-                                            },
-                                            child: (saveItemList[index]
-                                                    .itemImage![indexI]
-                                                    .contains('.pdf'))
-                                                ? ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child: Image.network(
-                                                      "https://techterms.com/img/lg/pdf_109.png",
-                                                      height: 120,
-                                                      width: 120,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  )
-                                                : ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    child: Image.network(
-                                                      saveItemList[index]
-                                                          .itemImage![indexI],
-                                                      height: 120,
-                                                      width: 120,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
+                                  Column(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                          height: 25,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                            BorderRadius.circular(20),
                                           ),
-                                        );
+                                          child: Icon(
+                                            null,color: Color(0xFF555555),
+                                            size: 30,
+                                          )),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      Container(
+                                          height: 25,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                            BorderRadius.circular(20),
+                                          ),
+                                          child: Icon(
+                                            null,color: Color(0xFF555555),
+                                            size: 30,
+                                          )),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      // InkWell(
+                                      //     borderRadius:
+                                      //     BorderRadius.circular(20),
+                                      //     splashColor: Colors.black12,
+                                      //     onTap: () {
+                                      //       // setState(() {
+                                      //       //   saveItemList
+                                      //       //       .removeAt(index);
+                                      //       //   Navigator.pop(context);
+                                      //       // });
+                                      //     },
+                                      //     child: Container(
+                                      //         alignment:
+                                      //         Alignment.bottomRight,
+                                      //         height: 25,
+                                      //         decoration: BoxDecoration(
+                                      //           borderRadius:
+                                      //           BorderRadius.circular(
+                                      //               20),
+                                      //         ),
+                                      //         child: Icon(
+                                      //           Icons.delete_outline,
+                                      //           color: Colors.redAccent,
+                                      //           size: 32,
+                                      //         ))),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              // Add more details as needed
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: List.generate(
+                                saveItemList[index].itemImage!.length,
+                                    (indexI) {
+                                  return Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: InkWell(
+                                      onTap: () {
+                                        final Uri _url = Uri.parse(
+                                            saveItemList[index]
+                                                .itemImage![indexI]);
+                                        setState(() {
+                                          _launchUrl(_url);
+                                        });
                                       },
+                                      child: (saveItemList[index]
+                                          .itemImage![indexI]
+                                          .contains('.pdf'))
+                                          ? ClipRRect(
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                            10),
+                                        child: Image.network(
+                                          "https://techterms.com/img/lg/pdf_109.png",
+                                          height: 120,
+                                          width: 120,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                          : ClipRRect(
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                            10),
+                                        child: Image.network(
+                                          saveItemList[index]
+                                              .itemImage![indexI],
+                                          height: 120,
+                                          width: 120,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, right: 16),
-                                  child: Divider(
-                                    color: Colors.amber,
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 16, right: 16),
+                            child: Divider(
+                              color: Colors.amber,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -940,19 +941,19 @@ class _NeedDetailApproveState extends State<NeedDetailApprove> {
 
 
 
-  List<NeedData>? NeedDetailApprove = [];
+  List<NeedData>? NeedDetailNoneEdit = [];
   NeedData? detailItem;
   int i = 0;
-
   Future<void> fetchDetail(action_type, need_id, type_id) async {
     final uri =
-        Uri.parse('https://www.origami.life/api/origami/need/detail.php');
+    Uri.parse('https://www.origami.life/api/origami/need/detail.php');
     try {
       final response = await http.post(
         uri,
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'auth_password': widget.employee.auth_password,
           'action_type': "$action_type",
           'need_id': "$need_id",
           'type_id': "$type_id",
@@ -963,12 +964,16 @@ class _NeedDetailApproveState extends State<NeedDetailApprove> {
         if (jsonResponse['status'] == true) {
           final List<dynamic> needItemJson = jsonResponse['need_detail'];
           setState(() {
-            NeedDetailApprove =
+            NeedDetailNoneEdit =
                 needItemJson.map((json) => NeedData.fromJson(json)).toList();
-            detailItem = NeedDetailApprove?[0];
-            print(NeedDetailApprove?[0]);
+            detailItem = NeedDetailNoneEdit?[0];
+            print(NeedDetailNoneEdit?[0]);
             needEdit();
           });
+
+          // setState(() {
+          //   _isLoading = true;
+          // });
         } else {
           throw Exception(
               'Failed to load personal data: ${jsonResponse['message']}');

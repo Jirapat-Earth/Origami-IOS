@@ -4,6 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../language/translate.dart';
+
 
 class Announcements extends StatefulWidget {
   Announcements({super.key,});
@@ -21,83 +23,86 @@ class _AnnouncementsState extends State<Announcements> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: SingleChildScrollView(
-        child: Column(
-          children: List.generate(1, (index) {
-            return Column(
-              children: [
-                Card(
-                  color: Colors.white,
-                  elevation: 0,
-                  child: InkWell(
-                    child: Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Image.network(
-                            'https://webcodeft.com/wp-content/uploads/2021/11/dummy-user.png',
-                            width: 90,
-                            height: 100,
-                            fit: BoxFit.fill,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.note_alt,color: Colors.amber,),
-                                      SizedBox(width: 4,),
-                                      Text(
-                                        'รบกวนแสดงความคิดเห็น',
-                                        style: GoogleFonts.openSans(
-                                          fontSize: 20.0,
-                                          color: Colors.amber,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 8,),
-                                Text(
-                                  'รบกวนแสดงความคิดเห็น ที่มีต่อคอร์สหลังเรียนจบ',
-                                  style: GoogleFonts.openSans(
-                                    color: Color(0xFF555555),
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-              ],
-            );
-          }),
-        ),
-      ),
-    );
+    return Center(child: Text('$Empty',style: GoogleFonts.openSans(
+      color: Color(0xFF555555),
+    ),));
+    //   Padding(
+    //   padding: const EdgeInsets.all(16),
+    //   child: SingleChildScrollView(
+    //     child: Column(
+    //       children: List.generate(1, (index) {
+    //         return Column(
+    //           children: [
+    //             Card(
+    //               color: Colors.white,
+    //               elevation: 0,
+    //               child: InkWell(
+    //                 child: Container(
+    //                   padding: EdgeInsets.all(20),
+    //                   decoration: BoxDecoration(
+    //                     color: Colors.white,
+    //                     borderRadius: BorderRadius.circular(20),
+    //                   ),
+    //                   child: Row(
+    //                     children: [
+    //                       Image.network(
+    //                         'https://webcodeft.com/wp-content/uploads/2021/11/dummy-user.png',
+    //                         width: 90,
+    //                         height: 100,
+    //                         fit: BoxFit.fill,
+    //                       ),
+    //                       SizedBox(
+    //                         width: 8,
+    //                       ),
+    //                       Expanded(
+    //                         child: Column(
+    //                           crossAxisAlignment: CrossAxisAlignment.start,
+    //                           children: [
+    //                             SingleChildScrollView(
+    //                               scrollDirection: Axis.horizontal,
+    //                               child: Row(
+    //                                 children: [
+    //                                   Icon(Icons.note_alt,color: Colors.amber,),
+    //                                   SizedBox(width: 4,),
+    //                                   Text(
+    //                                     'รบกวนแสดงความคิดเห็น',
+    //                                     style: GoogleFonts.openSans(
+    //                                       fontSize: 20.0,
+    //                                       color: Colors.amber,
+    //                                       fontWeight: FontWeight.bold,
+    //                                     ),
+    //                                     overflow: TextOverflow.ellipsis,
+    //                                     maxLines: 1,
+    //                                   ),
+    //                                 ],
+    //                               ),
+    //                             ),
+    //                             SizedBox(height: 8,),
+    //                             Text(
+    //                               'รบกวนแสดงความคิดเห็น ที่มีต่อคอร์สหลังเรียนจบ',
+    //                               style: GoogleFonts.openSans(
+    //                                 color: Color(0xFF555555),
+    //                               ),
+    //                               overflow: TextOverflow.ellipsis,
+    //                               maxLines: 3,
+    //                             ),
+    //                           ],
+    //                         ),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //             SizedBox(
+    //               height: 8,
+    //             ),
+    //           ],
+    //         );
+    //       }),
+    //     ),
+    //   ),
+    // );
   }
 
 }

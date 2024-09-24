@@ -11,6 +11,7 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -57,19 +58,42 @@ class _CameraScreenState extends State<CameraScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Delete User'),
-          content: Text('Are you sure you want to delete $name?'),
+          title: Text(
+            'Delete User',
+            style: GoogleFonts.openSans(
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF555555),
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to delete $name?',
+            style: GoogleFonts.openSans(
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF555555),
+            ),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(), // Cancel
-              child: Text('Cancel'),
+              child: Text(
+                'Cancel',
+                style: GoogleFonts.openSans(
+                  color: const Color(0xFF555555),
+                ),
+              ),
             ),
             TextButton(
               onPressed: () {
                 _deleteUser(id);
                 Navigator.of(context).pop(); // Close dialog
               },
-              child: Text('Delete'),
+              child: Text(
+                'Delete',
+                style: GoogleFonts.openSans(
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF555555),
+                ),
+              ),
             ),
           ],
         );
@@ -123,7 +147,9 @@ class _CameraScreenState extends State<CameraScreen> {
                             ],
                           ),
                           trailing: IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
+                            icon: FaIcon(FontAwesomeIcons.trashAlt,
+                              color: Colors.redAccent,
+                            ),
                             onPressed: () {
                               _confirmDelete(
                                   user['id'], user['name']); // Confirm deletion

@@ -91,7 +91,7 @@ class _TrandarShopState extends State<TrandarShop> {
                     border: InputBorder.none,
                     suffixIcon: Container(
                       alignment: Alignment.centerRight,
-                      width: 80,
+                      width: 10,
                       child: Center(
                         child: IconButton(
                             onPressed: () {

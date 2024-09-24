@@ -62,7 +62,6 @@ Future<void> ENG() async {
   Next = 'Next';
   Back = 'Back';
   Exit = 'Exit';
-  Request_reason = 'Request reason';
   Ok = 'OK';
   DescriptionT = 'Description';
   CurriculumT = 'Curriculum';

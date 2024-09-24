@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../language/translate.dart';
 import '../../../login/login.dart';
-import '../need_detail.dart';
+import '../need_view/need_detail.dart';
 
 class MiniContact extends StatefulWidget {
   const MiniContact({Key? key, required this.callback, required this.employee, required this.callbackId}) : super(key: key);
@@ -85,7 +85,7 @@ class _MiniContactState extends State<MiniContact> {
                               },
                               child: Container(
                                 alignment: Alignment.centerRight,
-                                width: 80,
+                                width: 10,
                                 child: Center(
                                     child: Text('$Search',
                                         style: GoogleFonts.openSans(
@@ -266,6 +266,7 @@ class _MiniContactState extends State<MiniContact> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'auth_password': widget.employee.auth_password,
         },
       );
       if (response.statusCode == 200) {

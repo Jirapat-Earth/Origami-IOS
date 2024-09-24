@@ -47,7 +47,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
   google_fonts: ^6.2.1
-  font_awesome_flutter: ^10.1.0
+  font_awesome_flutter: ^10.7.0
   awesome_bottom_bar: ^1.2.4
   loading_animation_widget: ^1.2.1
   shared_preferences: ^2.2.0
@@ -70,14 +70,30 @@ dev_dependencies:
   google_ml_kit: ^0.18.0
   path: ^1.9.0
   path_provider: ^2.1.4
+  permission_handler: ^10.2.0
   flutter_html: ^3.0.0-beta.2
   sqflite: ^2.3.3+1
   badges: ^3.1.2
+  webview_flutter: ^4.7.0
+  flutter_svg: ^2.0.9
+#  flutter_native_splash: ^2.3.13
+#  cloud_firestore: ^5.3.0
+#  firebase_auth: ^5.1.4
+#  firebase_core: ^3.3.0
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+
+#flutter_native_splash:
+#  color: "#ffffff"
+#  image: assets/images/logoOrigami/ogm_logo.png
+#  android: true              # เปิดใช้งานสำหรับ Android
+#  ios: true                  # เปิดใช้งานสำหรับ iOS
+#  fullscreen: true           # ใช้หน้าจอแบบ fullscreen
+
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -92,28 +108,9 @@ flutter:
   assets:
     - assets/company-scaled.jpg
     - assets/images/logo_trandar.jpg
-    - assets/images/cartoon-man.jpg
     - assets/images/ogm_logo.jpg
-    - assets/images/advance.jpg
-    - assets/images/asset.jpg
-    - assets/images/expense.jpg
-    - assets/images/product.jpg
-    - assets/images/purchase.jpg
-    - assets/images/person/person1.jpg
-    - assets/images/person/person2.jpg
-    - assets/images/person/person3.jpg
-    - assets/images/person/person4.jpg
-    - assets/images/person/person5.jpg
-    - assets/images/person/person6.jpg
-    - assets/images/person/person7.jpg
     - assets/images/logoOrigami/default_bg.png
     - assets/images/logoOrigami/ogm_logo.png
-    - assets/images/celebrity/bella1.jpg
-    - assets/images/celebrity/bella2.jpg
-    - assets/images/celebrity/bella3.jpg
-    - assets/images/celebrity/bella4.jpg
-    - assets/images/celebrity/bella5.jpg
-    - assets/images/celebrity/bella6.jpg
     - assets/images/logoOrigami/origami_logo.png
     - assets/ogm_logo2.png
     - assets/images/iconsNeed/advanceN.jpg
@@ -121,7 +118,6 @@ flutter:
     - assets/images/iconsNeed/expenseN.jpg
     - assets/images/iconsNeed/productN.jpg
     - assets/images/iconsNeed/purchaseN.jpg
-    - assets/images/person/19777.jpg
     - assets/images/certificate_1.png
     - assets/images/logoOrigami/allable_logo.png
     - assets/images/logoOrigami/trandar_logo.png

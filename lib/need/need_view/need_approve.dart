@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import '../../language/translate.dart';
-import '../../login/login.dart';
+import '../../../language/translate.dart';
+import '../../../login/login.dart';
 import 'need_approve_detail.dart';
 
 class NeedRequest extends StatefulWidget {
@@ -276,6 +276,7 @@ class _NeedRequestState extends State<NeedRequest> {
                               '$Ok',
                               style: GoogleFonts.openSans(
                                 color: Color(0xFF555555),
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -313,12 +314,15 @@ class _NeedRequestState extends State<NeedRequest> {
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: '$Request_reason...',
+                          hintText: '$Type_something...',
                           hintStyle: GoogleFonts.openSans(
                               fontSize: 14, color: Color(0xFF555555)),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF555555)),
                           ),
                         ),
                         onChanged: (value) {
@@ -411,6 +415,7 @@ class _NeedRequestState extends State<NeedRequest> {
                               '$Ok',
                               style: GoogleFonts.openSans(
                                 color: Color(0xFF555555),
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -448,12 +453,15 @@ class _NeedRequestState extends State<NeedRequest> {
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: '$Request_reason...',
+                          hintText: '$Type_something...',
                           hintStyle: GoogleFonts.openSans(
                               fontSize: 14, color: Color(0xFF555555)),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF555555)),
                           ),
                         ),
                         onChanged: (value) {
@@ -521,7 +529,6 @@ class _NeedRequestState extends State<NeedRequest> {
                         title: Text(
                           '$Exit Not Approve',
                           style: GoogleFonts.openSans(
-                            fontSize: 16,
                             color: Color(0xFF555555),
                           ),
                         ),
@@ -532,6 +539,7 @@ class _NeedRequestState extends State<NeedRequest> {
                               '$NotNow',
                               style: GoogleFonts.openSans(
                                 color: Color(0xFF555555),
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
@@ -584,12 +592,15 @@ class _NeedRequestState extends State<NeedRequest> {
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: '$Request_reason...',
+                          hintText: '$Type_something...',
                           hintStyle: GoogleFonts.openSans(
                               fontSize: 14, color: Color(0xFF555555)),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF555555)),
                           ),
                         ),
                         onChanged: (value) {

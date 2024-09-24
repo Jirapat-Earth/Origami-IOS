@@ -4,15 +4,18 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:origami_ios/setting_translate.dart';
 import 'package:origami_ios/test_view/camera_ml.dart';
+import 'package:origami_ios/test_view/test_chat.dart';
 import 'package:origami_ios/trandar_shop/shop.dart';
 import 'package:origami_ios/trandar_shop/trandar_shop.dart';
 import '../language/translate.dart';
 import '../login/login.dart';
 import 'academy/academy.dart';
 import 'chat/chat.dart';
-import 'need/need.dart';
-import 'need/need_approve.dart';
+import 'need/need_view/need.dart';
+import 'need/need_view/need_approve.dart';
 import 'package:camera/camera.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'need/petty_cash/petty_cash.dart';
 
 class OrigamiPage extends StatefulWidget {
   const OrigamiPage({
@@ -41,16 +44,6 @@ class _OrigamiPageState extends State<OrigamiPage> {
     futureLoadData = loadData();
   }
 
-  List<String> _listTitle = [
-    "$need",
-    "$request",
-    "$academy",
-    "$language",
-    "$logout",
-    "Test",
-    "Profile",
-  ];
-
   DateTime? lastPressed;
   bool isNeed = false;
   Widget build(BuildContext context) {
@@ -60,19 +53,21 @@ class _OrigamiPageState extends State<OrigamiPage> {
         // เช็คว่ามีการกดปุ่มย้อนกลับครั้งล่าสุดหรือไม่ และเวลาห่างจากปัจจุบันมากกว่า 2 วินาทีหรือไม่
         final now = DateTime.now();
         final maxDuration = Duration(seconds: 2);
-        final isWarning = lastPressed == null || now.difference(lastPressed!) > maxDuration;
+        final isWarning =
+            lastPressed == null || now.difference(lastPressed!) > maxDuration;
 
         if (isWarning) {
           // ถ้ายังไม่ได้กดสองครั้งภายในเวลาที่กำหนด ให้แสดง SnackBar แจ้งเตือน
           lastPressed = DateTime.now();
 
           ScaffoldMessenger.of(context).showSnackBar(
-
             SnackBar(
-              content: Text('Press back again to exit the origami application.',
+              content: Text(
+                'Press back again to exit the origami application.',
                 style: GoogleFonts.openSans(
-                color: Colors.white,
-              ),),
+                  color: Colors.white,
+                ),
+              ),
               duration: maxDuration,
             ),
           );
@@ -93,13 +88,13 @@ class _OrigamiPageState extends State<OrigamiPage> {
           ),
           actions: <Widget>[
             InkWell(
-              onTap:(){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                    builder: (context) => TrandarShop(),
-                ),
-                );
+              onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => WhatsAppChatScreen(),
+                //   ),
+                // );
               },
               child: Row(
                 children: [
@@ -216,7 +211,8 @@ class _OrigamiPageState extends State<OrigamiPage> {
                           child: Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 2,bottom: 2,left: 6,right: 6),
+                                padding: const EdgeInsets.only(
+                                    top: 2, bottom: 2, left: 6, right: 6),
                                 child: Column(
                                   children: [
                                     Container(
@@ -225,21 +221,40 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: ListTile(
-                                        trailing: Icon(Icons.arrow_drop_down_outlined,color: (_index == 0 || _index == 1)?Colors.orange:Color(0xFF555555)),
+                                        trailing: Icon(
+                                            Icons.arrow_drop_down_outlined,
+                                            color: (_index == 0 || _index == 1)
+                                                ? Colors.orange
+                                                : Color(0xFF555555)),
                                         title: Row(
                                           children: [
                                             Container(
                                               padding: EdgeInsets.all(8),
                                               decoration: BoxDecoration(
                                                 color: Colors.white,
-                                                borderRadius: BorderRadius.circular(10),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
                                               ),
-                                              child: Icon(Icons.file_copy_outlined),
+                                              child: FaIcon(
+                                                  FontAwesomeIcons
+                                                      .fileText,
+                                                  size: 18,
+                                                  color: (_index == 0 ||
+                                                      _index == 1)
+                                                      ? Colors.orange
+                                                      : Color(
+                                                      0xFF555555)),
                                             ),
-                                            SizedBox(width: 8,),
+                                            SizedBox(
+                                              width: 8,
+                                            ),
                                             Text(
                                               '$need',
-                                              style: GoogleFonts.openSans(color: (_index == 0 || _index == 1)?Colors.orange:Color(0xFF555555)),
+                                              style: GoogleFonts.openSans(
+                                                  color: (_index == 0 ||
+                                                          _index == 1)
+                                                      ? Colors.orange
+                                                      : Color(0xFF555555)),
                                             ),
                                           ],
                                         ),
@@ -259,48 +274,123 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                             child: Column(
                                               children: [
                                                 Padding(
-                                                  padding: const EdgeInsets.only(bottom: 4,left: 8,right: 8),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 4,
+                                                          left: 8,
+                                                          right: 8),
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                       color: Colors.white,
-                                                      borderRadius: BorderRadius.circular(10),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
                                                     ),
                                                     child: ListTile(
-                                                      trailing: Icon(Icons.file_present_outlined,color: (_index == 0 )?Colors.orange:Color(0xFF555555)),
+                                                      trailing: FaIcon(
+                                                          FontAwesomeIcons
+                                                              .handHoldingUsd,
+                                                          size: 18,
+                                                          color: (_index == 0)
+                                                              ? Colors.orange
+                                                              : Color(
+                                                              0xFF555555)),
                                                       title: Text(
                                                         '$need',
-                                                        style: GoogleFonts.openSans(color: (_index == 0 )?Colors.orange:Color(0xFF555555)),
+                                                        style: GoogleFonts.openSans(
+                                                            color: (_index == 0)
+                                                                ? Colors.orange
+                                                                : Color(
+                                                                    0xFF555555)),
                                                       ),
                                                       selected: _index == 0,
                                                       onTap: () {
                                                         setState(() {
                                                           _index = 0;
                                                         });
-                                                  
+
                                                         Navigator.pop(context);
                                                       },
                                                     ),
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsets.only(bottom: 4,left: 8,right: 8),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 4,
+                                                          left: 8,
+                                                          right: 8),
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                       color: Colors.white,
-                                                      borderRadius: BorderRadius.circular(10),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
                                                     ),
                                                     child: ListTile(
-                                                      trailing: Icon(Icons.done_all_outlined,color: (_index == 1)?Colors.orange:Color(0xFF555555)),
+                                                      trailing: FaIcon(
+                                                          FontAwesomeIcons
+                                                              .checkDouble,
+                                                          size: 18,
+                                                          color: (_index == 1)
+                                                              ? Colors.orange
+                                                              : Color(
+                                                                  0xFF555555)),
                                                       title: Text(
                                                         '$request',
-                                                        style: GoogleFonts.openSans(color: (_index == 1)?Colors.orange:Color(0xFF555555)),
+                                                        style: GoogleFonts.openSans(
+                                                            color: (_index == 1)
+                                                                ? Colors.orange
+                                                                : Color(
+                                                                    0xFF555555)),
                                                       ),
                                                       selected: _index == 1,
                                                       onTap: () {
                                                         setState(() {
                                                           _index = 1;
                                                         });
-                                                  
+
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 4,
+                                                          left: 8,
+                                                          right: 8),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                    child: ListTile(
+                                                      trailing: FaIcon(
+                                                          FontAwesomeIcons
+                                                              .wallet,
+                                                          size: 18,
+                                                          color: (_index == 8)
+                                                              ? Colors.orange
+                                                              : Color(
+                                                                  0xFF555555)),
+                                                      title: Text(
+                                                        'Petty Cash',
+                                                        style: GoogleFonts.openSans(
+                                                            color: (_index == 8)
+                                                                ? Colors.orange
+                                                                : Color(
+                                                                    0xFF555555)),
+                                                      ),
+                                                      selected: _index == 8,
+                                                      onTap: () {
+                                                        setState(() {
+                                                          _index = 8;
+                                                        });
+
                                                         Navigator.pop(context);
                                                       },
                                                     ),
@@ -313,32 +403,50 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 12,right: 12),
+                                padding:
+                                    const EdgeInsets.only(left: 12, right: 12),
                                 child: Divider(),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(top: 4,bottom: 4,left: 6,right: 6),
+                                padding: const EdgeInsets.only(
+                                    top: 4, bottom: 4, left: 6, right: 6),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: ListTile(
-                                    trailing: Icon(Icons.chevron_right,color: (_index == 2)?Colors.orange:Color(0xFF555555)),
+                                    trailing: Icon(Icons.chevron_right,
+                                        color: (_index == 2)
+                                            ? Colors.orange
+                                            : Color(0xFF555555)),
                                     title: Row(
                                       children: [
                                         Container(
                                           padding: EdgeInsets.all(8),
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
-                                          child: Icon(Icons.home_repair_service_outlined),
+                                          child: FaIcon(
+                                              FontAwesomeIcons
+                                                  .university,
+                                              size: 18,
+                                              color: (_index == 2)
+                                                  ? Colors.orange
+                                                  : Color(
+                                                  0xFF555555)),
                                         ),
-                                        SizedBox(width: 8,),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
                                         Text(
                                           '$academy',
-                                          style: GoogleFonts.openSans(color:(_index == 2)?Colors.orange:Color(0xFF555555)),
+                                          style: GoogleFonts.openSans(
+                                              color: (_index == 2)
+                                                  ? Colors.orange
+                                                  : Color(0xFF555555)),
                                         ),
                                       ],
                                     ),
@@ -347,39 +455,57 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                       setState(() {
                                         _index = 2;
                                       });
-                          
+
                                       Navigator.pop(context);
                                     },
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 12,right: 12),
+                                padding:
+                                    const EdgeInsets.only(left: 12, right: 12),
                                 child: Divider(),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(top: 4,bottom: 4,left: 6,right: 6),
+                                padding: const EdgeInsets.only(
+                                    top: 4, bottom: 4, left: 6, right: 6),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: ListTile(
-                                    trailing: Icon(Icons.chevron_right,color: (_index == 3)?Colors.orange:Color(0xFF555555)),
+                                    trailing: Icon(Icons.chevron_right,
+                                        color: (_index == 3)
+                                            ? Colors.orange
+                                            : Color(0xFF555555)),
                                     title: Row(
                                       children: [
                                         Container(
                                           padding: EdgeInsets.all(8),
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
-                                          child: Icon(Icons.language_outlined),
+                                          child: FaIcon(
+                                              FontAwesomeIcons
+                                                  .language,
+                                              size: 18,
+                                              color: (_index == 3)
+                                                  ? Colors.orange
+                                                  : Color(
+                                                  0xFF555555)),
                                         ),
-                                        SizedBox(width: 8,),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
                                         Text(
                                           '$language',
-                                          style: GoogleFonts.openSans(color:(_index == 3)?Colors.orange:Color(0xFF555555)),
+                                          style: GoogleFonts.openSans(
+                                              color: (_index == 3)
+                                                  ? Colors.orange
+                                                  : Color(0xFF555555)),
                                         ),
                                       ],
                                     ),
@@ -388,40 +514,57 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                       setState(() {
                                         _index = 3;
                                       });
-                          
+
                                       Navigator.pop(context);
                                     },
                                   ),
                                 ),
                               ),
-
                               Padding(
-                                padding: const EdgeInsets.only(left: 12,right: 12),
+                                padding:
+                                    const EdgeInsets.only(left: 12, right: 12),
                                 child: Divider(),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(top: 4,bottom: 4,left: 6,right: 6),
+                                padding: const EdgeInsets.only(
+                                    top: 4, bottom: 4, left: 6, right: 6),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: ListTile(
-                                    trailing: Icon(Icons.chevron_right,color: (_index == 6)?Colors.orange:Color(0xFF555555)),
+                                    trailing: Icon(Icons.chevron_right,
+                                        color: (_index == 6)
+                                            ? Colors.orange
+                                            : Color(0xFF555555)),
                                     title: Row(
                                       children: [
                                         Container(
                                           padding: EdgeInsets.all(8),
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
-                                          child: Icon(Icons.account_box_outlined),
+                                          child: FaIcon(
+                                              FontAwesomeIcons
+                                                  .user,
+                                              size: 18,
+                                              color: (_index == 6)
+                                                  ? Colors.orange
+                                                  : Color(
+                                                  0xFF555555)),
                                         ),
-                                        SizedBox(width: 8,),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
                                         Text(
                                           'About',
-                                          style: GoogleFonts.openSans(color:(_index == 6)?Colors.orange:Color(0xFF555555)),
+                                          style: GoogleFonts.openSans(
+                                              color: (_index == 6)
+                                                  ? Colors.orange
+                                                  : Color(0xFF555555)),
                                         ),
                                       ],
                                     ),
@@ -436,7 +579,8 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 12,right: 12),
+                                padding:
+                                    const EdgeInsets.only(left: 12, right: 12),
                                 child: Divider(),
                               ),
                             ],
@@ -444,14 +588,18 @@ class _OrigamiPageState extends State<OrigamiPage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 4,bottom: 4,left: 6,right: 6),
+                        padding: const EdgeInsets.only(
+                            top: 4, bottom: 4, left: 6, right: 6),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.orange.shade50,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: ListTile(
-                            trailing: Icon(Icons.chevron_right,color: (_index == 5)?Colors.orange:Color(0xFF555555)),
+                            trailing: Icon(Icons.chevron_right,
+                                color: (_index == 5)
+                                    ? Colors.orange
+                                    : Color(0xFF555555)),
                             title: Row(
                               children: [
                                 Container(
@@ -460,12 +608,20 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                     color: Colors.orange.shade200,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  child: Icon(Icons.terminal_sharp),
+                                  child: Icon(Icons.shopping_cart_outlined,
+                                      color: (_index == 5)
+                                          ? Colors.orange
+                                          : Color(0xFF555555)),
                                 ),
-                                SizedBox(width: 8,),
+                                SizedBox(
+                                  width: 8,
+                                ),
                                 Text(
-                                  'Test',
-                                  style: GoogleFonts.openSans(color:(_index == 5)?Colors.orange:Color(0xFF555555)),
+                                  'TestShop',
+                                  style: GoogleFonts.openSans(
+                                      color: (_index == 5)
+                                          ? Colors.orange
+                                          : Color(0xFF555555)),
                                 ),
                               ],
                             ),
@@ -480,14 +636,18 @@ class _OrigamiPageState extends State<OrigamiPage> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 4,bottom: 4,left: 8,right: 8),
+                        padding: const EdgeInsets.only(
+                            top: 4, bottom: 4, left: 6, right: 6),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.orange.shade50,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: ListTile(
-                            trailing: Icon(Icons.chevron_right,color:Colors.red),
+                            trailing: Icon(Icons.chevron_right,
+                                color: (_index == 7)
+                                    ? Colors.orange
+                                    : Color(0xFF555555)),
                             title: Row(
                               children: [
                                 Container(
@@ -496,34 +656,99 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                     color: Colors.orange.shade200,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  child: Icon(Icons.door_back_door_outlined,color: Colors.red,),
+                                  child: Icon(Icons.mark_chat_unread_outlined,
+                                      color: (_index == 7)
+                                          ? Colors.orange
+                                          : Color(0xFF555555)),
                                 ),
-                                SizedBox(width: 8,),
+                                SizedBox(
+                                  width: 8,
+                                ),
                                 Text(
-                                  '$logout',
-                                  style: GoogleFonts.openSans(color: Colors.red,fontWeight: FontWeight.bold,),
+                                  'TestChat',
+                                  style: GoogleFonts.openSans(
+                                      color: (_index == 7)
+                                          ? Colors.orange
+                                          : Color(0xFF555555)),
                                 ),
                               ],
                             ),
-                            selected: _index == 4,
+                            selected: _index == 7,
+                            onTap: () {
+                              setState(() {
+                                // _index = 7;
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatView(
+                                      employee: widget.employee,
+                                    ),
+                                  ),
+                                );
+                              });
+                              // Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 4, bottom: 4, left: 8, right: 8),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.orange.shade50,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListTile(
+                            trailing:
+                                Icon(Icons.chevron_right, color: Colors.red),
+                            title: Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange.shade200,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Icon(
+                                    Icons.door_back_door_outlined,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                  '$logout',
+                                  style: GoogleFonts.openSans(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // selected: _index == 4,
                             onTap: () {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext dialogContext) {
                                   return AlertDialog(
                                     elevation: 0,
-                                    title:Text('Do you want to log out?',style: GoogleFonts.openSans(
-                                      fontSize:16,
-                                      color: Color(0xFF555555),
-                                      fontWeight: FontWeight.bold,
-                                    ),),
+                                    title: Text(
+                                      'Do you want to log out?',
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 16,
+                                        color: Color(0xFF555555),
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                     actions: <Widget>[
                                       TextButton(
                                         child: Text(
                                           '$Cancel',
                                           style: GoogleFonts.openSans(
                                             color: Color(0xFF555555),
-                                            fontWeight: FontWeight.bold,
+                                            // fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         onPressed: () {
@@ -544,11 +769,13 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                         onPressed: () {
                                           Navigator.pushAndRemoveUntil(
                                             context,
-                                            MaterialPageRoute(builder: (context) =>  LoginPage(
-                                              num: 1,
-                                              popPage: 0,
-                                            )),
-                                                (Route<dynamic> route) => false, // ลบหน้าทั้งหมดใน stack
+                                            MaterialPageRoute(
+                                                builder: (context) => LoginPage(
+                                                      num: 1,
+                                                      popPage: 0,
+                                                    )),
+                                            (Route<dynamic> route) =>
+                                                false, // ลบหน้าทั้งหมดใน stack
                                           );
                                         },
                                       ),
@@ -563,7 +790,6 @@ class _OrigamiPageState extends State<OrigamiPage> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
@@ -575,22 +801,35 @@ class _OrigamiPageState extends State<OrigamiPage> {
     );
   }
 
-  //  mainCam() async {
-  //   WidgetsFlutterBinding.ensureInitialized();
-  //   final cameras = await availableCameras();
-  //   final firstCamera = cameras.first;
-  //   runApp(MyAppCan(camera: firstCamera));
-  // }
+  List<String> _listTitle = [
+    "$need",
+    "$request",
+    "$academy",
+    "$language",
+    "$logout",
+    "TestShop",
+    "Profile",
+    "TestChat",
+    "Petty Cash"
+  ];
 
   Widget _buildPage() {
     final pages = {
       0: NeedsView(employee: widget.employee),
       1: NeedRequest(employee: widget.employee),
-      2: AcademyPage(employee: widget.employee,),
+      2: AcademyPage(employee: widget.employee),
       3: TranslatePage(employee: widget.employee),
       4: Text('Index 6: LogOut', style: optionStyle),
       5: ShopPage(),
-      6: ProfilePage(employee: widget.employee,),
+      6: ProfilePage(
+        employee: widget.employee,
+      ),
+      7: ChatView(
+        employee: widget.employee,
+      ),
+      8: PettyCash(
+        employee: widget.employee,
+      ),
     };
     return pages[_index] ?? Container();
   }

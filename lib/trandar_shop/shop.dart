@@ -26,6 +26,16 @@ class _ShopPageState extends State<ShopPage> {
     "Bedroom",
     "Hallway"
   ];
+
+  void _launchWhatsApp() async {
+    const url = 'https://wa.me/0947428943';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not open WhatsApp';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +91,7 @@ class _ShopPageState extends State<ShopPage> {
                 border: InputBorder.none,
                 suffixIcon: Container(
                   alignment: Alignment.centerRight,
-                  width: 80,
+                  width: 10,
                   child: Center(
                     child: IconButton(
                         onPressed: () {
@@ -310,15 +320,6 @@ class _CategoryItemsScreenState extends State<CategoryItemsScreen> {
     super.initState();
   }
 
-  void _launchWhatsApp() async {
-    const url = 'https://wa.me/0656257183'; // แทนที่ด้วยหมายเลขโทรศัพท์ของคุณ
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not open WhatsApp';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -327,7 +328,8 @@ class _CategoryItemsScreenState extends State<CategoryItemsScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            _launchWhatsApp();
+            Navigator.pop(context);
+            // _launchWhatsApp();
           },
         ),
         actions: [

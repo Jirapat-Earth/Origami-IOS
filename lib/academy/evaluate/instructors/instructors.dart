@@ -65,7 +65,9 @@ class _InstructorsState extends State<Instructors> {
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No instructors found'));
+          return Center(child: Text('$Empty',style: GoogleFonts.openSans(
+            color: Color(0xFF555555),
+          ),));
         } else {
           return _getContentWidget(snapshot.data!);
         }

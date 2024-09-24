@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:origami_ios/chat/line/chat_whats.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../login/login.dart';
-import 'chat_line_oa.dart';
+import 'line/chat_list.dart';
+import 'login_lineoa.dart';
 
 class ChatView extends StatefulWidget {
   const ChatView({
@@ -31,22 +33,11 @@ class _ChatViewState extends State<ChatView> {
   Widget _bodySwitch() {
     switch (_selectedIndex) {
       case 0:
-        return LineOAPage();
+        return ChatList(selectedIndex: _selectedIndex,);
       case 1:
-        return Container(
-          color: Colors.black,
-          alignment: Alignment.center,
-          child: Text(
-            'Messenger',
-            style: GoogleFonts.openSans(
-              fontSize: 30,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-        );
+        return ChatList(selectedIndex: _selectedIndex,);
+      case 2:
+        return ChatList(selectedIndex: _selectedIndex,);
       default:
         return Container(
           alignment: Alignment.center,
@@ -66,54 +57,86 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.orange,
-            title: Row(
-              children: [
-                InkWell(
-                  onTap: (){
-                    setState(() {
-                      _selectedIndex = 0;
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: NetworkImage(
-                          'https://www.rocket.in.th/wp-content/uploads/2023/03/%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B-Line-Official-Account.png'),
-                      backgroundColor: Colors.transparent,
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              title: Row(
+                children: [
+                  InkWell(
+                    onTap: (){
+                      setState(() {
+                        Navigator.pop(context);
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(Icons.arrow_back_ios_new),
                     ),
                   ),
-                ),
-                InkWell(
-                  onTap: (){
-                    setState(() {
-                      _selectedIndex = 1;
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundImage: NetworkImage(
-                          'https://www.computerhope.com/jargon/f/facebook-messenger.png'),
-                      backgroundColor: Colors.transparent,
+                  InkWell(
+                    onTap: (){
+                      setState(() {
+                        _selectedIndex = 0;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage(
+                            'https://www.rocket.in.th/wp-content/uploads/2023/03/%E0%B8%AA%E0%B8%A3%E0%B8%B8%E0%B8%9B-Line-Official-Account.png'),
+                        backgroundColor: Colors.transparent,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  InkWell(
+                    onTap: (){
+                      setState(() {
+                        _selectedIndex = 1;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage(
+                            'https://www.computerhope.com/jargon/f/facebook-messenger.png'),
+                        backgroundColor: Colors.transparent,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: (){
+                      setState(() {
+                        _selectedIndex = 2;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage(
+                            'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/640px-WhatsApp.svg.png'),
+                        backgroundColor: Colors.green,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          body: _bodySwitch()
+            body: _bodySwitch()
+        ),
       ),
     );
 

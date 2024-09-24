@@ -284,7 +284,7 @@ class _DescriptionState extends State<Description> {
                                                       ),
                                                       SizedBox(width: 8,),
                                                       Text(
-                                                        "${document_count} $Documents",
+                                                        "${document_count} File",
                                                         style: GoogleFonts.openSans(
                                                           color: Colors.grey,
                                                           fontWeight: FontWeight.bold,

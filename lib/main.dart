@@ -43,26 +43,20 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,
-        // Define the default brightness and colors.
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.orange.shade500,
+          seedColor: Theme.of(context).colorScheme.inversePrimary,
           brightness: Brightness.light,
         ),
 
-        // Define the default `TextTheme`. Use this to specify the default
-        // text styling for headlines, titles, bodies of text, and more.
         textTheme: TextTheme(
-          displayLarge: const TextStyle(
+          displayLarge: GoogleFonts.openSans(
             fontSize: 72,
             fontWeight: FontWeight.bold,
           ),
           //GoogleFonts.oswald
           titleLarge: GoogleFonts.openSans(
             fontSize: 30,
-            fontStyle: FontStyle.italic,
           ),
-          // bodyMedium: GoogleFonts.merriweather(),
-          // displaySmall: GoogleFonts.pacifico(),
         ),
       ),
       home: LoginPage(num: 0, popPage: 0,),

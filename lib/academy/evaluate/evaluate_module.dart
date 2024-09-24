@@ -509,12 +509,15 @@ class _EvaluateModuleState extends State<EvaluateModule>
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: 'Write something...',
+                    hintText: '$Type_something...',
                     hintStyle: GoogleFonts.openSans(
                         fontSize: 14, color: const Color(0xFF555555)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF555555)),
                     ),
                   ),
                   onChanged: (value) {},

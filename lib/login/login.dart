@@ -373,6 +373,18 @@ class _LoginPageState extends State<LoginPage> {
                                               Icons.person,
                                               color: Color(0xFF555555),
                                             ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(color: Color(0xFF555555)),
+                                            ),
+                                            // border: new OutlineInputBorder(
+                                            //   borderRadius: const BorderRadius.all(
+                                            //     const Radius.circular(8.0),
+                                            //   ),
+                                            //   borderSide: new BorderSide(
+                                            //     color: Colors.red,
+                                            //     width: 1.0,
+                                            //   ),
+                                            // ),
                                           ),
                                         ),
                                         SizedBox(height: 16.0),
@@ -393,7 +405,7 @@ class _LoginPageState extends State<LoginPage> {
                                             ),
                                             suffixIcon: Container(
                                               alignment: Alignment.centerRight,
-                                              width: 80,
+                                              width: 10,
                                               child: Center(
                                                 child: IconButton(
                                                     onPressed: () {
@@ -405,6 +417,9 @@ class _LoginPageState extends State<LoginPage> {
                                                     color: Color(0xFF555555),
                                                     iconSize: 18),
                                               ),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(color: Color(0xFF555555)),
                                             ),
                                           ),
                                         ),

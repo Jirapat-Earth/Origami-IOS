@@ -64,9 +64,21 @@ class _CertificationState extends State<Certification> {
       future: fetchCertification(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Center(
+              child: Text(
+            'Error: ${snapshot.error}',
+            style: GoogleFonts.openSans(
+              color: Color(0xFF555555),
+            ),
+          ));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No instructors found'));
+          return Center(
+              child: Text(
+            '$Empty',
+            style: GoogleFonts.openSans(
+              color: Color(0xFF555555),
+            ),
+          ));
         } else {
           return _getContentWidget(snapshot.data!);
         }
@@ -191,36 +203,60 @@ class _CertificationState extends State<Certification> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          Stack(
-                                            alignment: Alignment.center,
-                                            children: [
-                                              Image.asset(
-                                                'assets/images/certificate_1.png',
-                                                // width: 90,
-                                                fit: BoxFit.fill,
-                                              ),
-                                              Container(
-                                                alignment: Alignment.center,
-                                                  child: AutoSizeText(
-                                                      "CERTIFICATE",style: GoogleFonts.openSans(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(0xFF555555),
+                                          LayoutBuilder(
+                                              builder: (context, constraints) {
+                                            return Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                Positioned(
+                                                  child: Image.network(
+                                                    (certificate.certificationName ==
+                                                            'Certificate Bronze')
+                                                        ? 'https://www.origami.life/images/certification/1.png?v=2'
+                                                        : (certificate
+                                                                    .certificationName ==
+                                                                'Certificate Platinum')
+                                                            ? 'https://www.origami.life/images/certification/3.png?v=2'
+                                                            : (certificate
+                                                                        .certificationName ==
+                                                                    'Certificate Gold')
+                                                                ? 'https://www.origami.life/images/certification/2.png?v=2'
+                                                                : 'https://www.origami.life/images/certification/4.png?v=2',
+                                                    width: constraints.maxWidth,
+                                                    fit: BoxFit.fill,
                                                   ),
-                                                    overflow: TextOverflow
-                                                        .ellipsis,
+                                                ),
+                                                Center(
+                                                  child: Text(
+                                                    certificate
+                                                        .certificationName,
+                                                    style: GoogleFonts.openSans(
+                                                      fontSize:
+                                                          constraints.maxWidth *
+                                                              0.1,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Color(0xFF555555),
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 2,
                                                   ),
-                                              ),
-                                            ],
-                                          ),
+                                                ),
+                                              ],
+                                            );
+                                          }),
                                           SizedBox(
                                             height: 8,
                                           ),
                                           (certificate.canDownload == "Y")
                                               ? InkWell(
                                                   onTap: () {
-                                                    courseId = certification.courseId;
-                                                    certificationId = certificate.certificationId;
+                                                    courseId =
+                                                        certification.courseId;
+                                                    certificationId =
+                                                        certificate
+                                                            .certificationId;
                                                     Download();
                                                   },
                                                   child: Container(
@@ -421,7 +457,8 @@ class _CertificationState extends State<Certification> {
   Future<void> Download() async {
     try {
       final response = await http.post(
-        Uri.parse('https://www.origami.life/api/origami/academy/certificationDownload.php'),
+        Uri.parse(
+            'https://www.origami.life/api/origami/academy/certificationDownload.php'),
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -453,7 +490,6 @@ class _CertificationState extends State<Certification> {
       throw Exception('Failed to load personal data: $e');
     }
   }
-
 }
 
 class CertificationData {

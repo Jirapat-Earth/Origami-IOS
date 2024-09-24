@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import '../../../login/login.dart';
 import '../../academy.dart';
 import '../evaluate_module.dart';
@@ -18,7 +18,8 @@ class NetworkVideoPlayer extends StatefulWidget {
     Key? key,
     required this.videoUrl,
     required this.employee,
-    required this.academy, required this.videoView,
+    required this.academy,
+    required this.videoView,
   }) : super(key: key);
 
   @override
@@ -45,7 +46,8 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
       await _videoPlayerController.initialize();
       String strTime = "70";
       int? inTime = int.parse(strTime);
-      await _videoPlayerController.seekTo(Duration(seconds: inTime)); // กำหนดให้เริ่มต้นที่วินาทีที่ 10
+      await _videoPlayerController
+          .seekTo(Duration(seconds: inTime)); // กำหนดให้เริ่มต้นที่วินาทีที่ 10
       setState(() {
         _chewieController = ChewieController(
           videoPlayerController: _videoPlayerController,
@@ -75,13 +77,17 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
   }
 
   void _videoPlayerListener() {
-    if (_videoPlayerController.value.isPlaying == false) { // ตรวจสอบถ้าวิดีโอหยุดเล่น
-      if (_videoPlayerController.value.isPlaying == false) { // ตรวจสอบถ้าวิดีโอหยุดเล่น
+    if (_videoPlayerController.value.isPlaying == false) {
+      // ตรวจสอบถ้าวิดีโอหยุดเล่น
+      if (_videoPlayerController.value.isPlaying == false) {
+        // ตรวจสอบถ้าวิดีโอหยุดเล่น
         setState(() {
-          _pausedSeconds = _videoPlayerController.value.position.inSeconds; // บันทึกเฉพาะค่าวินาทีที่หยุด
+          _pausedSeconds = _videoPlayerController
+              .value.position.inSeconds; // บันทึกเฉพาะค่าวินาทีที่หยุด
         });
         widget.videoView(_pausedSeconds.toString());
-        print('Paused at second: $_pausedSeconds'); // แสดงค่าวินาทีที่หยุดใน console หรือเก็บค่านี้ไว้ใช้
+        print(
+            'Paused at second: $_pausedSeconds'); // แสดงค่าวินาทีที่หยุดใน console หรือเก็บค่านี้ไว้ใช้
       }
     }
   }
@@ -100,19 +106,20 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
       home: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
-          title: Text('Network Video Player'),
+          backgroundColor: Colors.black,
+          title: Text(
+            'Network Video Player',
+            style: GoogleFonts.openSans(
+              color: Colors.white,
+            ),
+          ),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(
+              Icons.arrow_back_ios_new_sharp,
+              color: Colors.white,
+            ),
             onPressed: () {
-              // Navigator.pushReplacement(
-              //   context,
-              //   MaterialPageRoute(
-              //       builder: (context) => EvaluateModule(
-              //           employee: widget.employee,
-              //           academy: widget.academy,
-              //           selectedPage: 1)),
-              // );
-              Navigator.pop(context);
+              Navigator.pop(context); // ย้อนกลับไปยังหน้าก่อนหน้า
             },
           ),
         ),
@@ -120,28 +127,27 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
           child: _isLoading
               ? CircularProgressIndicator()
               : _errorMessage != null
-              ? Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                _errorMessage!,
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _initializePlayer,
-                child: Text('Retry'),
-              ),
-            ],
-          )
-              : Chewie(
-            controller: _chewieController!,
-          ),
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          _errorMessage!,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: _initializePlayer,
+                          child: Text('Retry'),
+                        ),
+                      ],
+                    )
+                  : Chewie(
+                      controller: _chewieController!,
+                    ),
         ),
       ),
     );
   }
-
 }
 
 // สร้าง custom controls ที่ห้ามข้ามวิดีโอ

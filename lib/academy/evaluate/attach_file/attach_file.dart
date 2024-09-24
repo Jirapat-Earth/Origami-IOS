@@ -89,7 +89,9 @@ class _AttachFileState extends State<AttachFile> {
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No instructors found'));
+          return Center(child: Text('$Empty',style: GoogleFonts.openSans(
+            color: Color(0xFF555555),
+          ),));
         } else {
           return _getContentWidget(snapshot.data!);
         }
@@ -134,9 +136,9 @@ class _AttachFileState extends State<AttachFile> {
                             //   fit: BoxFit.fill,
                             // ),
                             Icon(
-                              Icons.picture_as_pdf,
+                              Icons.file_present_outlined,
                               size: 90,
-                              color: Colors.red,
+                              color: Colors.red.shade400,
                             ),
                             SizedBox(
                               width: 8,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../need_detail.dart';
+import '../need_view/need_detail.dart';
 
 class DropdownNeed extends StatefulWidget {
   const DropdownNeed({

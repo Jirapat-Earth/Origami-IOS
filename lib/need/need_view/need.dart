@@ -10,10 +10,11 @@ import 'package:origami_ios/need/widget_mini/mini_employee.dart';
 import 'package:origami_ios/need/widget_mini/mini_project.dart';
 import 'package:origami_ios/need/widget_other/date_other.dart';
 import 'package:origami_ios/need/widget_other/priority_other.dart';
-import '../../login/login.dart';
-import '../origami_view.dart';
-import '../../language/translate.dart';
-import '../trandar_shop/trandar_shop.dart';
+import '../../../login/login.dart';
+import '../../origami_view.dart';
+import '../../../language/translate.dart';
+import '../../trandar_shop/trandar_shop.dart';
+import '../petty_cash/petty_cash.dart';
 import 'need_approve_detail.dart';
 import 'need_detail.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +24,7 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/parser.dart' show parse;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class NeedsView extends StatefulWidget {
   const NeedsView({
@@ -87,7 +89,8 @@ class _NeedsViewState extends State<NeedsView> {
   }
 
   Future<List<AnnounceData>> fetchAnnounce() async {
-    final uri = Uri.parse("https://www.origami.life/api/origami/announce/announce.php");
+    final uri =
+        Uri.parse("https://www.origami.life/api/origami/announce/announce.php");
     final response = await http.post(
       uri,
       body: {
@@ -222,33 +225,32 @@ class _NeedsViewState extends State<NeedsView> {
   //   );
   // }
 
-  Widget _loading(){
+  Widget _loading() {
     return FutureBuilder<List<NeedRespond>>(
       future: fetchNeedResponse(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(
-                    color: Colors.orange,
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Text(
-                    '$Loading...',
-                    style: GoogleFonts.openSans(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF555555),
-                    ),
-                  ),
-                ],
-              ));
-        }
-        else if(snapshot.hasError) {
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Colors.orange,
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              Text(
+                '$Loading...',
+                style: GoogleFonts.openSans(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF555555),
+                ),
+              ),
+            ],
+          ));
+        } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else {
           return _getContentWidget(snapshot.data!);
@@ -265,6 +267,14 @@ class _NeedsViewState extends State<NeedsView> {
       floatingActionButton: SpeedDial(
         elevation: 0,
         icon: Icons.add,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(100),
+            bottomLeft: Radius.circular(100),
+            bottomRight: Radius.circular(100),
+            topLeft: Radius.circular(100),
+          ),
+        ),
         animatedIcon: AnimatedIcons.add_event,
         backgroundColor: Colors.orange,
         foregroundColor: Colors.white,
@@ -502,7 +512,7 @@ class _NeedsViewState extends State<NeedsView> {
   }
 
   int? _selectcolor = 0;
-  int? _inde = 0;
+  int? _indexcolor = 0;
   Widget _getContentWidget(List<NeedRespond> needList) {
     return Column(
       children: [
@@ -541,7 +551,7 @@ class _NeedsViewState extends State<NeedsView> {
                             border: InputBorder.none,
                             suffixIcon: Container(
                               alignment: Alignment.centerRight,
-                              width: 80,
+                              width: 10,
                               child: Center(
                                 child: IconButton(
                                     onPressed: () {
@@ -616,7 +626,6 @@ class _NeedsViewState extends State<NeedsView> {
                           //   projectId,
                           //   ownerId,
                           // );
-
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(1),
@@ -668,7 +677,7 @@ class _NeedsViewState extends State<NeedsView> {
                         return InkWell(
                           onTap: () {
                             // setState(() {
-                            _inde = index;
+                            _indexcolor = index;
                             status_id = NeedTypeOption[_selectcolor ?? 0]
                                     .typeStatus?[index]
                                     .statusId ??
@@ -696,7 +705,7 @@ class _NeedsViewState extends State<NeedsView> {
                                 padding: EdgeInsets.all(8),
                                 height: 34,
                                 // width: 150,
-                                color: (index == _inde)
+                                color: (index == _indexcolor)
                                     ? Colors.orange
                                     : Colors.grey.shade100,
                                 child: Center(
@@ -705,7 +714,7 @@ class _NeedsViewState extends State<NeedsView> {
                                   child: Text(
                                     "${NeedTypeOption[_selectcolor ?? 0].typeStatus?[index].statusName}",
                                     style: GoogleFonts.openSans(
-                                      color: (index == _inde)
+                                      color: (index == _indexcolor)
                                           ? Colors.white
                                           : Color(0xFF555555),
                                     ),
@@ -913,11 +922,10 @@ class _NeedsViewState extends State<NeedsView> {
                                                 ),
                                               );
                                             },
-                                            icon: Icon(
-                                              Icons.delete_outline,
+                                            icon: FaIcon(FontAwesomeIcons.trashAlt,
                                               color: Colors.redAccent,
-                                              size: 34,
-                                            ))
+                                            ),
+                                        )
                                       ],
                                     ),
                                   ],
@@ -1138,6 +1146,7 @@ class _NeedsViewState extends State<NeedsView> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'auth_password': widget.employee.auth_password,
         },
       );
       if (response.statusCode == 200) {
@@ -1173,6 +1182,7 @@ class _NeedsViewState extends State<NeedsView> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'auth_password': widget.employee.auth_password,
         },
       );
       if (response.statusCode == 200) {
@@ -1204,12 +1214,14 @@ class _NeedsViewState extends State<NeedsView> {
   String need_status = "";
   String search = "";
   Future<List<NeedRespond>> fetchNeedResponse() async {
-    final uri = Uri.parse("https://www.origami.life/api/origami/need/need.php?need_type=$need_type&need_status=$need_status&search=$search");
+    final uri = Uri.parse(
+        "https://www.origami.life/api/origami/need/need.php?need_type=$need_type&need_status=$need_status&search=$search");
     final response = await http.post(
       uri,
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
+        'auth_password': widget.employee.auth_password,
         'start_date': firstDay,
         'end_date': lastDay,
         'filter_priority': filter_Priority,
@@ -1227,9 +1239,7 @@ class _NeedsViewState extends State<NeedsView> {
       final List<dynamic> needJson = jsonResponse['need_data'];
       departm = jsonResponse['need_data'];
       // แปลงข้อมูลจาก JSON เป็น List<Instructor>
-      return needJson
-          .map((json) => NeedRespond.fromJson(json))
-          .toList();
+      return needJson.map((json) => NeedRespond.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load instructors');
     }

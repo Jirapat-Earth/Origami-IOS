@@ -55,7 +55,11 @@ class _CreateQuoteScreenState extends State<CreateQuoteScreen> {
                   labelText: 'First Name',
                   prefixIcon: Icon(Icons.person),
                   border: OutlineInputBorder(),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF555555)),
+                  ),
                 ),
+
                 onChanged: (value){
                   name = _nameController.text;
                 },
@@ -66,6 +70,9 @@ class _CreateQuoteScreenState extends State<CreateQuoteScreen> {
                   labelText: 'Last Name',
                   prefixIcon: Icon(Icons.person),
                   border: OutlineInputBorder(),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF555555)),
+                  ),
                 ),
               ),
               SizedBox(height: 20),
@@ -74,6 +81,9 @@ class _CreateQuoteScreenState extends State<CreateQuoteScreen> {
                   labelText: 'Company (Optional)',
                   prefixIcon: Icon(Icons.business),
                   border: OutlineInputBorder(),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF555555)),
+                  ),
                 ),
               ),
               SizedBox(height: 20),
@@ -82,6 +92,9 @@ class _CreateQuoteScreenState extends State<CreateQuoteScreen> {
                   labelText: 'Email',
                   prefixIcon: Icon(Icons.email),
                   border: OutlineInputBorder(),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF555555)),
+                  ),
                 ),
               ),
               SizedBox(height: 20),

@@ -23,10 +23,11 @@ import 'package:origami_ios/need/widget_mini/mini_project.dart';
 import 'package:origami_ios/need/widget_mini/mini_unit.dart';
 import 'package:origami_ios/need/widget_other/dropdown_need.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../language/translate.dart';
-import '../../login/login.dart';
-import '../origami_view.dart';
+import '../../../language/translate.dart';
+import '../../../login/login.dart';
+import '../../origami_view.dart';
 import 'need.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class NeedDetail extends StatefulWidget {
@@ -462,6 +463,9 @@ class _NeedDetailState extends State<NeedDetail> {
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none,
                           ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF555555)),
+                          ),
                         ),
                         onChanged: (value) {
                           _searchSubject = value;
@@ -513,6 +517,9 @@ class _NeedDetailState extends State<NeedDetail> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                           borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFF555555)),
                         ),
                       ),
                       onChanged: (value) {
@@ -809,7 +816,7 @@ class _NeedDetailState extends State<NeedDetail> {
                               child: Text(
                                 '$Close',
                                 style: GoogleFonts.openSans(
-                                  color: Colors.orange,
+                                  color: Color(0xFF555555),
                                 ),
                               ),
                               onPressed: () {
@@ -1452,7 +1459,7 @@ class _NeedDetailState extends State<NeedDetail> {
                                             child: Text(
                                               '$Close',
                                               style: GoogleFonts.openSans(
-                                                color: Colors.orange,
+                                                color: Color(0xFF555555),
                                               ),
                                             ),
                                             onPressed: () {
@@ -1666,6 +1673,9 @@ class _NeedDetailState extends State<NeedDetail> {
                       borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide.none,
                     ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF555555)),
+                    ),
                   ),
                   onChanged: (value) {
                     _detail = value;
@@ -1717,6 +1727,9 @@ class _NeedDetailState extends State<NeedDetail> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF555555)),
                     ),
                   ),
                   onChanged: (value) {
@@ -1778,6 +1791,9 @@ class _NeedDetailState extends State<NeedDetail> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                             borderSide: BorderSide.none,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF555555)),
                           ),
                         ),
                         onChanged: (value) {
@@ -2169,11 +2185,9 @@ class _NeedDetailState extends State<NeedDetail> {
                                                           BorderRadius.circular(
                                                               20),
                                                     ),
-                                                    child: Icon(
-                                                      Icons.delete_outline,
+                                                    child: FaIcon(FontAwesomeIcons.trashAlt,
                                                       color: Colors.redAccent,
-                                                      size: 32,
-                                                    ))),
+                                                    ),)),
                                           ],
                                         ),
                                       ],
@@ -2364,7 +2378,8 @@ class _NeedDetailState extends State<NeedDetail> {
                 child: Text(
                   '$Ok',
                   style: GoogleFonts.openSans(
-                    color: Colors.orange,
+                    color: Color(0xFF555555),
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),

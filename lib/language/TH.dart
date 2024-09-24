@@ -62,7 +62,6 @@ Future<void> TH() async {
   Next = 'ถัดไป';
   Back = 'ย้อนกลับ';
   Exit = 'ออกจาก';
-  Request_reason = 'เหตุผล';
   Ok = 'ตกลง';
   DescriptionT = 'รายละเอียด';
   CurriculumT = 'หลักสูตร';

@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../language/translate.dart';
 import '../../../login/login.dart';
 import '../../academy.dart';
@@ -101,7 +101,9 @@ class _DiscussionState extends State<Discussion> {
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No instructors found'));
+          return Center(child: Text('$Empty',style: GoogleFonts.openSans(
+            color: Color(0xFF555555),
+          ),));
         } else {
           return _getContentWidget(snapshot.data!);
         }
@@ -315,12 +317,15 @@ class _DiscussionState extends State<Discussion> {
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Colors.white,
-                                hintText: 'Write something...',
+                                hintText: '$Type_something...',
                                 hintStyle: GoogleFonts.openSans(
                                     fontSize: 14, color: const Color(0xFF555555)),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15),
                                   borderSide: BorderSide.none,
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color(0xFF555555)),
                                 ),
                               ),
                               onChanged: (value) {},
@@ -404,7 +409,9 @@ class _DiscussionState extends State<Discussion> {
                         } else if (snapshot.hasError) {
                           return Center(child: Text('Error: ${snapshot.error}'));
                         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                          return Center(child: Text('No instructors found'));
+                          return Center(child: Text('$Empty',style: GoogleFonts.openSans(
+                            color: Color(0xFF555555),
+                          ),));
                         } else {
                           return _bodyReply(snapshot.data!);
                         }
@@ -525,10 +532,8 @@ class _DiscussionState extends State<Discussion> {
                               });
                             }
                           },
-                          icon: Icon(
-                            (reply.can_delete == "N")?null:Icons.delete_outline_outlined,
-                            color: Colors.red,
-                            size: 32,
+                          icon: FaIcon(FontAwesomeIcons.trashAlt,
+                            color: (reply.can_delete == "N")?Colors.transparent:Colors.redAccent,
                           ),
                           tooltip: '',
                         ),
@@ -590,12 +595,15 @@ class _DiscussionState extends State<Discussion> {
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: 'Write something...',
+                    hintText: '$Type_something...',
                     hintStyle: GoogleFonts.openSans(
                         fontSize: 14, color: const Color(0xFF555555)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF555555)),
                     ),
                   ),
                   onChanged: (value) {},
@@ -620,6 +628,7 @@ class _DiscussionState extends State<Discussion> {
                 'Edit',
                 style: GoogleFonts.openSans(
                   color: const Color(0xFF555555),
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               onPressed: () {
@@ -682,6 +691,7 @@ class _DiscussionState extends State<Discussion> {
                 'Delete',
                 style: GoogleFonts.openSans(
                   color: const Color(0xFF555555),
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               onPressed: () {

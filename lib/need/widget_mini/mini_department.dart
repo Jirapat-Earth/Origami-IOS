@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../language/translate.dart';
 import '../../../login/login.dart';
-import '../need_detail.dart';
+import '../need_view/need_detail.dart';
 
 class MiniDepartment extends StatefulWidget {
   const MiniDepartment({Key? key, required this.callback, required this.employee, required this.callbackId}) : super(key: key);
@@ -85,7 +85,7 @@ class _MiniDepartmentState extends State<MiniDepartment> {
                               },
                               child: Container(
                                 alignment: Alignment.centerRight,
-                                width: 80,
+                                width: 10,
                                 child: Center(
                                     child: Text('$Search',
                                         style: GoogleFonts.openSans(

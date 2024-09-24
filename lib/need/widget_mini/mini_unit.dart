@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../language/translate.dart';
 import '../../../login/login.dart';
-import '../need_detail.dart';
+import '../need_view/need_detail.dart';
 
 class MiniUnit extends StatefulWidget {
   const MiniUnit({Key? key, required this.callbackName, required this.callbackId, required this.employee}) : super(key: key);
@@ -85,7 +85,7 @@ class _MiniUnitState extends State<MiniUnit> {
                               },
                               child: Container(
                                 alignment: Alignment.centerRight,
-                                width: 80,
+                                width: 10,
                                 child: Center(
                                     child: Text('$Search',
                                         style: GoogleFonts.openSans(
@@ -246,6 +246,7 @@ class _MiniUnitState extends State<MiniUnit> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'auth_password': widget.employee.auth_password,
         },
       );
       if (response.statusCode == 200) {

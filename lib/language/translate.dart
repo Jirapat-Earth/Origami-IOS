@@ -82,7 +82,6 @@ String SearchFor = '';
 String Next = '';
 String Back = '';
 String Exit = '';
-String Request_reason = '';
 String Ok = '';
 String DescriptionT = '';
 String CurriculumT = '';
