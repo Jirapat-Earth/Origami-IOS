@@ -68,6 +68,15 @@
           <true/>
         </dict>
 
+        <key>NSContactsUsageDescription</key>
+        <string>We need access to your contacts to add new contacts.</string>
+
+        <key>GMSApiKey</key>
+        <string>AIzaSyDQ2c_pOSOFYSjxGMwkFvCVWKjYOM9siow</string>
+
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>This app needs access to your location to show the map.</string>
+
 		<key>NSCameraUsageDescription</key>
 		<string>We need to use your camera to scan your face</string>
 		<key>NSMicrophoneUsageDescription</key>

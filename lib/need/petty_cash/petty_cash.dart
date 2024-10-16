@@ -453,7 +453,6 @@ class _PettyCashState extends State<PettyCash> {
                               icon: Icon(Icons.arrow_back_ios_sharp)),
                       Spacer(),
                       Container(
-                        height: 45,
                         padding: EdgeInsets.only(left: 16, right: 16),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.0),
@@ -516,7 +515,7 @@ class _PettyCashState extends State<PettyCash> {
                             searchController: _searchController,
                             searchInnerWidgetHeight: 50,
                             searchInnerWidget: Padding(
-                              padding: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(4),
                               child: TextFormField(
                                 controller: _searchController,
                                 keyboardType: TextInputType.text,
@@ -525,14 +524,31 @@ class _PettyCashState extends State<PettyCash> {
                                 decoration: InputDecoration(
                                   isDense: true,
                                   contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
+                                    horizontal: 12,
                                     vertical: 8,
                                   ),
                                   hintText: '$Search...',
                                   hintStyle: GoogleFonts.openSans(
                                       fontSize: 14, color: Color(0xFF555555)),
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  filled: true, // เปิดการใช้สีพื้นหลัง
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors
+                                          .grey, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.grey, // ขอบสีส้มตอนที่โฟกัส
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
                               ),
@@ -572,14 +588,16 @@ class _PettyCashState extends State<PettyCash> {
                       child: _dataTable(cashData),
                     )
                   : Container(
-            padding: EdgeInsets.only(
-                top: 8, bottom: 8,),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(0),
-            ),
-              child: _editCashTable(),
-          ),
+                      padding: EdgeInsets.only(
+                        top: 8,
+                        bottom: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                      child: _editCashTable(),
+                    ),
         ),
       ],
     );
@@ -936,7 +954,7 @@ class _PettyCashState extends State<PettyCash> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final usedData = snapshot.data![index];
-                  return _cardCashTable(cashData, usedData,index);
+                  return _cardCashTable(cashData, usedData, index);
                 }),
           );
         }
@@ -1179,9 +1197,10 @@ class _PettyCashState extends State<PettyCash> {
               child: Padding(
                 padding: const EdgeInsets.all(4),
                 child: IconButton(
-                  icon: FaIcon(FontAwesomeIcons.trashAlt,
+                  icon: FaIcon(
+                    FontAwesomeIcons.trashAlt,
                     color: Colors.redAccent,
-                    ),
+                  ),
                   onPressed: () {
                     setState(() {
                       cash_id = cashData.cash_id;
@@ -1301,8 +1320,8 @@ class _PettyCashState extends State<PettyCash> {
                           decoration: InputDecoration(
                             isDense: true,
                             contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 8,
+                              horizontal: 12,
+                              vertical: 12,
                             ),
                             hintText: '$Search...',
                             hintStyle: GoogleFonts.openSans(
@@ -1594,8 +1613,8 @@ class _PettyCashState extends State<PettyCash> {
                                 decoration: InputDecoration(
                                   isDense: true,
                                   contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 8,
+                                    horizontal: 12,
+                                    vertical: 12,
                                   ),
                                   hintText: '$Search...',
                                   hintStyle: GoogleFonts.openSans(
@@ -1702,7 +1721,12 @@ class _PettyCashState extends State<PettyCash> {
                         width: 1.0,
                       ),
                     ),
-                    child: (_image == null)?Icon(Icons.add,size: 35,):Image.file(File(_image!.path)),
+                    child: (_image == null)
+                        ? Icon(
+                            Icons.add,
+                            size: 35,
+                          )
+                        : Image.file(File(_image!.path)),
                   ),
                 ),
               ],
@@ -1957,18 +1981,18 @@ class _PettyCashState extends State<PettyCash> {
     print(price);
     print(unit_id); //
     print(fileImage);
-    if(used_id == ''){
+    if (used_id == '') {
       setState(() {
         fetchSaveCash();
       });
-    }else{
-      if(unit_id == ''){
+    } else {
+      if (unit_id == '') {
         unit_id = _usedData[_index].uom_code;
-      }else if(item_id == ''){
+      } else if (item_id == '') {
         item_id = _usedData[_index].item_id;
-      }else if(quantity == ''){
+      } else if (quantity == '') {
         quantity = _usedData[_index].used_quantity;
-      }else if(price == ''){
+      } else if (price == '') {
         price = _usedData[_index].used_price;
       }
       setState(() {

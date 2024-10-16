@@ -1,5 +1,5 @@
 
-import '../setting_translate.dart';
+import '../setting.dart';
 import 'ENG.dart';
 import 'TH.dart';
 
@@ -71,7 +71,7 @@ String Baht = '';
 String Total_price = '';
 String Loading = '';
 String Name = '';
-String Position = '';
+String Position1 = '';
 String Comment = '';
 String No_Comment = '';
 String ExitApp = '';

@@ -11,7 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../origami_view.dart';
-import '../setting_translate.dart';
+import '../setting.dart';
 import '../trandar_shop/trandar_shop.dart';
 
 class LoginPage extends StatefulWidget {

@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_line_sdk/flutter_line_sdk.dart';
 import 'login/login.dart';
@@ -23,12 +26,13 @@ import 'package:google_fonts/google_fonts.dart';
 //   }
 // }
 int selectedRadio = 2;
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // ตั้งค่า LINE SDK โดยใช้ Channel ID ของคุณ
   LineSDK.instance.setup('2006248746').then((_) {
     print('LINE SDK is Prepared');
   });
+
   runApp(MyApp());
 }
 

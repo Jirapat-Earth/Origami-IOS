@@ -51,7 +51,7 @@ Future<void> TH() async {
   Total_price = 'ราคารวม';
   Loading = 'กำลังโหลด';
   Name = 'ชื่อ';
-  Position = 'ตำแหน่ง';
+  Position1 = 'ตำแหน่ง';
   Comment = 'แสดงความคิดเห็น';
   No_Comment = 'ไม่แสดงความคิดเห็น';
   ExitApp = 'คุณต้องการออกจากระบบใช่หรือไม่?';

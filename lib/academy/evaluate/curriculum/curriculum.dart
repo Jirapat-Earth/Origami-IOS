@@ -78,7 +78,8 @@ class _CurriculumState extends State<Curriculum> {
     }
   }
 
-  Widget loading() {
+  @override
+  Widget build(BuildContext context) {
     return FutureBuilder<CurriculumData>(
       future: fetchCurriculum(),
       builder: (context, snapshot) {
@@ -91,11 +92,6 @@ class _CurriculumState extends State<Curriculum> {
         }
       },
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return loading();
   }
 
   Future<void> _launchUrl(Uri url) async {

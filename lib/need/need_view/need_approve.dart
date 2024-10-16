@@ -72,8 +72,8 @@ class _NeedRequestState extends State<NeedRequest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      body:  FutureBuilder<String>(
+      backgroundColor: (ApprovelList!.length != 0)?Colors.grey.shade50:Colors.white,
+      body: FutureBuilder<String>(
         future: futureLoadData,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -214,12 +214,12 @@ class _NeedRequestState extends State<NeedRequest> {
       )
           : Center(
         child: Container(
-          child: AutoSizeText(
+          child: Text(
             '$Empty',
             style: GoogleFonts.openSans(
-              fontSize: 20,
+              fontSize: 16,
               color: Colors.orange,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w500,
             ),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,

@@ -51,7 +51,7 @@ Future<void> ENG() async {
   Total_price = 'Total Price';
   Loading = 'Loading';
   Name = 'Name';
-  Position = 'Position';
+  Position1 = 'Position';
   Comment = 'Comment';
   No_Comment = 'No Comment';
   ExitApp = 'Do you want to exit the application ?';

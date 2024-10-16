@@ -446,6 +446,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
         Column(
           children: [
             TabBar(
+              indicatorColor: Colors.orange,
               onTap: (index) {
                 setState(() {
                   _selectedIndex = index;

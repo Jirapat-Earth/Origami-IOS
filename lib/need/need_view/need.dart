@@ -193,38 +193,6 @@ class _NeedsViewState extends State<NeedsView> {
 
   int indexI = 0;
 
-  // Widget loading() {
-  //   return FutureBuilder<String>(
-  //     future: futureLoadData,
-  //     builder: (context, snapshot) {
-  //       if (snapshot.connectionState == ConnectionState.waiting) {
-  //         return Center(
-  //             child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             CircularProgressIndicator(
-  //               color: Colors.orange,
-  //             ),
-  //             SizedBox(
-  //               width: 12,
-  //             ),
-  //             Text(
-  //               '$Loading...',
-  //               style: GoogleFonts.openSans(
-  //                 fontSize: 16,
-  //                 fontWeight: FontWeight.bold,
-  //                 color: Color(0xFF555555),
-  //               ),
-  //             ),
-  //           ],
-  //         ));
-  //       } else {
-  //         return _getContentWidget();
-  //       }
-  //     },
-  //   );
-  // }
-
   Widget _loading() {
     return FutureBuilder<List<NeedRespond>>(
       future: fetchNeedResponse(),
@@ -263,7 +231,7 @@ class _NeedsViewState extends State<NeedsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+      backgroundColor: checkNeed == null ?Colors.grey.shade50:Colors.white,
       floatingActionButton: SpeedDial(
         elevation: 0,
         icon: Icons.add,
@@ -741,7 +709,7 @@ class _NeedsViewState extends State<NeedsView> {
           ),
         ),
         Expanded(
-          child: (departm != null || needList.length != 0)
+          child: (checkNeed == null || needList.isNotEmpty)
               ? ListView.builder(
                   controller: ScrollController(),
                   itemCount: needList.length,
@@ -941,12 +909,12 @@ class _NeedsViewState extends State<NeedsView> {
                 )
               : Center(
                   child: Container(
-                    child: AutoSizeText(
+                    child: Text(
                       '$Empty',
                       style: GoogleFonts.openSans(
-                        fontSize: 20,
+                        fontSize: 16,
                         color: Colors.orange,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                       ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -1209,7 +1177,7 @@ class _NeedsViewState extends State<NeedsView> {
   }
 
   // List<NeedRespond> needList = [];
-  var departm;
+  List<NeedRespond>? checkNeed;
   String need_type = "";
   String need_status = "";
   String search = "";
@@ -1237,7 +1205,7 @@ class _NeedsViewState extends State<NeedsView> {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
       // เข้าถึงข้อมูลในคีย์ 'instructors'
       final List<dynamic> needJson = jsonResponse['need_data'];
-      departm = jsonResponse['need_data'];
+      checkNeed = needJson.map((json) => NeedRespond.fromJson(json)).toList();
       // แปลงข้อมูลจาก JSON เป็น List<Instructor>
       return needJson.map((json) => NeedRespond.fromJson(json)).toList();
     } else {
