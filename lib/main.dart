@@ -1,57 +1,87 @@
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_line_sdk/flutter_line_sdk.dart';
-import 'login/login.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'imports.dart';
+import 'dart:ui';
 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   runApp(MyApp());
-// }
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Origami System',
-//       theme: ThemeData(
-//         primarySwatch: Colors.orange,
-//       ),
-//       home: LoginPage(num: 0, popPage: 0,),
-//     );
-//   }
-// }
-int selectedRadio = 2;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // ตั้งค่า LINE SDK โดยใช้ Channel ID ของคุณ
-  LineSDK.instance.setup('2006248746').then((_) {
-    print('LINE SDK is Prepared');
-  });
-
+  checkDeviceType();
   runApp(MyApp());
+}
+
+bool isAndroid = false;
+bool isTablet = false;
+bool isIPad = false;
+bool isIPhone = false;
+Future<void> checkDeviceType() async {
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  // ความกว้างของหน้าจอ
+  double screenWidth = window.physicalSize.shortestSide;
+  // ความยาวของหน้าจอ
+  double screenHeight = window.physicalSize.longestSide;
+  if (Platform.isAndroid) {
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    if (androidInfo.isPhysicalDevice) {
+      print('Android Device: ${androidInfo.model}');
+    }
+    if (screenWidth > 1440 || screenHeight <= 1900) {
+      isAndroid = false;
+      isTablet = true;
+      print("This Android device is a Tablet");
+    } else {
+      isAndroid = true;
+      isTablet = false;
+      print("This Android device is a Phone");
+    }
+    isIPad = false;
+    isIPhone = false;
+  } else if (Platform.isIOS) {
+    IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+    // เช็คชื่อรุ่นว่าเป็น iPad หรือไม่
+    if ((iosInfo.model?.toLowerCase().contains("ipad") ?? false) || screenWidth > 1440 || screenHeight <= 1900) {
+      isIPad = true;
+      isIPhone = false;
+      print("This device is an iPad");
+    } else {
+      isIPad = false;
+      isIPhone = true;
+      print("This device is an iPhone");
+    }
+    isAndroid = false;
+    isTablet = false;
+  }
+  print('$isAndroid , $isTablet , $isIPad , $isIPhone');
+  if(isAndroid == true || isIPhone == true){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    });
+  }else{
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   // หมุนหน้าจอเป็นแนวนอนอัตโนมัติและล็อคไว้
+    //   SystemChrome.setPreferredOrientations([
+    //     DeviceOrientation.landscapeRight,
+    //     DeviceOrientation.landscapeLeft,
+    //   ]);
+    // });
+  }
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Origami',
       theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Theme.of(context).colorScheme.inversePrimary,
-          brightness: Brightness.light,
-        ),
-
+        useMaterial3: false,
+        // colorScheme: ColorScheme.fromSeed(
+        //   seedColor: Theme.of(context).colorScheme.inversePrimary,
+        //   brightness: Brightness.light,
+        // ),
         textTheme: TextTheme(
           displayLarge: GoogleFonts.openSans(
             fontSize: 72,
@@ -59,7 +89,7 @@ class MyApp extends StatelessWidget {
           ),
           //GoogleFonts.oswald
           titleLarge: GoogleFonts.openSans(
-            fontSize: 30,
+            fontSize: 28,
           ),
         ),
       ),

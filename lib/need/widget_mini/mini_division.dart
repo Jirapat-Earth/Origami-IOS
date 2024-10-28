@@ -64,6 +64,9 @@ class _MiniDivisionState extends State<MiniDivision> {
                       child: TextField(
                         controller: _searchDivision,
                         decoration: InputDecoration(
+                          isDense: true,
+                          filled: true,
+                          fillColor: Colors.white,
                           hintText: '$Search...',
                           hintStyle: GoogleFonts.openSans(color: Color(0xFF555555),),
                           labelStyle: GoogleFonts.openSans(color: Color(0xFF555555),),

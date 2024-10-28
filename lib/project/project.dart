@@ -1,56 +1,74 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import 'package:origami_ios/project/project_add.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../login/login.dart';
-import '../language/translate.dart';
+import 'package:origami_ios/project/view/project_detail.dart';
+import '../../../imports.dart';
+import 'create_project/project_add.dart';
 
-class projectScreen extends StatefulWidget {
-  const projectScreen({
+class ProjectScreen extends StatefulWidget {
+  const ProjectScreen({
     Key? key,
     required this.employee,
+    required this.pageInput,
   }) : super(key: key);
   final Employee employee;
+  final String pageInput;
 
   @override
-  _projectScreenState createState() => _projectScreenState();
+  _ProjectScreenState createState() => _ProjectScreenState();
 }
 
-class _projectScreenState extends State<projectScreen> {
+class _ProjectScreenState extends State<ProjectScreen> {
   TextEditingController _searchController = TextEditingController();
 
   String _search = "";
   @override
   void initState() {
     super.initState();
+    if (widget.pageInput == 'project') {
+      // fetchModelProjectVoid();
+    } else if(widget.pageInput == 'contact'){
+
+    }
     _searchController.addListener(() {
-      _search = _searchController.text;
+      setState(() {
+        _search = _searchController.text;
+        allModelProject.clear();
+        fetchModelProjectVoid();
+      });
+
       print("Current text: ${_searchController.text}");
     });
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
-        // tooltip: 'Increment',
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => projectAdd(
                 employee: widget.employee,
+                pageInput: widget.pageInput,
               ),
             ),
-          );
+          ).then((value) {
+            if (widget.pageInput == 'contact') {
+            } else {
+              setState(() {
+                indexStr = 0;
+                allModelProject.clear();
+                fetchModelProjectVoid();
+              });
+            }
+          });
         },
         child: const Icon(
           Icons.add,
@@ -67,254 +85,327 @@ class _projectScreenState extends State<projectScreen> {
         elevation: 0,
         backgroundColor: Colors.orange,
       ),
-      body: SafeArea(
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _searchController,
-                  keyboardType: TextInputType.text,
-                  style: GoogleFonts.openSans(
-                      color: Color(0xFF555555), fontSize: 14),
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 14),
-                    hintText: '$Search...',
-                    hintStyle: GoogleFonts.openSans(
-                        fontSize: 14, color: Color(0xFF555555)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: Colors.orange,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: _searchController,
+              keyboardType: TextInputType.text,
+              style: GoogleFonts.openSans(
+                color: Color(0xFF555555),
+                fontSize: 14,
+              ),
+              decoration: InputDecoration(
+                isDense: true,
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+                hintText: 'Search...',
+                hintStyle: GoogleFonts.openSans(
+                    fontSize: 14, color: Color(0xFF555555)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.orange,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                    width: 1.0,
                   ),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.circular(100),
                 ),
               ),
-              Expanded(
-                child: Card(
-                  elevation: 0,
-                  color: Colors.white,
-                  // color: Color(0xFFF5F5F5),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: ListView.builder(
-                        itemCount: 7,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Card(
-                                  elevation: 0,
-                                  color: Colors.white,
-                                  child: InkWell(
-                                    onTap: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) => activityEdit(
-                                      //       employee: widget.employee,
-                                      //     ),
-                                      //   ),
-                                      // );
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      // mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 4, bottom: 4, right: 8),
-                                          child: CircleAvatar(
-                                            radius: 25,
-                                            backgroundColor: Colors.orange,
-                                            child: CircleAvatar(
-                                              radius: 24,
-                                              backgroundColor: Colors.orange,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                child: Text(
-                                                  'P',
-                                                  style: GoogleFonts.openSans(
-                                                    fontSize: 24,
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Origami Skoop',
-                                                maxLines: 1,
-                                                style: GoogleFonts.openSans(
-                                                  fontSize: 14,
-                                                  color: Colors.orange,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Trandar International',
-                                                maxLines: 1,
-                                                style: GoogleFonts.openSans(
-                                                  fontSize: 12,
-                                                  color: Color(0xFF555555),
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Divider(color: Colors.grey),
-                              ],
-                            ),
-                          );
-                        }),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          Expanded(child: _loading()),
+        ],
       ),
     );
   }
 
-  Future<List<ModelProject>> fetchModelProject() async {
-    final uri =
-    Uri.parse("https://www.origami.life/api/origami/");
+  Widget _loading() {
+    return FutureBuilder<void>(
+      future: (widget.pageInput == 'project') ? fetchModelProjectVoid() : null,
+      builder: (context, snapshot) {
+        final allModel = allModelProject;
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  color: Colors.orange,
+                ),
+                SizedBox(width: 12),
+                Text(
+                  '$Loading...',
+                  style: GoogleFonts.openSans(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF555555),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else if (allModel.isEmpty) {
+          return Center(
+            child: Text(
+              '$Empty',
+              style: GoogleFonts.openSans(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
+              ),
+            ),
+          );
+        } else {
+          return _getContentWidget(allModel);
+        }
+      },
+    );
+  }
+
+  Widget _getContentWidget(List<ModelProject> allModel) {
+    allModel = allModel.toSet().toList();
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: ListView.builder(
+            itemCount: allModel.length+1,
+            itemBuilder: (context, index) {
+              final project = allModel[index];
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Card(
+                  elevation: 0,
+                  color: Colors.white,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProjectView(
+                            employee: widget.employee,
+                            project: project,
+                            pageInput: widget.pageInput,
+                          ),
+                        ),
+                      ).then((value) {
+                        // เมื่อกลับมาหน้า 1 จะทำงานในส่วนนี้
+                        setState(() {
+                          indexStr = 0;
+                          allModel.clear();
+                          fetchModelProjectVoid(); // เรียกฟังก์ชันโหลด API ใหม่
+                        });
+                      });
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      // mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 4, bottom: 4, right: 8),
+                          child: CircleAvatar(
+                            radius: 25,
+                            backgroundColor: Colors.orange,
+                            child: CircleAvatar(
+                              radius: 24,
+                              backgroundColor: Colors.orange,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: Text(
+                                  project.project_name!.substring(0, 1),
+                                  style: GoogleFonts.openSans(
+                                    fontSize: 24,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${project.project_name!}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.openSans(
+                                  fontSize: 18,
+                                  color: Color(0xFF555555),
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              Text(
+                                project.m_company!,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.openSans(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
+      ),
+    );
+  }
+
+  int indexItems = 0;
+  List<ModelProject> allModelProject = [];
+  Future<void> fetchModelProjectVoid() async {
+    final uri = Uri.parse("https://www.origami.life/crm/project.php");
     final response = await http.post(
       uri,
       body: {
         'comp_id': widget.employee.comp_id,
-        'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'idemp': widget.employee.emp_id,
+        'user': 'origami',
+        'pass': widget.employee.auth_password,
+        'index': (_search != '') ? '0' : indexItems.toString(),
+        'txt_search': _search,
       },
     );
+
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      // เข้าถึงข้อมูลในคีย์ 'instructors'
-      final List<dynamic> dataJson = jsonResponse['Model_Project'];
-      // แปลงข้อมูลจาก JSON เป็น List<Instructor>
-      return dataJson.map((json) => ModelProject.fromJson(json)).toList();
+      final List<dynamic> dataJson = jsonResponse['data'];
+      int max = jsonResponse['max'];
+      int sum = jsonResponse['sum'];
+      List<ModelProject> newProjects =
+          dataJson.map((json) => ModelProject.fromJson(json)).toList();
+      newProjects.toSet().toList();
+      // เก็บข้อมูลเก่าและรวมกับข้อมูลใหม่
+      allModelProject.addAll(newProjects);
+
+      // เช็คเงื่อนไขตามที่ต้องการ
+      // if (_search == '') {
+      //   if (sum > indexItems) {
+      //     indexItems = indexItems + max;
+      //     if (indexItems >= sum) {
+      //       indexItems = 0;
+      //       _search == '0';
+      //     }
+      //     await fetchModelProjectVoid(); // โหลดข้อมูลใหม่เมื่อ index เปลี่ยน
+      //   } else if (sum <= indexItems) {
+      //     indexItems = 0;
+      //     _search == '0';
+      //   }
+      // }
     } else {
-      throw Exception('Failed to load instructors');
+      throw Exception('Failed to load projects');
     }
   }
+
+  bool isLoading = false;
+  int? indexStr = 0;
 
 }
 
 class ModelProject {
-  String? prId;
-  String? prName;
-  String? prLat;
-  String? prLng;
-  String? prStrat;
-  String? prEnd;
-  String? prTotal;
-  String? prCompId;
-  String? prDate;
+  String? project_id;
+  String? project_name;
+  String? project_latitude;
+  String? project_longtitude;
+  String? project_start;
+  String? project_end;
+  String? project_all_total;
+  String? m_company;
+  String? project_create_date;
   String? emp_id;
   String? project_value;
   String? project_type_name;
   String? project_description;
   String? project_sale_status_name;
   String? project_oppo_reve;
-  String? prComp_id;
-  String? con_id;
-  String? con_name;
-  String? typeId;
-  String? sale;
+  String? comp_id;
+  String? typeIds;
+  String? salestatusIds;
+  String? main_contact;
+  String? cont_id;
   String? projct_location;
+  String? cus_id;
 
   ModelProject({
-    this.prId,
-    this.prName,
-    this.prLat,
-    this.prLng,
-    this.prStrat,
-    this.prEnd,
-    this.prTotal,
-    this.prCompId,
-    this.prDate,
+    this.project_id,
+    this.project_name,
+    this.project_latitude,
+    this.project_longtitude,
+    this.project_start,
+    this.project_end,
+    this.project_all_total,
+    this.m_company,
+    this.project_create_date,
     this.emp_id,
     this.project_value,
     this.project_type_name,
     this.project_description,
     this.project_sale_status_name,
     this.project_oppo_reve,
-    this.prComp_id,
-    this.con_id,
-    this.con_name,
-    this.typeId,
-    this.sale,
+    this.comp_id,
+    this.typeIds,
+    this.salestatusIds,
+    this.main_contact,
+    this.cont_id,
     this.projct_location,
+    this.cus_id,
   });
 
   // สร้างฟังก์ชันเพื่อแปลง JSON ไปเป็น Object ของ Academy
   factory ModelProject.fromJson(Map<String, dynamic> json) {
     return ModelProject(
-      prId: json['prId'],
-      prName: json['prName'],
-      prLat: json['prLat'],
-      prLng: json['prLng'],
-      prStrat: json['prStrat'],
-      prEnd: json['prEnd'],
-      prTotal: json['prTotal'],
-      prCompId: json['prCompId'],
-      prDate: json['prDate'],
+      project_id: json['project_id'],
+      project_name: json['project_name'],
+      project_latitude: json['project_latitude'],
+      project_longtitude: json['project_longtitude'],
+      project_start: json['project_start'],
+      project_end: json['project_end'],
+      project_all_total: json['project_all_total'],
+      m_company: json['m_company'],
+      project_create_date: json['project_create_date'],
       emp_id: json['emp_id'],
       project_value: json['project_value'],
       project_type_name: json['project_type_name'],
       project_description: json['project_description'],
       project_sale_status_name: json['project_sale_status_name'],
       project_oppo_reve: json['project_oppo_reve'],
-      prComp_id: json['prComp_id'],
-      con_id: json['con_id'],
-      con_name: json['con_name'],
-      typeId: json['typeId'],
-      sale: json['sale'],
+      comp_id: json['comp_id'],
+      typeIds: json['typeIds'],
+      salestatusIds: json['salestatusIds'],
+      main_contact: json['main_contact'],
+      cont_id: json['cont_id'],
       projct_location: json['projct_location'],
+      cus_id: json['cus_id'],
     );
   }
 }

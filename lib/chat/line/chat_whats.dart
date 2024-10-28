@@ -107,6 +107,9 @@ class _ChatWhatsState extends State<ChatWhats> {
                     child: TextField(
                       controller: _controller,
                       decoration: InputDecoration(
+                        isDense: true,
+                        filled: true,
+                        fillColor: Colors.white,
                         hintText: 'Enter your message',
                         hintStyle: GoogleFonts.openSans(
                           color: const Color(0xFF555555),

@@ -82,7 +82,7 @@ class _PettyCashState extends State<PettyCash> {
   int _currentIndex = 0;
   String startDate = '';
   void _startTime(CashData cashData) {
-    String cashStart = cashData.cash_start;
+    String cashStart = cashData.cash_start??'';
     if (cashStart == null || cashStart.isEmpty) {
       print('No date provided'); // หรือจัดการกับกรณีค่าว่างที่นี่
     } else {
@@ -106,7 +106,7 @@ class _PettyCashState extends State<PettyCash> {
 
   String endDate = '';
   void _endTime(CashData cashData) {
-    String cashEnd = cashData.cash_end;
+    String cashEnd = cashData.cash_end??'';
     if (cashEnd == null || cashEnd.isEmpty) {
       print('No date provided'); // หรือจัดการกับกรณีค่าว่างที่นี่
     } else {
@@ -132,8 +132,8 @@ class _PettyCashState extends State<PettyCash> {
   double longBalance = 0.0;
 
   void _sumLong(CashData cashData) {
-    double amount = double.parse(cashData.cash_amount.replaceAll(',', ''));
-    double balance = double.parse(cashData.cash_balance.replaceAll(',', ''));
+    double amount = double.parse(cashData.cash_amount?.replaceAll(',', '')??'');
+    double balance = double.parse(cashData.cash_balance?.replaceAll(',', '')??'');
     longAmount = (balance * 100) / amount;
     longBalance = longAmount / 100;
   }
@@ -181,8 +181,10 @@ class _PettyCashState extends State<PettyCash> {
         if (snapshot.hasError) {
           return Center(
               child: Text(
-            'Error: ${snapshot.error}',
+            Empty,
             style: GoogleFonts.openSans(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
               color: const Color(0xFF555555),
             ),
           ));
@@ -290,7 +292,7 @@ class _PettyCashState extends State<PettyCash> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  cashData.cash_no,
+                                  cashData.cash_no??'',
                                   style: GoogleFonts.openSans(
                                     color: Colors.white,
                                     fontSize: 18,
@@ -327,7 +329,7 @@ class _PettyCashState extends State<PettyCash> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  cashData.cash_name,
+                                  cashData.cash_name??'',
                                   style: GoogleFonts.openSans(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -335,7 +337,7 @@ class _PettyCashState extends State<PettyCash> {
                                   ),
                                 ),
                                 Text(
-                                  cashData.cash_amount,
+                                  cashData.cash_amount??'',
                                   style: GoogleFonts.openSans(
                                     color: Colors.white,
                                     fontSize: 28,
@@ -363,7 +365,7 @@ class _PettyCashState extends State<PettyCash> {
                             ),
                           ),
                           Text(
-                            cashData.cash_balance,
+                            cashData.cash_balance??'',
                             style: GoogleFonts.openSans(
                               color: Colors.white,
                               fontSize: 28,
@@ -523,6 +525,8 @@ class _PettyCashState extends State<PettyCash> {
                                     color: Color(0xFF555555), fontSize: 14),
                                 decoration: InputDecoration(
                                   isDense: true,
+                                  filled: true,
+                                  fillColor: Colors.white,
                                   contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 12,
                                     vertical: 8,
@@ -533,8 +537,6 @@ class _PettyCashState extends State<PettyCash> {
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  filled: true, // เปิดการใช้สีพื้นหลัง
-                                  fillColor: Colors.white,
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Colors
@@ -623,16 +625,20 @@ class _PettyCashState extends State<PettyCash> {
           if (snapshot.hasError) {
             return Center(
                 child: Text(
-              'Error: ${snapshot.error}',
-              style: GoogleFonts.openSans(
-                color: const Color(0xFF555555),
-              ),
-            ));
+                  Empty,
+                  style: GoogleFonts.openSans(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF555555),
+                  ),
+                ));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(
                 child: Text(
               Empty,
               style: GoogleFonts.openSans(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
                 color: const Color(0xFF555555),
               ),
             ));
@@ -687,12 +693,13 @@ class _PettyCashState extends State<PettyCash> {
                         cells: [
                           DataCell(
                             Checkbox(
-                              value: selectedIds.contains(item.used_id),
+                              checkColor: Colors.white,
+                              activeColor: Colors.orange,
+                              value: selectedIds.contains(item.used_id??''),
                               onChanged: (bool? isChecked) {
-                                _onCheckboxChanged(item.used_id, isChecked);
+                                _onCheckboxChanged(item.used_id??'', isChecked);
                                 print(selectedIds);
                               },
-                              activeColor: Colors.green,
                             ),
                           ),
                           DataCell(
@@ -700,13 +707,13 @@ class _PettyCashState extends State<PettyCash> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  item.item_name,
+                                  item.item_name??'',
                                   style: GoogleFonts.openSans(
                                     color: const Color(0xFF555555),
                                   ),
                                 ),
                                 Text(
-                                  "(${item.used_date})",
+                                  "(${item.used_date??''})",
                                   style: GoogleFonts.openSans(
                                     color: const Color(0xFF555555),
                                   ),
@@ -785,6 +792,9 @@ class _PettyCashState extends State<PettyCash> {
                                   child: TextField(
                                     controller: _subjectController,
                                     decoration: InputDecoration(
+                                      isDense: true,
+                                      filled: true,
+                                      fillColor: Colors.white,
                                       hintText: 'subject',
                                       hintStyle: GoogleFonts.openSans(
                                         color: const Color(0xFF555555),
@@ -831,6 +841,7 @@ class _PettyCashState extends State<PettyCash> {
                                         color: const Color(0xFF555555),
                                         fontSize: 14),
                                     decoration: InputDecoration(
+                                      isDense: true,
                                       filled: true,
                                       fillColor: Colors.white,
                                       hintText: '$Type_something...',
@@ -934,8 +945,10 @@ class _PettyCashState extends State<PettyCash> {
         } else if (snapshot.hasError) {
           return Center(
               child: Text(
-            'Error: ${snapshot.error}',
+            Empty,
             style: GoogleFonts.openSans(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
               color: const Color(0xFF555555),
             ),
           ));
@@ -944,6 +957,8 @@ class _PettyCashState extends State<PettyCash> {
               child: Text(
             Empty,
             style: GoogleFonts.openSans(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
               color: const Color(0xFF555555),
             ),
           ));
@@ -969,17 +984,17 @@ class _PettyCashState extends State<PettyCash> {
           _index = index;
           // selectedUnit2 = usedData.uom_description as UnitData?;
           setState(() {
-            _detailyController.text = usedData.used_description;
-            _quantityController.text = usedData.used_quantity;
-            _priceController.text = usedData.used_price;
-            _amountController.text = usedData.used_amount;
+            _detailyController.text = usedData.used_description??'';
+            _quantityController.text = usedData.used_quantity??'';
+            _priceController.text = usedData.used_price??'';
+            _amountController.text = usedData.used_amount??'';
           });
-          cash_id = cashData.cash_id;
-          used_id = usedData.used_id;
+          cash_id = cashData.cash_id??'';
+          used_id = usedData.used_id??'';
           // item_id = usedData.item_id;
           fetchDetail();
-          unit_id = usedData.uom_code;
-          item_id = usedData.item_id;
+          unit_id = usedData.uom_code??'';
+          item_id = usedData.item_id??'';
           isSave = false;
         });
       },
@@ -1025,7 +1040,7 @@ class _PettyCashState extends State<PettyCash> {
                                 ),
                                 Flexible(
                                   child: Text(
-                                    usedData.used_date,
+                                    usedData.used_date??'',
                                     style: GoogleFonts.openSans(
                                         fontSize: 14, color: Color(0xFF555555)),
                                     overflow: TextOverflow.ellipsis,
@@ -1050,7 +1065,7 @@ class _PettyCashState extends State<PettyCash> {
                                 ),
                                 Flexible(
                                   child: Text(
-                                    usedData.item_name,
+                                    usedData.item_name??'',
                                     style: GoogleFonts.openSans(
                                         fontSize: 14, color: Color(0xFF555555)),
                                     overflow: TextOverflow.ellipsis,
@@ -1082,7 +1097,7 @@ class _PettyCashState extends State<PettyCash> {
                             child: Text(
                               (usedData.used_description == '')
                                   ? ' - '
-                                  : usedData.used_description,
+                                  : usedData.used_description??'',
                               style: GoogleFonts.openSans(
                                 fontSize: 14,
                                 color: Color(0xFF555555),
@@ -1113,7 +1128,7 @@ class _PettyCashState extends State<PettyCash> {
                                 ),
                                 Flexible(
                                   child: Text(
-                                    usedData.used_quantity,
+                                    usedData.used_quantity??'',
                                     style: GoogleFonts.openSans(
                                         fontSize: 14, color: Color(0xFF555555)),
                                     overflow: TextOverflow.ellipsis,
@@ -1170,7 +1185,7 @@ class _PettyCashState extends State<PettyCash> {
                           ),
                           Flexible(
                             child: Text(
-                              usedData.used_amount,
+                              usedData.used_amount??'',
                               style: GoogleFonts.openSans(
                                   fontSize: 14, color: Color(0xFF555555)),
                               overflow: TextOverflow.ellipsis,
@@ -1203,8 +1218,8 @@ class _PettyCashState extends State<PettyCash> {
                   ),
                   onPressed: () {
                     setState(() {
-                      cash_id = cashData.cash_id;
-                      used_id = usedData.used_id;
+                      cash_id = cashData.cash_id??'';
+                      used_id = usedData.used_id??'';
                       fetchDeleteCash();
                     });
                   },
@@ -1319,6 +1334,8 @@ class _PettyCashState extends State<PettyCash> {
                               color: Color(0xFF555555), fontSize: 14),
                           decoration: InputDecoration(
                             isDense: true,
+                            filled: true,
+                            fillColor: Colors.white,
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 12,
@@ -1386,6 +1403,7 @@ class _PettyCashState extends State<PettyCash> {
                     style: GoogleFonts.openSans(
                         color: Color(0xFF555555), fontSize: 14),
                     decoration: InputDecoration(
+                      isDense: true,
                       filled: true,
                       fillColor: Colors.white,
                       hintText: '',
@@ -1444,6 +1462,7 @@ class _PettyCashState extends State<PettyCash> {
                     style: GoogleFonts.openSans(
                         color: Color(0xFF555555), fontSize: 14),
                     decoration: InputDecoration(
+                      isDense: true,
                       filled: true,
                       fillColor: Colors.white,
                       hintText: '0',
@@ -1504,6 +1523,7 @@ class _PettyCashState extends State<PettyCash> {
                           style: GoogleFonts.openSans(
                               color: Color(0xFF555555), fontSize: 14),
                           decoration: InputDecoration(
+                            isDense: true,
                             filled: true,
                             fillColor: Colors.white,
                             hintText: '0',
@@ -1612,6 +1632,8 @@ class _PettyCashState extends State<PettyCash> {
                                     color: Color(0xFF555555), fontSize: 14),
                                 decoration: InputDecoration(
                                   isDense: true,
+                                  filled: true,
+                                  fillColor: Colors.white,
                                   contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 12,
                                     vertical: 12,
@@ -1867,7 +1889,7 @@ class _PettyCashState extends State<PettyCash> {
       // เข้าถึงข้อมูลในคีย์ 'instructors'
       final List<dynamic> dataJson = jsonResponse['cash_data'];
       final dataCash = dataJson.map((json) => CashData.fromJson(json)).toList();
-      cash_id = dataCash[0].cash_id;
+      cash_id = dataCash[0].cash_id??'';
       print(cash_id);
       // แปลงข้อมูลจาก JSON เป็น List<Instructor>
       return dataJson.map((json) => CashData.fromJson(json)).toList();
@@ -1987,13 +2009,13 @@ class _PettyCashState extends State<PettyCash> {
       });
     } else {
       if (unit_id == '') {
-        unit_id = _usedData[_index].uom_code;
+        unit_id = _usedData[_index].uom_code??'';
       } else if (item_id == '') {
-        item_id = _usedData[_index].item_id;
+        item_id = _usedData[_index].item_id??'';
       } else if (quantity == '') {
-        quantity = _usedData[_index].used_quantity;
+        quantity = _usedData[_index].used_quantity??'';
       } else if (price == '') {
-        price = _usedData[_index].used_price;
+        price = _usedData[_index].used_price??'';
       }
       setState(() {
         fetchSaveCash();
@@ -2159,22 +2181,22 @@ class _PettyCashState extends State<PettyCash> {
 }
 
 class CashData {
-  final String cash_id;
-  final String cash_name;
-  final String cash_no;
-  final String cash_amount;
-  final String cash_start;
-  final String cash_end;
-  final String cash_balance;
+  final String? cash_id;
+  final String? cash_name;
+  final String? cash_no;
+  final String? cash_amount;
+  final String? cash_start;
+  final String? cash_end;
+  final String? cash_balance;
 
   CashData({
-    required this.cash_id,
-    required this.cash_name,
-    required this.cash_no,
-    required this.cash_amount,
-    required this.cash_start,
-    required this.cash_end,
-    required this.cash_balance,
+    this.cash_id,
+    this.cash_name,
+    this.cash_no,
+    this.cash_amount,
+    this.cash_start,
+    this.cash_end,
+    this.cash_balance,
   });
 
   // สร้างฟังก์ชันเพื่อแปลง JSON ไปเป็น Object ของ Academy
@@ -2210,35 +2232,35 @@ class StatusCash {
 }
 
 class UsedData {
-  final String used_id;
-  final String used_date;
-  final String used_description;
-  final String item_id;
-  final String item_name;
-  final String used_quantity;
-  final String uom_code;
-  final String uom_description;
-  final String used_price;
-  final String used_amount;
-  final String used_status;
-  final String can_action;
-  final String files_path;
+  final String? used_id;
+  final String? used_date;
+  final String? used_description;
+  final String? item_id;
+  final String? item_name;
+  final String? used_quantity;
+  final String? uom_code;
+  final String? uom_description;
+  final String? used_price;
+  final String? used_amount;
+  final String? used_status;
+  final String? can_action;
+  final String? files_path;
   // bool isSelected;
 
   UsedData({
-    required this.used_id,
-    required this.used_date,
-    required this.used_description,
-    required this.item_id,
-    required this.item_name,
-    required this.used_quantity,
-    required this.uom_code,
-    required this.uom_description,
-    required this.used_price,
-    required this.used_amount,
-    required this.used_status,
-    required this.can_action,
-    required this.files_path,
+    this.used_id,
+    this.used_date,
+    this.used_description,
+    this.item_id,
+    this.item_name,
+    this.used_quantity,
+    this.uom_code,
+    this.uom_description,
+    this.used_price,
+    this.used_amount,
+    this.used_status,
+    this.can_action,
+    this.files_path,
     // this.isSelected = false,
   });
 
@@ -2264,32 +2286,32 @@ class UsedData {
 }
 
 class DetailData {
-  final String used_date;
-  final String used_description;
-  final String item_id;
-  final String item_name;
-  final String used_quantity;
-  final String uom_code;
-  final String uom_description;
-  final String used_price;
-  final String used_amount;
-  final String used_status;
-  final String can_action;
-  final String files_path;
+  String? used_date;
+  String? used_description;
+  String? item_id;
+  String? item_name;
+  String? used_quantity;
+  String? uom_code;
+  String? uom_description;
+  String? used_price;
+  String? used_amount;
+  String? used_status;
+  String? can_action;
+  String? files_path;
 
   DetailData({
-    required this.used_date,
-    required this.used_description,
-    required this.item_id,
-    required this.item_name,
-    required this.used_quantity,
-    required this.uom_code,
-    required this.uom_description,
-    required this.used_price,
-    required this.used_amount,
-    required this.used_status,
-    required this.can_action,
-    required this.files_path,
+    this.used_date,
+    this.used_description,
+    this.item_id,
+    this.item_name,
+    this.used_quantity,
+    this.uom_code,
+    this.uom_description,
+    this.used_price,
+    this.used_amount,
+    this.used_status,
+    this.can_action,
+    this.files_path,
   });
 
   // สร้างฟังก์ชันเพื่อแปลง JSON ไปเป็น Object ของ Academy

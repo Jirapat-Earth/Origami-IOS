@@ -150,6 +150,9 @@ class _ChatListState extends State<ChatList> {
                               child: TextField(
                                 controller: _searchController,
                                 decoration: InputDecoration(
+                                  isDense: true,
+                                  filled: true,
+                                  fillColor: Colors.white,
                                   hintText: '$Search...',
                                   hintStyle: GoogleFonts.openSans(
                                     color: Color(0xFF555555),

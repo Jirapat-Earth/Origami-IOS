@@ -449,6 +449,7 @@ class _NeedDetailState extends State<NeedDetail> {
                             color: Color(0xFF555555), fontSize: 14),
                         decoration: InputDecoration(
                           labelStyle: GoogleFonts.openSans(color: Colors.blue),
+                          isDense: true,
                           filled: true,
                           fillColor: Colors.white,
                           hintText: (widget.request_id == '')
@@ -504,6 +505,7 @@ class _NeedDetailState extends State<NeedDetail> {
                       style: GoogleFonts.openSans(
                           color: Color(0xFF555555), fontSize: 14),
                       decoration: InputDecoration(
+                        isDense: true,
                         filled: true,
                         fillColor: Colors.white,
                         hintText: (widget.request_id == '')
@@ -1660,6 +1662,7 @@ class _NeedDetailState extends State<NeedDetail> {
                   style: GoogleFonts.openSans(
                       color: Color(0xFF555555), fontSize: 14),
                   decoration: InputDecoration(
+                    isDense: true,
                     filled: true,
                     fillColor: Colors.white,
                     hintText: '$Type_something...',
@@ -1716,6 +1719,7 @@ class _NeedDetailState extends State<NeedDetail> {
                   keyboardType: TextInputType.number,
                   controller: _amountController,
                   decoration: InputDecoration(
+                    isDense: true,
                     filled: true,
                     fillColor: Colors.white,
                     hintText: '0',
@@ -1780,6 +1784,7 @@ class _NeedDetailState extends State<NeedDetail> {
                         keyboardType: TextInputType.number,
                         controller: _priceController,
                         decoration: InputDecoration(
+                          isDense: true,
                           filled: true,
                           fillColor: Colors.white,
                           hintText: '0',
@@ -2008,9 +2013,9 @@ class _NeedDetailState extends State<NeedDetail> {
                       child: Text(
                         '$Empty',
                         style: GoogleFonts.openSans(
-                          fontSize: 24,
-                          color: Colors.orange,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey,
                         ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,

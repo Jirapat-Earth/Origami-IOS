@@ -1,22 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:origami_ios/project/project.dart';
-import 'package:origami_ios/setting.dart';
-import 'package:origami_ios/work/work_page.dart';
-import '../language/translate.dart';
-import '../login/login.dart';
-import 'academy/academy.dart';
-import 'activity/activity.dart';
-import 'chat/chat.dart';
-import 'google_map/custom_info_windows.dart';
-import 'google_map/google_map.dart';
-import 'need/need_view/need.dart';
-import 'need/need_view/need_approve.dart';
-import 'package:camera/camera.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'need/petty_cash/petty_cash.dart';
+import 'package:http/http.dart' as http;
+import '../imports.dart';
 
 class OrigamiPage extends StatefulWidget {
   const OrigamiPage({
@@ -31,7 +14,7 @@ class OrigamiPage extends StatefulWidget {
 }
 
 class _OrigamiPageState extends State<OrigamiPage> {
-  int _index = 0;
+  int _index = 12;
   static var optionStyle = GoogleFonts.openSans(
     fontSize: 24,
     fontWeight: FontWeight.bold,
@@ -43,10 +26,14 @@ class _OrigamiPageState extends State<OrigamiPage> {
     super.initState();
     _index = widget.popPage;
     futureLoadData = loadData();
+    fetchBranch();
   }
 
   DateTime? lastPressed;
   bool isNeed = false;
+  bool isBranch = false;
+  GetTimeStampSim? timeStampObject;
+  List<GetTimeStampSim> timeStampList = [];
   Widget build(BuildContext context) {
     double drawerWidth = MediaQuery.of(context).size.width * 0.6;
     return WillPopScope(
@@ -80,6 +67,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          elevation: 1,
           foregroundColor: Colors.orange,
           backgroundColor: Colors.white,
           title: Text(
@@ -90,15 +78,15 @@ class _OrigamiPageState extends State<OrigamiPage> {
           actions: <Widget>[
             InkWell(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => WhatsAppChatScreen(),
-                //   ),
-                // );
+                if (branchStr == 'Time') {
+                  _changeBranch();
+                } else {
+                  return;
+                }
               },
               child: Row(
                 children: [
+                  SizedBox(width: 20),
                   Container(
                     width: 40,
                     child: Image.network(
@@ -209,215 +197,10 @@ class _OrigamiPageState extends State<OrigamiPage> {
                     children: [
                       Expanded(
                         child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 2, left: 6, right: 6),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: ListTile(
-                                        trailing: Icon(
-                                            Icons.arrow_drop_down_outlined,
-                                            color: (_index == 0 || _index == 1)
-                                                ? Colors.orange
-                                                : Color(0xFF555555)),
-                                        title: Row(
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              child: FaIcon(
-                                                  FontAwesomeIcons.fileText,
-                                                  size: 18,
-                                                  color: (_index == 0 ||
-                                                          _index == 1)
-                                                      ? Colors.orange
-                                                      : Color(0xFF555555)),
-                                            ),
-                                            SizedBox(
-                                              width: 8,
-                                            ),
-                                            Text(
-                                              '$need',
-                                              style: GoogleFonts.openSans(
-                                                  color: (_index == 0 ||
-                                                          _index == 1)
-                                                      ? Colors.orange
-                                                      : Color(0xFF555555)),
-                                            ),
-                                          ],
-                                        ),
-                                        // selected: _index == 0,
-                                        // onTap: () {
-                                        //   setState(() {
-                                        //     (isNeed == true) ? _index = 0 : _index = _index;
-                                        //     (isNeed == true) ? isNeed = false : isNeed = true;
-                                        //   });
-                                        // },
-                                      ),
-                                    ),
-                                    (isNeed == true)
-                                        ? Container()
-                                        : Container(
-                                            padding: EdgeInsets.only(left: 16),
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8, right: 8),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                    child: ListTile(
-                                                      trailing: FaIcon(
-                                                          FontAwesomeIcons
-                                                              .handHoldingUsd,
-                                                          size: 18,
-                                                          color: (_index == 0)
-                                                              ? Colors.orange
-                                                              : Color(
-                                                                  0xFF555555)),
-                                                      title: Text(
-                                                        '$need',
-                                                        style: GoogleFonts.openSans(
-                                                            color: (_index == 0)
-                                                                ? Colors.orange
-                                                                : Color(
-                                                                    0xFF555555)),
-                                                      ),
-                                                      selected: _index == 0,
-                                                      onTap: () {
-                                                        setState(() {
-                                                          _index = 0;
-                                                        });
-
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8, right: 8),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                    child: ListTile(
-                                                      trailing: FaIcon(
-                                                          FontAwesomeIcons
-                                                              .checkDouble,
-                                                          size: 18,
-                                                          color: (_index == 1)
-                                                              ? Colors.orange
-                                                              : Color(
-                                                                  0xFF555555)),
-                                                      title: Text(
-                                                        '$request',
-                                                        style: GoogleFonts.openSans(
-                                                            color: (_index == 1)
-                                                                ? Colors.orange
-                                                                : Color(
-                                                                    0xFF555555)),
-                                                      ),
-                                                      selected: _index == 1,
-                                                      onTap: () {
-                                                        setState(() {
-                                                          _index = 1;
-                                                        });
-
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8, right: 8),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                    child: ListTile(
-                                                      trailing: FaIcon(
-                                                          FontAwesomeIcons
-                                                              .wallet,
-                                                          size: 18,
-                                                          color: (_index == 8)
-                                                              ? Colors.orange
-                                                              : Color(
-                                                                  0xFF555555)),
-                                                      title: Text(
-                                                        'Petty Cash',
-                                                        style: GoogleFonts.openSans(
-                                                            color: (_index == 8)
-                                                                ? Colors.orange
-                                                                : Color(
-                                                                    0xFF555555)),
-                                                      ),
-                                                      selected: _index == 8,
-                                                      onTap: () {
-                                                        setState(() {
-                                                          _index = 8;
-                                                        });
-
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: 12, right: 12),
-                                child: Divider(),
-                              ),
-                              _viewMenu(10, 'Project', Icons.chevron_right,
-                                  FontAwesomeIcons.book),
-                              _viewMenu(9, 'Activity', Icons.chevron_right,
-                                  FontAwesomeIcons.running),
-                              _viewMenu(11, 'Time', Icons.chevron_right,
-                                  FontAwesomeIcons.clock),
-                              _viewMenu(
-                                  12, 'Work', Icons.chevron_right, Icons.work),
-                              _viewMenu(2, '$academy', Icons.chevron_right,
-                                  FontAwesomeIcons.university),
-                              _viewMenu(3, '$language', Icons.chevron_right,
-                                  FontAwesomeIcons.language),
-                              _viewMenu(6, 'About', Icons.chevron_right,
-                                  FontAwesomeIcons.user),
-                            ],
-                          ),
+                          child: _ListMenu(),
                         ),
                       ),
-                      _test(),
+                      // _test(),
                       _output(),
                     ],
                   ),
@@ -426,18 +209,228 @@ class _OrigamiPageState extends State<OrigamiPage> {
             ),
           ),
         ),
-        body: Center(
-          child: _buildPage(),
+        body: SafeArea(
+          child: Center(
+            child: _buildPage(),
+          ),
         ),
       ),
     );
   }
 
-  List<String> _listTitle = [
+  Widget _ListMenu() {
+    return Column(
+      children: [
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 2, left: 6, right: 6),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ListTile(
+                      trailing: Icon(Icons.keyboard_arrow_down,
+                          color: (_index == 0 || _index == 1)
+                              ? Colors.transparent
+                              : Color(0xFF555555)),
+                      title: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: FaIcon(FontAwesomeIcons.fileText,
+                                size: 18,
+                                color: (_index == 0 || _index == 1)
+                                    ? Colors.orange
+                                    : Color(0xFF555555)),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            '$need',
+                            style: GoogleFonts.openSans(
+                                color: (_index == 0 || _index == 1)
+                                    ? Colors.orange
+                                    : Color(0xFF555555)),
+                          ),
+                        ],
+                      ),
+                      // selected: _index == 0,
+                      // onTap: () {
+                      //   setState(() {
+                      //     (isNeed == true) ? _index = 0 : _index = _index;
+                      //     (isNeed == true) ? isNeed = false : isNeed = true;
+                      //   });
+                      // },
+                    ),
+                  ),
+                  if (isNeed == false)
+                    Container(
+                      padding: EdgeInsets.only(left: 16),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: ListTile(
+                                trailing: FaIcon(FontAwesomeIcons.handHoldingUsd,
+                                    size: 18,
+                                    color: (_index == 0)
+                                        ? Colors.orange
+                                        : Color(0xFF555555)),
+                                title: Text(
+                                  '$need',
+                                  style: GoogleFonts.openSans(
+                                      color: (_index == 0)
+                                          ? Colors.orange
+                                          : Color(0xFF555555)),
+                                ),
+                                selected: _index == 0,
+                                onTap: () {
+                                  setState(() {
+                                    _index = 0;
+                                  });
+
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: ListTile(
+                                trailing: FaIcon(FontAwesomeIcons.checkDouble,
+                                    size: 18,
+                                    color: (_index == 1)
+                                        ? Colors.orange
+                                        : Color(0xFF555555)),
+                                title: Text(
+                                  '$request',
+                                  style: GoogleFonts.openSans(
+                                      color: (_index == 1)
+                                          ? Colors.orange
+                                          : Color(0xFF555555)),
+                                ),
+                                selected: _index == 1,
+                                onTap: () {
+                                  setState(() {
+                                    _index = 1;
+                                  });
+
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: ListTile(
+                                trailing: FaIcon(FontAwesomeIcons.wallet,
+                                    size: 18,
+                                    color: (_index == 8)
+                                        ? Colors.orange
+                                        : Color(0xFF555555)),
+                                title: Text(
+                                  'Petty Cash',
+                                  style: GoogleFonts.openSans(
+                                      color: (_index == 8)
+                                          ? Colors.orange
+                                          : Color(0xFF555555)),
+                                ),
+                                selected: _index == 8,
+                                onTap: () {
+                                  setState(() {
+                                    _index = 8;
+                                  });
+
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 12, right: 12),
+              child: Divider(),
+            ),
+          ],
+        ),
+        Container(
+          child: _viewMenu(12, 'Contact', Icons.keyboard_arrow_right,
+              Icons.perm_contact_cal_outlined),
+        ),
+        Container(
+          child: _viewMenu(
+              13, 'Account', Icons.keyboard_arrow_right, Icons.person_sharp),
+        ),
+        Container(
+          child: _viewMenu(10, 'Project', Icons.keyboard_arrow_right,
+              FontAwesomeIcons.projectDiagram),
+        ),
+        Container(
+          child: _viewMenu(9, 'Activity', Icons.keyboard_arrow_right,
+              FontAwesomeIcons.running),
+        ),
+        Container(
+          child: _viewMenu(14, 'Calendar', Icons.keyboard_arrow_right,
+            Icons.calendar_month),
+        ),
+        Container(
+          child: _viewMenu(
+              5, 'Time', Icons.keyboard_arrow_right, FontAwesomeIcons.clock),
+        ),
+        Container(
+          child: _viewMenu(11, 'Work', Icons.keyboard_arrow_right, Icons.work),
+        ),
+
+        Container(
+          child: _viewMenu(2, 'Academy', Icons.keyboard_arrow_right,
+              FontAwesomeIcons.university),
+        ),
+        Container(
+          child: _viewMenu(3, 'Language', Icons.keyboard_arrow_right,
+              FontAwesomeIcons.language),
+        ),
+        Container(
+          child: _viewMenu(
+              6, 'About', Icons.keyboard_arrow_right, FontAwesomeIcons.user),
+        ),
+      ],
+    );
+  }
+
+  final List<String> _listTitle = [
     "$need",
     "$request",
-    "$academy",
-    "$language",
+    "Academy",
+    "Language",
     "$logout",
     "Time",
     "Profile",
@@ -445,8 +438,10 @@ class _OrigamiPageState extends State<OrigamiPage> {
     "Petty Cash",
     "Activity",
     "Project",
-    "Time",
     "Work",
+    "Contact",
+    "Account",
+    "Calendar",
   ];
 
   Widget _buildPage() {
@@ -458,6 +453,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
       4: Text('Index 6: LogOut', style: optionStyle),
       5: TimeSample(
         employee: widget.employee,
+        timeStamp: timeStampObject,
       ),
       6: ProfilePage(
         employee: widget.employee,
@@ -468,18 +464,32 @@ class _OrigamiPageState extends State<OrigamiPage> {
       8: PettyCash(
         employee: widget.employee,
       ),
-      9: activityScreen(
+      9: ActivityScreen(
         employee: widget.employee,
+        pageInput: 'activity',
       ),
-      10: projectScreen(
+      10: ProjectScreen(
         employee: widget.employee,
+        pageInput: 'project',
       ),
-      11: TimeSample(employee: widget.employee),
-      12: WorkPage(employee: widget.employee),
+      11: WorkPage(employee: widget.employee),
+      12: ContactScreen(
+        employee: widget.employee,
+        pageInput: 'contact',
+      ),
+      13: AccountList(
+        employee: widget.employee,
+        pageInput: 'account',
+      ),
+      14: CalendarScreen(
+        employee: widget.employee,
+        pageInput: 'calendar',
+      ),
     };
     return pages[_index] ?? Container();
   }
 
+  String branchStr = '';
   Widget _viewMenu(int page, String title, IconData icons, IconData faIcon) {
     return Column(
       children: [
@@ -523,6 +533,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
               onTap: () {
                 setState(() {
                   _index = page;
+                  branchStr = title;
                 });
                 Navigator.pop(context);
               },
@@ -546,7 +557,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: ListTile(
-          trailing: Icon(Icons.chevron_right, color: Colors.red),
+          trailing: Icon(Icons.keyboard_arrow_right, color: Colors.red),
           title: Row(
             children: [
               Container(
@@ -645,7 +656,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: ListTile(
-              trailing: Icon(Icons.chevron_right,
+              trailing: Icon(Icons.keyboard_arrow_right,
                   color: (_index == 5) ? Colors.orange : Color(0xFF555555)),
               title: Row(
                 children: [
@@ -713,7 +724,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
         //       borderRadius: BorderRadius.circular(10),
         //     ),
         //     child: ListTile(
-        //       trailing: Icon(Icons.chevron_right,
+        //       trailing: Icon(Icons.keyboard_arrow_right,
         //           color: (_index == 7) ? Colors.orange : Color(0xFF555555)),
         //       title: Row(
         //         children: [
@@ -758,5 +769,174 @@ class _OrigamiPageState extends State<OrigamiPage> {
         // ),
       ],
     );
+  }
+
+  void _changeBranch() {
+    showModalBottomSheet<void>(
+      barrierColor: Colors.black87,
+      backgroundColor: Colors.transparent,
+      context: context,
+      isScrollControlled: true,
+      isDismissible: true,
+      enableDrag: false,
+      builder: (BuildContext context) {
+        return _getBranch();
+      },
+    );
+  }
+
+  Widget _getBranch() {
+    return FutureBuilder<List<GetTimeStampSim>>(
+      future: fetchBranch(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Colors.white,
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              Text(
+                '$Loading...',
+                style: GoogleFonts.openSans(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ));
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+              child: Text(
+            '$Empty',
+            style: GoogleFonts.openSans(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey,
+            ),
+          ));
+        } else {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(10),
+              ),
+            ),
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  children: [
+                    SizedBox(height: 16),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Branch',
+                        style: GoogleFonts.openSans(
+                          fontSize: 22,
+                          color: Colors.orange,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: snapshot.data?.length,
+                        itemBuilder: (context, index) {
+                          final branch = snapshot.data?[index];
+                          return Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    timeStampObject = snapshot.data?[index];
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.location_on,
+                                            color: Color(0xFF555555),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Flexible(
+                                            child: Text(
+                                              '${branch?.branch_name ?? ''}',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.openSans(
+                                                fontSize: 16,
+                                                color: Color(0xFF555555),
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // Divider(),
+                                  ],
+                                ),
+                              ),
+                              Divider(),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Future<List<GetTimeStampSim>> fetchBranch() async {
+    final uri = Uri.parse("https://www.origami.life/api/load_branch.php");
+    final response = await http.post(
+      uri,
+      body: {
+        'comp_id': widget.employee.comp_id,
+        'emp_id': widget.employee.emp_id,
+        'auth_password': widget.employee.auth_password,
+      },
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      final List<dynamic> dataJson = jsonResponse['data'];
+      setState(() {
+        timeStampList =
+            dataJson.map((json) => GetTimeStampSim.fromJson(json)).toList();
+        timeStampObject = timeStampList[0];
+      });
+      return dataJson.map((json) => GetTimeStampSim.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load contacts');
+    }
   }
 }

@@ -1,13 +1,5 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:google_fonts/google_fonts.dart';
-
-import '../../../language/translate.dart';
-import '../../../login/login.dart';
-import '../../academy.dart';
+import '../../../imports.dart';
 
 class Instructors extends StatefulWidget {
   Instructors({super.key, required this.employee, required this.academy, });
@@ -66,6 +58,8 @@ class _InstructorsState extends State<Instructors> {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(child: Text('$Empty',style: GoogleFonts.openSans(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
             color: Color(0xFF555555),
           ),));
         } else {

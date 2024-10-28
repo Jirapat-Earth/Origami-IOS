@@ -182,6 +182,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                             style: GoogleFonts.openSans(
                                 color: const Color(0xFF555555), fontSize: 14),
                             decoration: InputDecoration(
+                              isDense: true,
                               filled: true,
                               fillColor: Colors.white,
                               hintText: '',
@@ -331,6 +332,9 @@ class _ShopPageState extends State<ShopPage> {
             ),
             child: TextField(
               decoration: InputDecoration(
+                isDense: true,
+                filled: true,
+                fillColor: Colors.white,
                 hintText: '$Search...',
                 hintStyle: GoogleFonts.openSans(
                   color: Color(0xFF555555),

@@ -1,13 +1,5 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:google_fonts/google_fonts.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../../language/translate.dart';
-import '../../../login/login.dart';
-import '../../academy.dart';
+import '../../../imports.dart';
 
 class Discussion extends StatefulWidget {
   Discussion({
@@ -102,7 +94,9 @@ class _DiscussionState extends State<Discussion> {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(child: Text('$Empty',style: GoogleFonts.openSans(
-            color: Color(0xFF555555),
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey,
           ),));
         } else {
           return _getContentWidget(snapshot.data!);
@@ -315,6 +309,7 @@ class _DiscussionState extends State<Discussion> {
                               style: GoogleFonts.openSans(
                                   color: const Color(0xFF555555), fontSize: 14),
                               decoration: InputDecoration(
+                                isDense: true,
                                 filled: true,
                                 fillColor: Colors.white,
                                 hintText: '$Type_something...',
@@ -410,7 +405,9 @@ class _DiscussionState extends State<Discussion> {
                           return Center(child: Text('Error: ${snapshot.error}'));
                         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                           return Center(child: Text('$Empty',style: GoogleFonts.openSans(
-                            color: Color(0xFF555555),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey,
                           ),));
                         } else {
                           return _bodyReply(snapshot.data!);
@@ -593,6 +590,7 @@ class _DiscussionState extends State<Discussion> {
                   style: GoogleFonts.openSans(
                       color: const Color(0xFF555555), fontSize: 14),
                   decoration: InputDecoration(
+                    isDense: true,
                     filled: true,
                     fillColor: Colors.white,
                     hintText: '$Type_something...',

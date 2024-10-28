@@ -64,6 +64,9 @@ class _MiniAccountState extends State<MiniAccount> {
                       child: TextField(
                         controller: _searchAccount,
                         decoration: InputDecoration(
+                          isDense: true,
+                          filled: true,
+                          fillColor: Colors.white,
                           hintText: '$Search...',
                           hintStyle: GoogleFonts.openSans(color: Color(0xFF555555),),
                           labelStyle: GoogleFonts.openSans(color: Color(0xFF555555),),

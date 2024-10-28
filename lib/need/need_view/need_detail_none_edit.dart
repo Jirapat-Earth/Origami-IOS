@@ -669,9 +669,9 @@ class _NeedDetailNoneEditState extends State<NeedDetailNoneEdit> {
                 child: Text(
                   '$Empty',
                   style: GoogleFonts.openSans(
-                    fontSize: 24,
-                    color: Colors.orange,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
                   ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,

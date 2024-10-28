@@ -1,16 +1,7 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
-import 'package:dropdown_button2/dropdown_button2.dart';
-import '../../../language/translate.dart';
-import '../../../login/login.dart';
-import '../activity/activity_add.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import '../../../imports.dart';
+import '../activity/activity_add.dart';
 
 class WorkApplyPage extends StatefulWidget {
   const WorkApplyPage({Key? key, required this.employee}) : super(key: key);
@@ -305,7 +296,8 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
                           children: [
                             Checkbox(
                               value: _isChecked,
-                              checkColor: Colors.orange,
+                              checkColor: Colors.white,
+                              activeColor: Colors.orange,
                               onChanged: (bool? value) {
                                 setState(() {
                                   _isChecked = value ?? false;
@@ -397,6 +389,8 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
           style: GoogleFonts.openSans(color: Color(0xFF555555), fontSize: 14),
           decoration: InputDecoration(
             isDense: true,
+            filled: true,
+            fillColor: Colors.white,
             contentPadding:
             const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             hintText: '',
@@ -405,8 +399,6 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(100),
             ),
-            filled: true, // เปิดการใช้สีพื้นหลัง
-            fillColor: Colors.white,
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
@@ -497,6 +489,8 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
                       color: Color(0xFF555555), fontSize: 14),
                   decoration: InputDecoration(
                     isDense: true,
+                    filled: true,
+                    fillColor: Colors.white,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 10,
                       vertical: 8,

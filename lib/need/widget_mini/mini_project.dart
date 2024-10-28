@@ -65,6 +65,9 @@ class _MiniProjectState extends State<MiniProject> {
                       child: TextField(
                         controller: _searchProject,
                         decoration: InputDecoration(
+                          isDense: true,
+                          filled: true,
+                          fillColor: Colors.white,
                           hintText: '$Search...',
                           hintStyle: GoogleFonts.openSans(color: Color(0xFF555555),),
                           labelStyle: GoogleFonts.openSans(color: Color(0xFF555555),),

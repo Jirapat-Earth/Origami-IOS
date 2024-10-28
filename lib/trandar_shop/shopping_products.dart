@@ -209,6 +209,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     color: Color(0xFF555555), fontSize: 14),
                 decoration: InputDecoration(
                   isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 12,
                       vertical: 12

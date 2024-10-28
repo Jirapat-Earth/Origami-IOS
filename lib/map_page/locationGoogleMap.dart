@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import '../../../imports.dart';
 
 class LocationGoogleMap extends StatefulWidget {
   const LocationGoogleMap({super.key, required this.latLng});
@@ -16,7 +17,10 @@ class _LocationGoogleMapState extends State<LocationGoogleMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('แตะเพื่อเลือกตำแหน่ง'),
+        backgroundColor: Colors.orange,
+        title: Text('Select location',style: GoogleFonts.openSans(
+          color: Colors.white,
+        ),),
       ),
       body: Stack(
         children: [
@@ -49,7 +53,7 @@ class _LocationGoogleMapState extends State<LocationGoogleMap> {
               bottom: 50,
               left: 20,
               child: Text(
-                'ตำแหน่งที่เลือก: \nLat: ${_selectedLocation!.latitude}, Lng: ${_selectedLocation!.longitude}',
+                'Selected Position: \nLat: ${_selectedLocation!.latitude}, Lng: ${_selectedLocation!.longitude}',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,

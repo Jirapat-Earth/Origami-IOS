@@ -1,5 +1,4 @@
-
-import '../setting.dart';
+import 'package:origami_ios/language/translate_page.dart';
 import 'ENG.dart';
 import 'TH.dart';
 
@@ -120,28 +119,3 @@ String Times = '';
 String Please_select = '';
 String Not_found_favoite = '';
 String Not_found_course = '';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,18 +1,5 @@
-import 'package:flutter/widgets.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import '../academy/academy.dart';
-import '../language/translate.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../origami_view.dart';
-import '../setting.dart';
-import '../trandar_shop/trandar_shop.dart';
+import '../imports.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -425,17 +412,26 @@ class _LoginPageState extends State<LoginPage> {
                                         ),
                                         SizedBox(height: 16.0),
                                         ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            padding: const EdgeInsets.all(1),
+                                            foregroundColor: Colors.white,
+                                            backgroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(15),
+                                            ),
+                                          ),
                                           onPressed: _login,
                                           child: Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 60,
                                                 right: 60,
-                                                bottom: 16,
-                                                top: 16),
+                                                bottom: 14,
+                                                top: 14),
                                             child: Text(
                                               'LOGIN',
                                               style: GoogleFonts.openSans(
                                                 color: Color(0xFF555555),
+                                                fontWeight: FontWeight.w500,
                                               ),
                                             ),
                                           ),

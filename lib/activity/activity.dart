@@ -1,58 +1,37 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../login/login.dart';
-import '../language/translate.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'dart:convert';
+import '../../../imports.dart';
 import 'activity_add.dart';
 import 'activity_edit.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 
-
-class activityScreen extends StatefulWidget {
-  const activityScreen({
+class ActivityScreen extends StatefulWidget {
+  const ActivityScreen({
     Key? key,
-    required this.employee,
+    required this.employee, required this.pageInput,
   }) : super(key: key);
   final Employee employee;
+  final String pageInput;
 
   @override
-  _activityScreenState createState() => _activityScreenState();
+  _ActivityScreenState createState() => _ActivityScreenState();
 }
 
-class _activityScreenState extends State<activityScreen> {
+class _ActivityScreenState extends State<ActivityScreen> {
   TextEditingController _searchController = TextEditingController();
   ScrollController _scrollController = ScrollController();
   String _search = "";
-  bool isLoading = false; // ใช้แสดงสถานะการโหลดข้อมูลเพิ่มเติม
-  bool isEndOfList = false;
-  List<ModelActivity> filterSearch = [];
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
-    _loadMoreAccounts(); // โหลดชุดแรกของบัญชี
+    fetchModelActivityVoid();
     _searchController.addListener(() {
       setState(() {
-        _search = _searchController.text.toLowerCase();
-        filterSearch = activityList
-            .where((activity) =>
-        activity.activity_project_name != null &&
-            activity.activity_project_name!.toLowerCase().contains(_search))
-            .toList();
+        _search = _searchController.text;
       });
+      fetchModelActivityVoid();
+      print("Current text: ${_searchController.text}");
     });
-
-    print("Current text: ${_searchController.text}");
   }
 
   @override
@@ -61,40 +40,10 @@ class _activityScreenState extends State<activityScreen> {
     super.dispose();
   }
 
-  // ฟังก์ชันโหลดข้อมูลเพิ่มเติม
-  Future<void> _loadMoreAccounts() async {
-    if (isLoading || isEndOfList) return; // ป้องกันการโหลดข้อมูลซ้ำเมื่อสิ้นสุดรายการแล้ว
-
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      List<ModelActivity> newActivities = await fetchModelActivity();
-      setState(() {
-        activityList.addAll(newActivities);
-      });
-    } catch (e) {
-      print('Error fetching data: $e');
-    }
-
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  // ฟังก์ชันตรวจจับการเลื่อนถึงตำแหน่งสุดท้าย
-  void _onScroll() {
-    if (_scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent &&
-        !isLoading) {
-      _loadMoreAccounts(); // เรียกฟังก์ชันโหลดข้อมูลเพิ่มเติมเมื่อเลื่อนถึงสุดท้าย
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: (allActivity == [])?Colors.white:Colors.grey.shade50,
       floatingActionButton: FloatingActionButton(
         // tooltip: 'Increment',
         onPressed: () {
@@ -105,7 +54,13 @@ class _activityScreenState extends State<activityScreen> {
                 employee: widget.employee,
               ),
             ),
-          );
+          ).then((value) {
+            // เมื่อกลับมาหน้า 1 จะทำงานในส่วนนี้
+            setState(() {
+              indexItems = 0;
+              fetchModelActivityVoid(); // เรียกฟังก์ชันโหลด API ใหม่
+            });
+          });
         },
         child: const Icon(
           Icons.add,
@@ -136,6 +91,8 @@ class _activityScreenState extends State<activityScreen> {
                       color: Color(0xFF555555), fontSize: 14),
                   decoration: InputDecoration(
                     isDense: true,
+                    filled: true,
+                    fillColor: Colors.white,
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 12),
                     hintText: '$Search...',
@@ -176,249 +133,279 @@ class _activityScreenState extends State<activityScreen> {
   }
 
   Widget _getContentWidget() {
-    return Card(
-      elevation: 0,
-      color: Colors.white,
-      // color: Color(0xFFF5F5F5),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: ListView.builder(
-            itemCount: filterSearch.length +
-                (isLoading ? 1 : 0), // เพิ่ม 1 ถ้ากำลังโหลด
-            controller: _scrollController,
-            itemBuilder: (context, index) {
-              if (index == filterSearch.length) {
-                return Center(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(
-                      color: Colors.orange,
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Text(
-                      '$Loading...',
-                      style: GoogleFonts.openSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF555555),
-                      ),
-                    ),
-                  ],
-                ));
-              }
-              final activity = filterSearch[index];
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => activityEdit(
-                        employee: widget.employee, activity: activity,
-                      ),
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        // mainAxisSize: MainAxisSize.max,
+    return FutureBuilder<void>(
+      future: fetchModelActivityVoid(),
+      builder: (context, snapshot) {
+        final allModel = allActivity;
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  color: Colors.orange,
+                ),
+                SizedBox(width: 12),
+                Text(
+                  '$Loading...',
+                  style: GoogleFonts.openSans(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF555555),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else if (allModel.isEmpty) {
+          return Center(
+            child: Text(
+              '$Empty',
+              style: GoogleFonts.openSans(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
+              ),
+            ),
+          );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: ListView.builder(
+                itemCount: allModel.length +
+                    (isLoading ? 1 : 0), // เพิ่ม 1 ถ้ากำลังโหลด
+                controller: _scrollController,
+                itemBuilder: (context, index) {
+                  allModel.sort((a, b) => b.activity_id!.compareTo(a.activity_id!));
+                  final activity = allModel[index];
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => activityEdit(
+                            employee: widget.employee,
+                            activity: activity,
+                          ),
+                        ),
+                      ).then((value) {
+                        // เมื่อกลับมาหน้า 1 จะทำงานในส่วนนี้
+                        setState(() {
+                          indexItems = 0;
+                          fetchModelActivityVoid(); // เรียกฟังก์ชันโหลด API ใหม่
+                        });
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Stack(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            // mainAxisSize: MainAxisSize.max,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 4, bottom: 4, right: 8),
-                                child: CircleAvatar(
-                                  radius: 25,
-                                  backgroundColor: Colors.grey,
-                                  child: CircleAvatar(
-                                    radius: 24,
-                                    backgroundColor: Colors.white,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.network(
-                                        widget.employee.emp_avatar ?? '',
-                                        fit: BoxFit.fill,
+                              Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 4, bottom: 4, right: 8),
+                                    child: CircleAvatar(
+                                      radius: 25,
+                                      backgroundColor: Colors.grey,
+                                      child: CircleAvatar(
+                                        radius: 24,
+                                        backgroundColor: Colors.white,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          child: Image.network(
+                                            widget.employee.emp_avatar ?? '',
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
+                                  Positioned(
+                                    right: 0,
+                                    child: Icon(
+                                      Icons.bolt,
+                                      color: Colors.amber,
+                                      size: 32,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Positioned(
-                                right: 0,
-                                child: Icon(
-                                  Icons.bolt,
-                                  color: Colors.amber,
-                                  size: 32,
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      activity.activity_project_name ?? '',
+                                      maxLines: 1,
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 14,
+                                        color: Colors.orange,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Text(
+                                      activity.activity_location ?? '',
+                                      maxLines: 1,
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 12,
+                                        color: Color(0xFF555555),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      '${widget.employee.emp_name ?? ''} - ${activity.projectname ?? ''}',
+                                      maxLines: 1,
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 12,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      '${activity.activity_start_date ?? ''} ${activity.time_start ?? ''} - ${activity.activity_end_date ?? ''} ${activity.time_end ?? ''}',
+                                      maxLines: 1,
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 12,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            'Type : Website & Application',
+                                            maxLines: 1,
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 12,
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          // height: 28,
+                                          padding: const EdgeInsets.only(
+                                              left: 18, right: 18),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                (activity.activity_status ==
+                                                        'close')
+                                                    ? Colors.orange
+                                                    : Colors.blue.shade200,
+                                            border: Border.all(
+                                              color:
+                                                  (activity.activity_status ==
+                                                          'close')
+                                                      ? Colors.orange
+                                                      : Colors.blue.shade200,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              (activity.activity_status ==
+                                                      null)
+                                                  ? 'plan'
+                                                  : activity
+                                                          .activity_status ??
+                                                      '',
+                                              style: GoogleFonts.openSans(
+                                                  fontSize: 12,
+                                                  color: Colors.white,
+                                                  fontWeight:
+                                                      FontWeight.w500),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  activity.activity_project_name!,
-                                  maxLines: 1,
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 14,
-                                    color: Colors.orange,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                Text(
-                                  activity.activity_location!,
-                                  maxLines: 1,
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 12,
-                                    color: Color(0xFF555555),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  '${widget.employee.emp_name!} - ${activity.projectname!}',
-                                  maxLines: 1,
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  '${activity.activity_start_date!} ${activity.time_start!} - ${activity.activity_end_date!} ${activity.time_end!}',
-                                  maxLines: 1,
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        'Type : Website & Application',
-                                        maxLines: 1,
-                                        style: GoogleFonts.openSans(
-                                          fontSize: 12,
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      // height: 28,
-                                      padding: const EdgeInsets.only(
-                                          left: 18, right: 18),
-                                      decoration: BoxDecoration(
-                                        color: (activity.activity_status == 'close')?Colors.orange:Colors.blue.shade200,
-                                        border:
-                                            Border.all(color: (activity.activity_status == 'close')?Colors.orange:Colors.blue.shade200,),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          (activity.activity_status == null)
-                                              ? 'plan'
-                                              : activity.activity_status!,
-                                          style: GoogleFonts.openSans(
-                                              fontSize: 12,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                          Divider(color: Colors.grey),
                         ],
                       ),
-                      Divider(color: Colors.grey),
-                    ],
-                  ),
-                ),
-              );
-            }),
-      ),
+                    ),
+                  );
+                }),
+          );
+        }
+      },
     );
   }
 
-  int imax = 0;
-  List<ModelActivity> activityList = [];
-  Future<List<ModelActivity>> fetchModelActivity() async {
+  int indexItems = 0;
+  List<ModelActivity> allActivity = [];
+  Future<void> fetchModelActivityVoid() async {
     final uri = Uri.parse("https://www.origami.life/crm/activity.php");
     final response = await http.post(
       uri,
       body: {
         'comp_id': widget.employee.comp_id,
         'idemp': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
-        'index': imax.toString(),
+        'user': 'origami',
+        'pass': widget.employee.auth_password,
+        'index': (_search != '') ? '0' : indexItems.toString(),
         'txt_search': _search,
       },
     );
+
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      final List<dynamic> dataJson = jsonResponse['data'];
+      int max = jsonResponse['max'];
+      int sum = jsonResponse['sum'];
+      List<ModelActivity> newProjects =
+          dataJson.map((json) => ModelActivity.fromJson(json)).toList();
 
-      if (jsonResponse.containsKey('data')) {
-        final List<dynamic> dataJson = jsonResponse['data'];
-        int max = jsonResponse['max'];
-        int sum = jsonResponse['sum'];
+      allActivity.clear();
+      // เก็บข้อมูลเก่าและรวมกับข้อมูลใหม่
+      allActivity.addAll(newProjects);
 
-        // แปลงข้อมูล JSON เป็น List<ModelActivity> และเพิ่มลงใน activityList
-        setState(() {
-          activityList = dataJson
-              .map((json) => ModelActivity.fromJson(json))
-              .toList();
-          filterSearch = activityList;  // เริ่มต้นให้แสดงข้อมูลทั้งหมด
-        });
+      // เช็คเงื่อนไขตามที่ต้องการ
+      // if(_search == ''){
+      //   if (sum > indexItems) {
+      //     indexItems = indexItems + max;
+      //     if(indexItems >= sum){
+      //       indexItems = sum;
+      //       _search == '0';
+      //     }
+      //     await fetchModelActivityVoid(); // โหลดข้อมูลใหม่เมื่อ index เปลี่ยน
+      //   } else if (sum <= indexItems) {
+      //     indexItems = sum;
+      //     _search == '0';
+      //   }
+      // }
 
-        int n = sum - imax;
-        int a = 0;
-        if (n > max) {
-          if(a > 5){
-            imax += 20;
-          }else{
-            imax = 114;
-          }
-          a += 1;
-        } else {
-          print('object');
-          setState(() {
-            isEndOfList = true;
-          });
-        }
-        return dataJson.map((json) => ModelActivity.fromJson(json)).toList();
-      } else {
-        throw Exception('Data key not found in the response');
-      }
     } else {
-      throw Exception('Failed to load activities. Status code: ${response.statusCode}');
+      throw Exception('Failed to load projects');
     }
   }
 }
@@ -487,7 +474,7 @@ class ModelActivity {
       activity_real_comment: json['activity_real_comment'],
       activity_create_user: json['activity_create_user'],
       projectname: json['projectname'],
-      activity_place_type: json ['activity_place_type'],
+      activity_place_type: json['activity_place_type'],
     );
   }
 }

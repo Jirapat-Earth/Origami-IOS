@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../../../login/login.dart';
-import '../../academy.dart';
+import 'package:http/http.dart' as http;
+import '../../../imports.dart';
 
 // class YouTubePlayerWidget extends StatefulWidget {
 //   final String videoId;

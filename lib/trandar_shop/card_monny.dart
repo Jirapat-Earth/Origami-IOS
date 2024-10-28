@@ -52,6 +52,9 @@ class _CreateQuoteScreenState extends State<CreateQuoteScreen> {
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
                   labelText: 'First Name',
                   prefixIcon: Icon(Icons.person),
                   border: OutlineInputBorder(),
@@ -67,6 +70,9 @@ class _CreateQuoteScreenState extends State<CreateQuoteScreen> {
               SizedBox(height: 20),
               TextFormField(
                 decoration: InputDecoration(
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
                   labelText: 'Last Name',
                   prefixIcon: Icon(Icons.person),
                   border: OutlineInputBorder(),
@@ -78,6 +84,9 @@ class _CreateQuoteScreenState extends State<CreateQuoteScreen> {
               SizedBox(height: 20),
               TextFormField(
                 decoration: InputDecoration(
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
                   labelText: 'Company (Optional)',
                   prefixIcon: Icon(Icons.business),
                   border: OutlineInputBorder(),
@@ -89,6 +98,9 @@ class _CreateQuoteScreenState extends State<CreateQuoteScreen> {
               SizedBox(height: 20),
               TextFormField(
                 decoration: InputDecoration(
+                  isDense: true,
+                  filled: true,
+                  fillColor: Colors.white,
                   labelText: 'Email',
                   prefixIcon: Icon(Icons.email),
                   border: OutlineInputBorder(),

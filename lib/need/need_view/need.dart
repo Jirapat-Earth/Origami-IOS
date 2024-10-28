@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:origami_ios/need/widget_mini/mini_department.dart';
 import 'package:origami_ios/need/widget_mini/mini_employee.dart';
-import 'package:origami_ios/need/widget_mini/mini_project.dart';
 import 'package:origami_ios/need/widget_other/date_other.dart';
 import 'package:origami_ios/need/widget_other/priority_other.dart';
 import '../../../login/login.dart';
@@ -15,6 +14,7 @@ import '../../origami_view.dart';
 import '../../../language/translate.dart';
 import '../../trandar_shop/trandar_shop.dart';
 import '../petty_cash/petty_cash.dart';
+import '../widget_mini/mini_project.dart';
 import 'need_approve_detail.dart';
 import 'need_detail.dart';
 import 'package:intl/intl.dart';
@@ -54,265 +54,6 @@ class _NeedsViewState extends State<NeedsView> {
 
   String firstDay = '';
   String lastDay = '';
-
-  @override
-  void initState() {
-    super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _showMyDialog();
-    // });
-    Day();
-    futureLoadData = loadData();
-    fetchProject(project_number, project_name);
-    fetchDepartment(department_number, department_name);
-    fetchPriority(priority_number, priority_name);
-    fetchEmployee(employee_number, employee_name);
-    fetchTypeRespond();
-    fetchTypeItemRespond();
-    _searchController.addListener(() {
-      // ฟังก์ชันนี้จะถูกเรียกทุกครั้งเมื่อข้อความใน _searchController เปลี่ยนแปลง
-      searchText = _searchController.text;
-      fetchNeedResponse();
-      print("Current text: ${_searchController.text}");
-    });
-    // fetchNeedRespond(
-    //   typeName,
-    //   status_id,
-    //   searchText,
-    //   firstDay,
-    //   lastDay,
-    //   priorityId,
-    //   departmentId,
-    //   projectId,
-    //   ownerId,
-    // );
-  }
-
-  Future<List<AnnounceData>> fetchAnnounce() async {
-    final uri =
-        Uri.parse("https://www.origami.life/api/origami/announce/announce.php");
-    final response = await http.post(
-      uri,
-      body: {
-        'comp_id': widget.employee.comp_id,
-        'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      // เข้าถึงข้อมูลในคีย์ 'instructors'
-      final List<dynamic> instructorsJson = jsonResponse['announce_data'];
-      // แปลงข้อมูลจาก JSON เป็น List<Instructor>
-      return instructorsJson
-          .map((json) => AnnounceData.fromJson(json))
-          .toList();
-    } else {
-      throw Exception('Failed to load instructors');
-    }
-  }
-
-  Future<void> _showMyDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // User must tap a button to close the dialog
-      builder: (BuildContext context) {
-        return FutureBuilder<List<AnnounceData>>(
-          future: fetchAnnounce(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
-              final _Announce = snapshot.data![0];
-              return AlertDialog(
-                title: Text(_Announce.announce_subject),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Html(
-                        data: "${_Announce.announce_description}",
-                        style: {
-                          'p': Style(
-                            fontFamily: GoogleFonts.openSans().fontFamily,
-                            fontSize: FontSize(16),
-                            color: Color(0xFF555555),
-                          ),
-                          'h1': Style(
-                            fontFamily: GoogleFonts.openSans().fontFamily,
-                            fontSize: FontSize(24),
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                          'b': Style(
-                            fontFamily: GoogleFonts.openSans().fontFamily,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
-                          ),
-                          'i': Style(
-                            fontFamily: GoogleFonts.openSans().fontFamily,
-                            fontStyle: FontStyle.italic,
-                            color: Colors.green,
-                          ),
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text(_Announce.announce_button),
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
-                    },
-                  ),
-                ],
-              );
-            }
-          },
-        );
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  void Day() {
-    DateTime thirtyDaysAgo = now.subtract(Duration(days: 30));
-    DateFormat formatter = DateFormat('dd/MM/yyyy');
-    firstDay = formatter.format(thirtyDaysAgo);
-    lastDay = formatter.format(now);
-  }
-
-  String typeName = '';
-  String status_id = '';
-
-  int indexI = 0;
-
-  Widget _loading() {
-    return FutureBuilder<List<NeedRespond>>(
-      future: fetchNeedResponse(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(
-                color: Colors.orange,
-              ),
-              SizedBox(
-                width: 12,
-              ),
-              Text(
-                '$Loading...',
-                style: GoogleFonts.openSans(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF555555),
-                ),
-              ),
-            ],
-          ));
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else {
-          return _getContentWidget(snapshot.data!);
-        }
-      },
-    );
-  }
-
-  NeedTypeItemRespond? NeedTypeItemRes;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: checkNeed == null ?Colors.grey.shade50:Colors.white,
-      floatingActionButton: SpeedDial(
-        elevation: 0,
-        icon: Icons.add,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(100),
-            bottomLeft: Radius.circular(100),
-            bottomRight: Radius.circular(100),
-            topLeft: Radius.circular(100),
-          ),
-        ),
-        animatedIcon: AnimatedIcons.add_event,
-        backgroundColor: Colors.orange,
-        foregroundColor: Colors.white,
-        visible: true,
-        curve: Curves.bounceIn,
-        overlayColor: Colors.black,
-        // overlayOpacity: 0.5,
-        children: List.generate(NeedTypeItemOption.length, (indexItem) {
-          indexI = indexItem;
-          NeedTypeItemOption.sort(
-              (a, b) => b.type_id!.compareTo(a.type_id ?? ''));
-          NeedTypeItemOption.sort(
-              (a, b) => b.type_color!.compareTo(a.type_color ?? ''));
-          NeedTypeItemOption.sort(
-              (a, b) => b.type_name!.compareTo(a.type_name ?? ''));
-          NeedTypeItemOption.sort(
-              (a, b) => b.type_image!.compareTo(a.type_image ?? ''));
-          return SpeedDialChild(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                NeedTypeItemOption[indexItem].type_image ?? '',
-                width: 40,
-                height: 40,
-                fit: BoxFit.cover,
-              ),
-            ),
-            label: NeedTypeItemOption[indexItem].type_name ?? '',
-            labelStyle: GoogleFonts.openSans(
-              fontSize: 14.0,
-              color: Color(0xFF555555),
-              fontWeight: FontWeight.bold,
-            ),
-            labelBackgroundColor: Color(int.parse(
-                '0xFF${this.NeedTypeItemOption[indexItem].type_color}')),
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            onTap: () {
-              showModalBottomSheet<void>(
-                barrierColor: Colors.black87,
-                backgroundColor: Colors.transparent,
-                context: context,
-                isScrollControlled: true,
-                isDismissible: false,
-                enableDrag: false,
-                builder: (BuildContext context) {
-                  return Container(
-                    color: Colors.white,
-                    child: FractionallySizedBox(
-                      heightFactor: 0.96,
-                      child: Scaffold(
-                        backgroundColor: Colors.transparent,
-                        body: NeedDetail(
-                          needTypeItem: NeedTypeItemOption[indexItem],
-                          employee: widget.employee,
-                          request_id: '',
-                          // detailItem: ,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          );
-        }),
-      ),
-      body: _loading(),
-    );
-  }
 
   String request_id = '';
   Widget _filter() {
@@ -479,451 +220,623 @@ class _NeedsViewState extends State<NeedsView> {
     );
   }
 
-  int? _selectcolor = 0;
-  int? _indexcolor = 0;
-  Widget _getContentWidget(List<NeedRespond> needList) {
-    return Column(
-      children: [
-        Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 48,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            color: Colors.orange,
-                            width: 1.0,
-                          ),
-                        ),
-                        child: TextField(
-                          controller: _searchController,
-                          decoration: InputDecoration(
-                            hintText: '$Search...',
-                            hintStyle: GoogleFonts.openSans(
-                              color: Color(0xFF555555),
-                            ),
-                            labelStyle: GoogleFonts.openSans(
-                              color: Color(0xFF555555),
-                            ),
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: Colors.orange,
-                            ),
-                            border: InputBorder.none,
-                            suffixIcon: Container(
-                              alignment: Alignment.centerRight,
-                              width: 10,
-                              child: Center(
-                                child: IconButton(
-                                    onPressed: () {
-                                      _searchController.clear();
-                                    },
-                                    icon: Icon(Icons.close),
-                                    color: Colors.orange,
-                                    iconSize: 18),
-                              ),
-                            ),
-                          ),
-                          onChanged: (value) {},
+  int _selectcolor = 0;
+  int _indexcolor = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _showMyDialog();
+    // });
+    Day();
+    futureLoadData = loadData();
+    fetchProject(project_number, project_name);
+    fetchDepartment(department_number, department_name);
+    fetchPriority(priority_number, priority_name);
+    fetchEmployee(employee_number, employee_name);
+    fetchTypeRespond();
+    fetchTypeItemRespond();
+    _searchController.addListener(() {
+      // ฟังก์ชันนี้จะถูกเรียกทุกครั้งเมื่อข้อความใน _searchController เปลี่ยนแปลง
+      searchText = _searchController.text;
+      fetchNeedResponse();
+      print("Current text: ${_searchController.text}");
+    });
+    // fetchNeedRespond(
+    //   typeName,
+    //   status_id,
+    //   searchText,
+    //   firstDay,
+    //   lastDay,
+    //   priorityId,
+    //   departmentId,
+    //   projectId,
+    //   ownerId,
+    // );
+  }
+
+  Future<List<AnnounceData>> fetchAnnounce() async {
+    final uri =
+        Uri.parse("https://www.origami.life/api/origami/announce/announce.php");
+    final response = await http.post(
+      uri,
+      body: {
+        'comp_id': widget.employee.comp_id,
+        'emp_id': widget.employee.emp_id,
+        'auth_password': widget.employee.auth_password,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      // เข้าถึงข้อมูลในคีย์ 'instructors'
+      final List<dynamic> instructorsJson = jsonResponse['announce_data'];
+      // แปลงข้อมูลจาก JSON เป็น List<Instructor>
+      return instructorsJson
+          .map((json) => AnnounceData.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load instructors');
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void Day() {
+    DateTime thirtyDaysAgo = now.subtract(Duration(days: 30));
+    DateFormat formatter = DateFormat('dd/MM/yyyy');
+    firstDay = formatter.format(thirtyDaysAgo);
+    lastDay = formatter.format(now);
+  }
+
+  String typeName = '';
+  String status_id = '';
+  int indexI = 0;
+
+  NeedTypeItemRespond? NeedTypeItemRes;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: checkNeed == null ?Colors.grey.shade50:Colors.white,
+      floatingActionButton: SpeedDial(
+        elevation: 0,
+        icon: Icons.add,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(100),
+            bottomLeft: Radius.circular(100),
+            bottomRight: Radius.circular(100),
+            topLeft: Radius.circular(100),
+          ),
+        ),
+        animatedIcon: AnimatedIcons.add_event,
+        backgroundColor: Colors.orange,
+        foregroundColor: Colors.white,
+        visible: true,
+        curve: Curves.bounceIn,
+        overlayColor: Colors.black,
+        // overlayOpacity: 0.5,
+        children: List.generate(NeedTypeItemOption.length, (indexItem) {
+          indexI = indexItem;
+          NeedTypeItemOption.sort(
+              (a, b) => b.type_id?.compareTo(a.type_id ?? '')??0);
+          NeedTypeItemOption.sort(
+              (a, b) => b.type_color?.compareTo(a.type_color ?? '')??0);
+          NeedTypeItemOption.sort(
+              (a, b) => b.type_name?.compareTo(a.type_name ?? '')??0);
+          NeedTypeItemOption.sort(
+              (a, b) => b.type_image?.compareTo(a.type_image ?? '')??0);
+          return SpeedDialChild(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                NeedTypeItemOption[indexItem].type_image ?? '',
+                width: 40,
+                height: 40,
+                fit: BoxFit.cover,
+              ),
+            ),
+            label: NeedTypeItemOption[indexItem].type_name ?? '',
+            labelStyle: GoogleFonts.openSans(
+              fontSize: 14.0,
+              color: Color(0xFF555555),
+              fontWeight: FontWeight.bold,
+            ),
+            labelBackgroundColor: Color(int.parse(
+                '0xFF${this.NeedTypeItemOption[indexItem].type_color}')),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            onTap: () {
+              showModalBottomSheet<void>(
+                barrierColor: Colors.black87,
+                backgroundColor: Colors.transparent,
+                context: context,
+                isScrollControlled: true,
+                isDismissible: false,
+                enableDrag: false,
+                builder: (BuildContext context) {
+                  return Container(
+                    color: Colors.white,
+                    child: FractionallySizedBox(
+                      heightFactor: 0.96,
+                      child: Scaffold(
+                        backgroundColor: Colors.transparent,
+                        body: NeedDetail(
+                          needTypeItem: NeedTypeItemOption[indexItem],
+                          employee: widget.employee,
+                          request_id: '',
+                          // detailItem: ,
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        showModalBottomSheet<void>(
-                          barrierColor: Colors.black87,
-                          backgroundColor: Colors.transparent,
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (BuildContext context) {
-                            return Container(
-                              color: Colors.white,
-                              child: FractionallySizedBox(
-                                heightFactor: 0.7,
-                                child: MaterialApp(
-                                  debugShowCheckedModeBanner: false,
-                                  home: Scaffold(
-                                    backgroundColor: Colors.transparent,
-                                    body: _filter(),
-                                  ),
+                  );
+                },
+              );
+            },
+          );
+        }),
+      ),
+      body: Column(
+        children: [
+          Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 48,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                              color: Colors.orange,
+                              width: 1.0,
+                            ),
+                          ),
+                          child: TextField(
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                              hintText: '$Search...',
+                              hintStyle: GoogleFonts.openSans(
+                                color: Color(0xFF555555),
+                              ),
+                              labelStyle: GoogleFonts.openSans(
+                                color: Color(0xFF555555),
+                              ),
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Colors.orange,
+                              ),
+                              border: InputBorder.none,
+                              suffixIcon: Container(
+                                alignment: Alignment.centerRight,
+                                width: 10,
+                                child: Center(
+                                  child: IconButton(
+                                      onPressed: () {
+                                        _searchController.clear();
+                                      },
+                                      icon: Icon(Icons.close),
+                                      color: Colors.orange,
+                                      iconSize: 18),
                                 ),
                               ),
-                            );
-                          },
-                        );
-                      },
-                      child: Icon(
-                        Icons.filter_alt_outlined,
-                        color: Colors.orange,
-                        size: 30,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  child: Row(
-                    children: List.generate(NeedTypeOption.length, (index) {
-                      return InkWell(
-                        onTap: () {
-                          _selectcolor = index;
-                          typeName =
-                              NeedTypeOption[_selectcolor ?? 0].typeId ?? '';
-                          fetchNeedResponse();
-                          // fetchNeedRespond(
-                          //   typeName,
-                          //   status_id,
-                          //   searchText,
-                          //   firstDay,
-                          //   lastDay,
-                          //   priorityId,
-                          //   departmentId,
-                          //   projectId,
-                          //   ownerId,
-                          // );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(1),
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Colors.white,
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 0.5,
-                              ),
                             ),
+                            onChanged: (value) {},
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          showModalBottomSheet<void>(
+                            barrierColor: Colors.black87,
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (BuildContext context) {
+                              return Container(
+                                color: Colors.white,
+                                child: FractionallySizedBox(
+                                  heightFactor: 0.7,
+                                  child: MaterialApp(
+                                    debugShowCheckedModeBanner: false,
+                                    home: Scaffold(
+                                      backgroundColor: Colors.transparent,
+                                      body: _filter(),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Icon(
+                          Icons.filter_alt_outlined,
+                          color: Colors.orange,
+                          size: 30,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Row(
+                      children: List.generate(NeedTypeOption.length, (index) {
+                        return InkWell(
+                          onTap: () {
+                            _selectcolor = index;
+                            typeName =
+                                NeedTypeOption[_selectcolor ?? 0].typeId ?? '';
+                            fetchNeedResponse();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(1),
                             child: Container(
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
-                                color: (index == _selectcolor)
-                                    ? Colors.orange
-                                    : Colors.grey.shade100,
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 0.5,
+                                ),
                               ),
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: 6, top: 6, left: 16, right: 16),
-                                child: Text(
-                                  NeedTypeOption[index].typeName ?? '',
-                                  style: GoogleFonts.openSans(
-                                      color: (index == _selectcolor)
-                                          ? Colors.white
-                                          : Color(0xFF555555)),
+                              child: Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  color: (index == _selectcolor)
+                                      ? Colors.orange
+                                      : Colors.grey.shade100,
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: 6, top: 6, left: 16, right: 16),
+                                  child: Text(
+                                    NeedTypeOption[index].typeName ?? '',
+                                    style: GoogleFonts.openSans(
+                                        color: (index == _selectcolor)
+                                            ? Colors.white
+                                            : Color(0xFF555555)),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 8),
-                  child: Row(
-                    children: List.generate(
-                      NeedTypeOption[_selectcolor ?? 0].typeStatus!.length,
-                      (index) {
-                        return InkWell(
-                          onTap: () {
-                            // setState(() {
-                            _indexcolor = index;
-                            status_id = NeedTypeOption[_selectcolor ?? 0]
-                                    .typeStatus?[index]
-                                    .statusId ??
-                                '';
-                            fetchNeedResponse();
-                            // fetchNeedRespond(
-                            //   typeName,
-                            //   status_id,
-                            //   searchText,
-                            //   firstDay,
-                            //   lastDay,
-                            //   priorityId,
-                            //   departmentId,
-                            //   projectId,
-                            //   ownerId,
-                            // );
-                            // });
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                bottom: 4, top: 4, left: 2, right: 2),
-                            child: ClipPath(
-                              clipper: ArrowClipper(15, 32, Edge.RIGHT),
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                height: 34,
-                                // width: 150,
-                                color: (index == _indexcolor)
-                                    ? Colors.orange
-                                    : Colors.grey.shade100,
-                                child: Center(
-                                    child: Padding(
-                                  padding: EdgeInsets.only(left: 8, right: 16),
-                                  child: Text(
-                                    "${NeedTypeOption[_selectcolor ?? 0].typeStatus?[index].statusName}",
-                                    style: GoogleFonts.openSans(
-                                      color: (index == _indexcolor)
-                                          ? Colors.white
-                                          : Color(0xFF555555),
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                )),
-                              ),
-                            ),
-                            // Text(
-                            //   NeedTypeOption[index].typeName ?? '',
-                            //   style: GoogleFonts.openSans(
-                            //       fontSize: 12.0, color: (index == _selectcolor)?Colors.white:Color(0xFF555555)),
-                            // ),
-                          ),
                         );
-                      },
+                      }),
                     ),
                   ),
                 ),
-              ),
-              Divider(),
-            ],
-          ),
-        ),
-        Expanded(
-          child: (checkNeed == null || needList.isNotEmpty)
-              ? ListView.builder(
-                  controller: ScrollController(),
-                  itemCount: needList.length,
-                  itemBuilder: (context, indexNl) {
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 16, right: 16, top: 16),
-                          child: Card(
-                            elevation: 0,
-                            color: Colors.white,
-                            // shape: RoundedRectangleBorder(
-                            //   borderRadius: BorderRadius.circular(15),
-                            //   side: BorderSide(width: 1, color: Color(0xFF555555)),
-                            // ),
-                            child: InkWell(
-                              onTap: () {
-                                showModalBottomSheet<void>(
-                                  barrierColor: Color(0xFF555555),
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  isScrollControlled: true,
-                                  isDismissible: false,
-                                  enableDrag: false,
-                                  builder: (BuildContext context) {
-                                    // fetchDetail('edit', needList[index].mny_request_id??'' , '');
-                                    return Container(
-                                      color: Colors.white,
-                                      child: FractionallySizedBox(
-                                        heightFactor: 0.96,
-                                        child: Scaffold(
-                                          backgroundColor: Colors.transparent,
-                                          body: (needList[indexNl]
-                                                          .need_status !=
-                                                      "N" ||
-                                                  needList[indexNl]
-                                                          .need_status !=
-                                                      "All")
-                                              ? NeedDetailApprove(
-                                                  employee: widget.employee,
-                                                  request_id: needList[indexNl]
-                                                          .mny_request_id ??
-                                                      '',
-                                                  // approvelList:needList[indexNl],
-                                                )
-                                              : NeedDetail(
-                                                  needTypeItem:
-                                                      NeedTypeItemOption[
-                                                          indexI],
-                                                  employee: widget.employee,
-                                                  request_id: needList[indexNl]
-                                                          .mny_request_id ??
-                                                      '',
-                                                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Row(
+                      children: List.generate(
+                        NeedTypeOption[_selectcolor ?? 0].typeStatus?.length??0,
+                            (index) {
+                          return InkWell(
+                            onTap: () {
+                              // setState(() {
+                              _indexcolor = index;
+                              status_id = NeedTypeOption[_selectcolor ?? 0]
+                                  .typeStatus?[index]
+                                  .statusId ??
+                                  '';
+                              fetchNeedResponse();
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: 4, top: 4, left: 2, right: 2),
+                              child: ClipPath(
+                                clipper: ArrowClipper(15, 32, Edge.RIGHT),
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  height: 34,
+                                  // width: 150,
+                                  color: (index == _indexcolor)
+                                      ? Colors.orange
+                                      : Colors.grey.shade100,
+                                  child: Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 8, right: 16),
+                                        child: Text(
+                                          "${NeedTypeOption[_selectcolor ?? 0].typeStatus?[index].statusName}",
+                                          style: GoogleFonts.openSans(
+                                            color: (index == _indexcolor)
+                                                ? Colors.white
+                                                : Color(0xFF555555),
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
                                         ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: ListTile(
-                                title: Text(
-                                  needList[indexNl].need_subject ?? '',
-                                  style: GoogleFonts.openSans(
-                                    fontSize: 18,
-                                    color: Colors.orange,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
+                                      )),
                                 ),
-                                subtitle: Row(
+                              ),
+                              // Text(
+                              //   NeedTypeOption[index].typeName ?? '',
+                              //   style: GoogleFonts.openSans(
+                              //       fontSize: 12.0, color: (index == _selectcolor)?Colors.white:Color(0xFF555555)),
+                              // ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                Divider(),
+              ],
+            ),
+          ),
+          Expanded(child: _loading()),
+        ],
+      ),
+    );
+  }
+
+  Widget _loading() {
+    return FutureBuilder<List<NeedRespond>>(
+      future: fetchNeedResponse(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    color: Colors.orange,
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    '$Loading...',
+                    style: GoogleFonts.openSans(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF555555),
+                    ),
+                  ),
+                ],
+              ));
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          return _getContentWidget(snapshot.data??[]);
+        }
+      },
+    );
+  }
+
+  Widget _getContentWidget(List<NeedRespond> needList) {
+    return (checkNeed == null || needList.isNotEmpty)
+        ? ListView.builder(
+            controller: ScrollController(),
+            itemCount: needList.length,
+            itemBuilder: (context, indexNl) {
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 16, right: 16, top: 16),
+                    child: Card(
+                      elevation: 0,
+                      color: Colors.white,
+                      // shape: RoundedRectangleBorder(
+                      //   borderRadius: BorderRadius.circular(15),
+                      //   side: BorderSide(width: 1, color: Color(0xFF555555)),
+                      // ),
+                      child: InkWell(
+                        onTap: () {
+                          showModalBottomSheet<void>(
+                            barrierColor: Color(0xFF555555),
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            isScrollControlled: true,
+                            isDismissible: false,
+                            enableDrag: false,
+                            builder: (BuildContext context) {
+                              // fetchDetail('edit', needList[index].mny_request_id??'' , '');
+                              return Container(
+                                color: Colors.white,
+                                child: FractionallySizedBox(
+                                  heightFactor: 0.96,
+                                  child: Scaffold(
+                                    backgroundColor: Colors.transparent,
+                                    body: (needList[indexNl]
+                                                    .need_status !=
+                                                "N" ||
+                                            needList[indexNl]
+                                                    .need_status !=
+                                                "All")
+                                        ? NeedDetailApprove(
+                                            employee: widget.employee,
+                                            request_id: needList[indexNl]
+                                                    .mny_request_id ??
+                                                '',
+                                            // approvelList:needList[indexNl],
+                                          )
+                                        : NeedDetail(
+                                            needTypeItem:
+                                                NeedTypeItemOption[
+                                                    indexI],
+                                            employee: widget.employee,
+                                            request_id: needList[indexNl]
+                                                    .mny_request_id ??
+                                                '',
+                                          ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: ListTile(
+                          title: Text(
+                            needList[indexNl].need_subject ?? '',
+                            style: GoogleFonts.openSans(
+                              fontSize: 18,
+                              color: Colors.orange,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3,
+                          ),
+                          subtitle: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                   children: [
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '${needList[indexNl].mny_type_name ?? ''} - ${needList[indexNl].mny_request_generate_code ?? ''}',
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 14.0,
-                                              color: Color(0xFF555555),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            "$Date : ${needList[indexNl].create_date ?? ''} ",
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 14.0,
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            "$Amount : ${needList[indexNl].need_amount ?? ''} $Baht",
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 14.0,
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(height: 8),
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  "$Status1 : ${needList[indexNl].need_status ?? ''}",
-                                                  style: GoogleFonts.openSans(
-                                                    fontSize: 14.0,
-                                                    color: Colors.grey,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                    Text(
+                                      '${needList[indexNl].mny_type_name ?? ''} - ${needList[indexNl].mny_request_generate_code ?? ''}',
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 14.0,
+                                        color: Color(0xFF555555),
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Column(
+                                    SizedBox(height: 8),
+                                    Text(
+                                      "$Date : ${needList[indexNl].create_date ?? ''} ",
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 14.0,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      "$Amount : ${needList[indexNl].need_amount ?? ''} $Baht",
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 14.0,
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Row(
                                       children: [
-                                        Container(
-                                            height: 25,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                            ),
-                                            child: Icon(
-                                              null,
+                                        Expanded(
+                                          child: Text(
+                                            "$Status1 : ${needList[indexNl].need_status ?? ''}",
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 14.0,
                                               color: Colors.grey,
-                                              size: 30,
-                                            )),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        Container(
-                                            height: 25,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                            child: Icon(
-                                              null,
-                                              color: Colors.grey,
-                                              size: 30,
-                                            )),
-                                        SizedBox(
-                                          height: 8,
+                                          ),
                                         ),
-                                        IconButton(
-                                            onPressed: () {
-                                              // Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(
-                                              //     builder: (context) =>
-                                              //     GoogleMap2(),
-                                              //   ),
-                                              // );
-                                              setState(() {
-                                                fetchDelete(needList[indexNl]
-                                                        .mny_request_id ??
-                                                    '');
-                                              });
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      OrigamiPage(
-                                                    employee: widget.employee,
-                                                    popPage: 0,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            icon: FaIcon(FontAwesomeIcons.trashAlt,
-                                              color: Colors.redAccent,
-                                            ),
-                                        )
                                       ],
                                     ),
                                   ],
                                 ),
-                                // Add more details as needed
                               ),
-                            ),
+                              Column(
+                                children: [
+                                  Container(
+                                      height: 25,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20),
+                                      ),
+                                      child: Icon(
+                                        null,
+                                        color: Colors.grey,
+                                        size: 30,
+                                      )),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Container(
+                                      height: 25,
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20),
+                                      ),
+                                      child: Icon(
+                                        null,
+                                        color: Colors.grey,
+                                        size: 30,
+                                      )),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) =>
+                                        //     GoogleMap2(),
+                                        //   ),
+                                        // );
+                                        setState(() {
+                                          fetchDelete(needList[indexNl]
+                                                  .mny_request_id ??
+                                              '');
+                                        });
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                OrigamiPage(
+                                              employee: widget.employee,
+                                              popPage: 0,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      icon: FaIcon(FontAwesomeIcons.trashAlt,
+                                        color: Colors.redAccent,
+                                      ),
+                                  )
+                                ],
+                              ),
+                            ],
                           ),
+                          // Add more details as needed
                         ),
-                      ],
-                    );
-                  },
-                )
-              : Center(
-                  child: Container(
-                    child: Text(
-                      '$Empty',
-                      style: GoogleFonts.openSans(
-                        fontSize: 16,
-                        color: Colors.orange,
-                        fontWeight: FontWeight.w500,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
                     ),
                   ),
+                ],
+              );
+            },
+          )
+        : Center(
+            child: Container(
+              child: Text(
+                '$Empty',
+                style: GoogleFonts.openSans(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey,
                 ),
-        ),
-      ],
-    );
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+          );
   }
 
   String editEmployeeText = '';
@@ -1000,7 +913,6 @@ class _NeedsViewState extends State<NeedsView> {
       ),
       child: InkWell(
         onTap: () async {
-          // setState(() {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -1012,7 +924,6 @@ class _NeedsViewState extends State<NeedsView> {
             ),
           );
           filter_Project = editprojectText;
-          // });
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -1100,7 +1011,6 @@ class _NeedsViewState extends State<NeedsView> {
     ));
   }
 
-  // String editpriorityText = '';
   String priorityId = '';
 
   List<NeedTypeRespond> NeedTypeOption = [];
@@ -1212,62 +1122,6 @@ class _NeedsViewState extends State<NeedsView> {
       throw Exception('Failed to load instructors');
     }
   }
-
-  // Future<void> fetchNeedRespond(
-  //     need_type,
-  //     need_status,
-  //     search,
-  //     firstDay,
-  //     lastDay,
-  //     filter_Priority,
-  //     filter_Department,
-  //     filter_Project,
-  //     filter_Owner,
-  //     ) async {
-  //   final uri = Uri.parse(
-  //       'https://www.origami.life/api/origami/need/need.php?need_type=$need_type&need_status=$need_status&search=$search');
-  //   try {
-  //     final response = await http.post(
-  //       uri,
-  //       body: {
-  //         'comp_id': widget.employee.comp_id,
-  //         'emp_id': widget.employee.emp_id,
-  //         'start_date': "$firstDay",
-  //         'end_date': "$lastDay",
-  //         'filter_priority': "$filter_Priority",
-  //         'filter_department': "$filter_Department",
-  //         'filter_project': "$filter_Project",
-  //         'filter_owner': "$filter_Owner",
-  //         'need_type': "$need_type",
-  //         'need_status': "$need_status",
-  //       },
-  //     );
-  //
-  //     if (response.statusCode == 200) {
-  //       final jsonResponse = jsonDecode(response.body);
-  //       if (jsonResponse['status'] == true) {
-  //         // _loadMoreNews();
-  //         // setState(() {
-  //         departm = jsonResponse['need_data'];
-  //         // });
-  //         final List<dynamic> NeedRespondDataJson = jsonResponse['need_data'];
-  //         setState(() {
-  //           needList =
-  //               NeedRespondDataJson.map((json) => NeedRespond.fromJson(json))
-  //                   .toList();
-  //         });
-  //       } else {
-  //         throw Exception(
-  //             'Failed to load personal data: ${jsonResponse['message']}');
-  //       }
-  //     } else {
-  //       throw Exception(
-  //           'Failed to load personal data: ${response.reasonPhrase}');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Failed to load personal data: $e');
-  //   }
-  // }
 
   // PriorityRespond
   List<PriorityData> priorityOption = [];
@@ -1458,7 +1312,7 @@ class _NeedsViewState extends State<NeedsView> {
         final jsonResponse = jsonDecode(response.body);
         if (jsonResponse['status'] == true) {
           setState(() {
-            initState();
+
           });
         } else {
           throw Exception(
@@ -1807,12 +1661,12 @@ class NeedRespond {
 }
 
 class NeedTypeRespond {
-  final String? typeId;
-  final String? typeName;
-  final String? typeColor;
-  final String? typeImage;
-  final List<Status>? typeStatus;
-  final List<String>? statusListString;
+  String? typeId;
+  String? typeName;
+  String? typeColor;
+  String? typeImage;
+  List<Status>? typeStatus;
+  List<String>? statusListString;
 
   NeedTypeRespond({
     this.typeId,
@@ -1858,10 +1712,10 @@ class Status {
 }
 
 class NeedTypeItemRespond {
-  final String? type_id;
-  final String? type_name;
-  final String? type_color;
-  final String? type_image;
+  String? type_id;
+  String? type_name;
+  String? type_color;
+  String? type_image;
 
   NeedTypeItemRespond({
     this.type_id,
@@ -1881,12 +1735,12 @@ class NeedTypeItemRespond {
 }
 
 class AnnounceData {
-  final String announce_id;
-  final String announce_subject;
-  final String announce_description;
-  final String announce_date;
-  final String announce_accept;
-  final String announce_button;
+  String announce_id;
+  String announce_subject;
+  String announce_description;
+  String announce_date;
+  String announce_accept;
+  String announce_button;
 
   AnnounceData({
     required this.announce_id,

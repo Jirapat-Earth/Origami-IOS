@@ -1,15 +1,7 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../../../language/translate.dart';
-import '../../../login/login.dart';
-import '../../academy.dart';
-import '../video/video_player.dart';
-import '../video/youtube.dart';
+import 'package:origami_ios/academy/evaluate/video/video_player.dart';
+import 'package:origami_ios/academy/evaluate/video/youtube.dart';
+import '../../../imports.dart';
 
 class Curriculum extends StatefulWidget {
   Curriculum({

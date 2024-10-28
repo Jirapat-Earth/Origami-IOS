@@ -1,12 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:video_player/video_player.dart';
-import 'package:chewie/chewie.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../../../login/login.dart';
-import '../../academy.dart';
-import '../evaluate_module.dart';
+
+import 'package:http/http.dart' as http;
+import '../../../imports.dart';
 
 class NetworkVideoPlayer extends StatefulWidget {
   final String videoUrl;

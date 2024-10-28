@@ -1,16 +1,5 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../../../language/translate.dart';
-import '../../../login/login.dart';
-import '../../academy.dart';
-
+import '../../../imports.dart';
 
 class AttachFile extends StatefulWidget {
   AttachFile({super.key, required this.employee, required this.academy, });
@@ -87,10 +76,16 @@ class _AttachFileState extends State<AttachFile> {
       future: fetchAttach(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Center(child: Text('Error: ${snapshot.error}',style: GoogleFonts.openSans(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF555555),
+          ),));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(child: Text('$Empty',style: GoogleFonts.openSans(
-            color: Color(0xFF555555),
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey,
           ),));
         } else {
           return _getContentWidget(snapshot.data!);

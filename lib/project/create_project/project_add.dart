@@ -1,26 +1,14 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../login/login.dart';
-import '../language/translate.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import '../map_page/locationGoogleMap.dart';
+import 'package:http/http.dart' as http;
+import '../../../imports.dart';
 
 class projectAdd extends StatefulWidget {
   const projectAdd({
     Key? key,
-    required this.employee,
+    required this.employee, required this.pageInput,
   }) : super(key: key);
   final Employee employee;
+  final String pageInput;
 
   @override
   _projectAddState createState() => _projectAddState();
@@ -31,6 +19,7 @@ class _projectAddState extends State<projectAdd> {
   TextEditingController _projectController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _contactController = TextEditingController();
+  TextEditingController _locationController = TextEditingController();
   LatLng? _selectedLocation; // สำหรับเก็บตำแหน่งที่เลือก
 
   @override
@@ -121,7 +110,6 @@ class _projectAddState extends State<projectAdd> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // backgroundColor: Color(0xFFF5F5F5),
       appBar: AppBar(
         backgroundColor: Colors.orange,
         title: Align(
@@ -171,11 +159,24 @@ class _projectAddState extends State<projectAdd> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _textBody('Project Name', _projectController, true),
-                _dropdownBody('Type'),
-                _textBody('Code', _codeController, true),
+                Row(
+                  children: [
+                    Expanded(child: _DropdownBody('Type')),
+                    SizedBox(width: 8),
+                    Expanded(child: _textBody('Code', _codeController, true)),
+                  ],
+                ),
                 _textBody('Default Contact', _contactController, true),
-                _dropdownBody('Status'),
-                _dropdownBody('Sale Status'),
+                _DropdownBody('Categories'),
+                _DropdownBody('Account'),
+                _DropdownBody('Sale/Non Sale'),
+                _DropdownBody('Project Model'),
+                _textBody('Cost Value', _projectController, true),
+                _textBody('Source', _projectController, true),
+                _DropdownBody('Process'),
+                _DropdownBody('Project Process'),
+                _DropdownBody('Project Priority'),
+                _DropdownBody('Sub Status'),
                 _textBody('Description', _descriptionController, true),
                 InkWell(
                     onTap: () {
@@ -192,10 +193,10 @@ class _projectAddState extends State<projectAdd> {
                         ),
                       );
                     },
-                    child: _textBody('Location', _codeController, false)),
-                _dateBody('Start Date'),
+                    child: _textBody('Location', _locationController, false)),
+                _DateBody('Start Date'),
                 SizedBox(height: 8),
-                _dateBody('End Date'),
+                _DateBody('End Date'),
               ],
             ),
           ),
@@ -228,9 +229,13 @@ class _projectAddState extends State<projectAdd> {
           style: GoogleFonts.openSans(color: Color(0xFF555555), fontSize: 14),
           decoration: InputDecoration(
             isDense: true,
+            filled: true,
+            fillColor: Colors.white,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            hintText: (_selectedLocation == null || _isTrue == true)?'':'${_selectedLocation!.latitude}, ${_selectedLocation!.longitude}',
+            hintText: (_selectedLocation == null || _isTrue == true)
+                ? ''
+                : '${_selectedLocation!.latitude}, ${_selectedLocation!.longitude}',
             hintStyle:
                 GoogleFonts.openSans(fontSize: 14, color: Color(0xFF555555)),
             suffixIcon: Container(
@@ -239,7 +244,8 @@ class _projectAddState extends State<projectAdd> {
               child: Center(
                 child: IconButton(
                     onPressed: () {},
-                    icon: Icon((_isTrue == true) ? null : Icons.location_on),
+                    icon:
+                        Icon((title != 'Location') ? null : Icons.location_on),
                     color: Colors.orange,
                     iconSize: 18),
               ),
@@ -258,8 +264,6 @@ class _projectAddState extends State<projectAdd> {
                 width: 1,
               ),
             ),
-            filled: true, // เปิดการใช้สีพื้นหลัง
-            fillColor: Colors.white,
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
@@ -281,7 +285,7 @@ class _projectAddState extends State<projectAdd> {
     );
   }
 
-  Widget _dateBody(String _nemedate) {
+  Widget _DateBody(String _nemedate) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -332,9 +336,7 @@ class _projectAddState extends State<projectAdd> {
     );
   }
 
-  Widget _dropdownBody(
-    String title
-  ) {
+  Widget _DropdownBody(String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -387,7 +389,8 @@ class _projectAddState extends State<projectAdd> {
             },
             underline: SizedBox.shrink(),
             iconStyleData: IconStyleData(
-              icon: Icon(Icons.arrow_drop_down, color: Color(0xFF555555), size: 30),
+              icon: Icon(Icons.arrow_drop_down,
+                  color: Color(0xFF555555), size: 30),
               iconSize: 30,
             ),
             buttonStyleData: ButtonStyleData(

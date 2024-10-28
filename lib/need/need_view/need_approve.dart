@@ -218,8 +218,8 @@ class _NeedRequestState extends State<NeedRequest> {
             '$Empty',
             style: GoogleFonts.openSans(
               fontSize: 16,
-              color: Colors.orange,
               fontWeight: FontWeight.w500,
+              color: Colors.grey,
             ),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
@@ -312,6 +312,7 @@ class _NeedRequestState extends State<NeedRequest> {
                         style: GoogleFonts.openSans(
                             color: Color(0xFF555555), fontSize: 14),
                         decoration: InputDecoration(
+                          isDense: true,
                           filled: true,
                           fillColor: Colors.white,
                           hintText: '$Type_something...',
@@ -451,6 +452,7 @@ class _NeedRequestState extends State<NeedRequest> {
                         style: GoogleFonts.openSans(
                             color: Color(0xFF555555), fontSize: 14),
                         decoration: InputDecoration(
+                          isDense: true,
                           filled: true,
                           fillColor: Colors.white,
                           hintText: '$Type_something...',
@@ -590,6 +592,7 @@ class _NeedRequestState extends State<NeedRequest> {
                         style: GoogleFonts.openSans(
                             color: Color(0xFF555555), fontSize: 14),
                         decoration: InputDecoration(
+                          isDense: true,
                           filled: true,
                           fillColor: Colors.white,
                           hintText: '$Type_something...',

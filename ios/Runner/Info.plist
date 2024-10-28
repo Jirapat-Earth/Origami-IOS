@@ -77,6 +77,12 @@
         <key>NSLocationWhenInUseUsageDescription</key>
         <string>This app needs access to your location to show the map.</string>
 
+
+        <key>NSLocationAlwaysUsageDescription</key>
+
+
+        <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+
 		<key>NSCameraUsageDescription</key>
 		<string>We need to use your camera to scan your face</string>
 		<key>NSMicrophoneUsageDescription</key>

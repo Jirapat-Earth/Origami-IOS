@@ -64,6 +64,9 @@ class _MiniAssetState extends State<MiniAsset> {
                       child: TextField(
                         controller: _searchAsset,
                         decoration: InputDecoration(
+                          isDense: true,
+                          filled: true,
+                          fillColor: Colors.white,
                           hintText: '$Search...',
                           hintStyle: GoogleFonts.openSans(color: Color(0xFF555555),),
                           labelStyle: GoogleFonts.openSans(color: Color(0xFF555555),),

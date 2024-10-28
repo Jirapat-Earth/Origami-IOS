@@ -1,13 +1,5 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:google_fonts/google_fonts.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../../../language/translate.dart';
-import '../../../login/login.dart';
-import '../../academy.dart';
+import '../../../imports.dart';
 
 class Description extends StatefulWidget {
   Description({

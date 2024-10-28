@@ -1,23 +1,6 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import '../../../language/translate.dart';
-import '../../login/login.dart';
-import '../academy.dart';
-import 'Announcements/announcements.dart';
-import 'attach_file/attach_file.dart';
-import 'certification/certification.dart';
-import 'curriculum/curriculum.dart';
-import 'description/description.dart';
-import 'discussion/discussion.dart';
-import 'instructors/instructors.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:html/parser.dart' show parse;
+import '../../imports.dart';
 
 class EvaluateModule extends StatefulWidget {
   EvaluateModule({
@@ -508,6 +491,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                   style: GoogleFonts.openSans(
                       color: const Color(0xFF555555), fontSize: 14),
                   decoration: InputDecoration(
+                    isDense: true,
                     filled: true,
                     fillColor: Colors.white,
                     hintText: '$Type_something...',
@@ -607,7 +591,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
               Text(
                 'No data available in table',
                 style: GoogleFonts.openSans(
-                  color: const Color(0xFF555555),
+                  color: Colors.grey,
                   fontSize: 14,
                 ),
               ),

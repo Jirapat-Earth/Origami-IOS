@@ -225,6 +225,9 @@ class _WhatsAppChatScreenState extends State<WhatsAppChatScreen> {
             child: TextField(
               controller: _messageController,
               decoration: InputDecoration(
+                isDense: true,
+                filled: true,
+                fillColor: Colors.white,
                 hintText: 'Type a message',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25),

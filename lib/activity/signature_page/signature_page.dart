@@ -1,11 +1,6 @@
-import 'dart:typed_data';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:signature/signature.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import '../../../imports.dart';
 
 class SignaturePage extends StatefulWidget {
   const SignaturePage({super.key, required this.signatureImage});

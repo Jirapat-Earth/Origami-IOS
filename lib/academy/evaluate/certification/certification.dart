@@ -1,14 +1,5 @@
-import 'dart:convert';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
-import 'package:google_fonts/google_fonts.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import '../../../language/translate.dart';
-import '../../../login/login.dart';
-import '../../academy.dart';
+import '../../../imports.dart';
 
 class Certification extends StatefulWidget {
   Certification({
@@ -76,7 +67,9 @@ class _CertificationState extends State<Certification> {
               child: Text(
             '$Empty',
             style: GoogleFonts.openSans(
-              color: Color(0xFF555555),
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey,
             ),
           ));
         } else {
