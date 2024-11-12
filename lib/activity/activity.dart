@@ -1,16 +1,16 @@
 import 'package:http/http.dart' as http;
 import '../../../imports.dart';
-import 'activity_add.dart';
-import 'activity_edit.dart';
+import 'add/activity_add.dart';
+import 'edit/activity_edit_list.dart';
 
 class ActivityScreen extends StatefulWidget {
   const ActivityScreen({
     Key? key,
-    required this.employee, required this.pageInput,
+    required this.employee, required this.pageInput, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
-
+  final String Authorization;
   @override
   _ActivityScreenState createState() => _ActivityScreenState();
 }
@@ -51,7 +51,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
             context,
             MaterialPageRoute(
               builder: (context) => activityAdd(
-                employee: widget.employee,
+                employee: widget.employee,Authorization: widget.Authorization,
               ),
             ),
           ).then((value) {
@@ -75,7 +75,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
           ),
         ),
         elevation: 0,
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
       ),
       body: SafeArea(
         child: Container(
@@ -103,18 +103,18 @@ class _ActivityScreenState extends State<ActivityScreen> {
                     ),
                     prefixIcon: Icon(
                       Icons.search,
-                      color: Colors.orange,
+                      color: Color(0xFFFF9900),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                        color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                        color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(100),
@@ -143,7 +143,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CircularProgressIndicator(
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                 ),
                 SizedBox(width: 12),
                 Text(
@@ -183,8 +183,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => activityEdit(
-                            employee: widget.employee,
+                          builder: (context) => ActivityEditList(
+                            employee: widget.employee,Authorization: widget.Authorization,
                             activity: activity,
                           ),
                         ),
@@ -253,7 +253,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                       maxLines: 1,
                                       style: GoogleFonts.openSans(
                                         fontSize: 14,
-                                        color: Colors.orange,
+                                        color: Color(0xFFFF9900),
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -314,13 +314,13 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                             color:
                                                 (activity.activity_status ==
                                                         'close')
-                                                    ? Colors.orange
+                                                    ? Color(0xFFFF9900)
                                                     : Colors.blue.shade200,
                                             border: Border.all(
                                               color:
                                                   (activity.activity_status ==
                                                           'close')
-                                                      ? Colors.orange
+                                                      ? Color(0xFFFF9900)
                                                       : Colors.blue.shade200,
                                             ),
                                             borderRadius:
@@ -370,8 +370,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       body: {
         'comp_id': widget.employee.comp_id,
         'idemp': widget.employee.emp_id,
-        'user': 'origami',
-        'pass': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'index': (_search != '') ? '0' : indexItems.toString(),
         'txt_search': _search,
       },

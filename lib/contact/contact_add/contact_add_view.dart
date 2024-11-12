@@ -20,10 +20,10 @@ import 'contact_add_information.dart';
 class ContactAddView extends StatefulWidget {
   const ContactAddView({
     Key? key,
-    required this.employee,
+    required this.employee, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
-
+  final String Authorization;
   @override
   _ContactAddViewState createState() => _ContactAddViewState();
 }
@@ -70,7 +70,7 @@ class _ContactAddViewState extends State<ContactAddView> {
     return Scaffold(
       // backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -99,7 +99,7 @@ class _ContactAddViewState extends State<ContactAddView> {
         titleStyle: GoogleFonts.openSans(),
         backgroundColor: Colors.white,
         color: Colors.grey.shade400,
-        colorSelected: Colors.orange,
+        colorSelected: Color(0xFFFF9900),
         indexSelected: _selectedIndex,
         // paddingVertical: 25,
         onTap: _onItemTapped,

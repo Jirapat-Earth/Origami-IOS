@@ -35,7 +35,7 @@ class PriorityOtherState extends State<PriorityOther> {
         borderRadius: BorderRadius.circular(15),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -96,7 +96,7 @@ class PriorityOtherState extends State<PriorityOther> {
                                   :(priority.priority_name == 'Medium')
                                   ?Colors.yellow
                                   :(priority.priority_name == 'High')
-                                  ?Colors.orangeAccent
+                                  ?Color(0xFFFF9900)
                                   :(priority.priority_name == 'Very high')
                                   ?Colors.redAccent
                                   :Colors.black,

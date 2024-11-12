@@ -6,11 +6,11 @@ class SkoopScreen extends StatefulWidget {
   const SkoopScreen(
       {super.key,
       required this.employee,
-      required this.skoopDetail,
+      required this.skoopDetail, required this.Authorization,
       });
   final Employee employee;
   final GetSkoopDetail? skoopDetail;
-
+  final String Authorization;
   @override
   _SkoopScreenState createState() => _SkoopScreenState();
 }
@@ -94,14 +94,14 @@ class _SkoopScreenState extends State<SkoopScreen> {
           'Skoop',
           style: GoogleFonts.openSans(
             fontSize: 30,
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             fontWeight: FontWeight.bold,
           ),
         ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -125,7 +125,7 @@ class _SkoopScreenState extends State<SkoopScreen> {
                   'DONE',
                   style: GoogleFonts.openSans(
                     fontSize: 14,
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -170,7 +170,7 @@ class _SkoopScreenState extends State<SkoopScreen> {
                         fontSize: 14, color: Color(0xFF555555)),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.orange,
+                        color: Color(0xFFFF9900),
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(100),
@@ -178,20 +178,20 @@ class _SkoopScreenState extends State<SkoopScreen> {
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: BorderSide(
-                        color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                        color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
                         width: 1,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                        color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                        color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(10),
@@ -220,7 +220,7 @@ class _SkoopScreenState extends State<SkoopScreen> {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
                     border: Border.all(
-                      color: Colors.orange,
+                      color: Color(0xFFFF9900),
                       width: 1.0,
                     ),
                   ),
@@ -280,7 +280,7 @@ class _SkoopScreenState extends State<SkoopScreen> {
                   'Tap here to select an image.',
                   style: GoogleFonts.openSans(
                     fontSize: 14,
-                    color: Colors.orange.shade400,
+                    color: Color(0xFFFF9900),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -322,7 +322,7 @@ class _SkoopScreenState extends State<SkoopScreen> {
                   'Tap here to select an image.',
                   style: GoogleFonts.openSans(
                     fontSize: 14,
-                    color: Colors.orange.shade400,
+                    color: Color(0xFFFF9900),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -404,7 +404,7 @@ class _SkoopScreenState extends State<SkoopScreen> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'pass': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'activity_id': widget.skoopDetail?.activity_id,
           'skoop_location': '',
           'skoop_lat': '',

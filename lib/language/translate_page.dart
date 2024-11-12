@@ -7,10 +7,10 @@ int selectedRadio = 2;
 class TranslatePage extends StatefulWidget {
   const TranslatePage({
     Key? key,
-    required this.employee,
+    required this.employee, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
-
+  final String Authorization;
   @override
   _TranslatePageState createState() => _TranslatePageState();
 }
@@ -84,11 +84,11 @@ class _TranslatePageState extends State<TranslatePage> {
                               (selectedRadio == 1)
                                   ? Icon(
                                 Icons.radio_button_on,
-                                color: Colors.orange,
+                                color: Color(0xFFFF9900),
                               )
                                   : Icon(
                                 Icons.radio_button_off,
-                                color: Colors.orange,
+                                color: Color(0xFFFF9900),
                               ),
                               SizedBox(
                                 width: 8,
@@ -125,11 +125,11 @@ class _TranslatePageState extends State<TranslatePage> {
                               (selectedRadio == 2)
                                   ? Icon(
                                 Icons.radio_button_on,
-                                color: Colors.orange,
+                                color: Color(0xFFFF9900),
                               )
                                   : Icon(
                                 Icons.radio_button_off,
-                                color: Colors.orange,
+                                color: Color(0xFFFF9900),
                               ),
                               SizedBox(
                                 width: 8,

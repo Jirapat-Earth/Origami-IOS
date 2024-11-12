@@ -36,7 +36,7 @@ class _SignaturePageState extends State<SignaturePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -93,7 +93,7 @@ class _SignaturePageState extends State<SignaturePage> {
                           'Next',
                           style: GoogleFonts.openSans(
                             fontSize: 18.0,
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             fontWeight: FontWeight.w500,
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -102,7 +102,7 @@ class _SignaturePageState extends State<SignaturePage> {
                         SizedBox(width: 8),
                         Icon(
                           Icons.arrow_forward_ios,
-                          color: Colors.orange,
+                          color: Color(0xFFFF9900),
                         )
                       ],
                     ),

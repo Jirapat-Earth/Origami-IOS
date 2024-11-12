@@ -17,10 +17,10 @@ import 'package:url_launcher/url_launcher.dart';
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({
     Key? key,
-    required this.employee,
+    required this.employee, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
-
+  final String Authorization;
   @override
   _ProductsScreenState createState() => _ProductsScreenState();
 }
@@ -223,18 +223,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   ),
                   prefixIcon: Icon(
                     Icons.search,
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                      color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                       width: 2.0,
                     ),
                     borderRadius: BorderRadius.circular(100),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                      color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                       width: 2.0,
                     ),
                     borderRadius: BorderRadius.circular(100),
@@ -301,7 +301,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                               itemsList[index].productName,
                                               style: GoogleFonts.openSans(
                                                 fontSize: 18,
-                                                color: Colors.orange,
+                                                color: Color(0xFFFF9900),
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),

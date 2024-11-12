@@ -16,11 +16,12 @@ class NeedDetailNoneEdit extends StatefulWidget {
   const NeedDetailNoneEdit({
     super.key,
     required this.employee,
-    required this.request_id,
+    required this.request_id, required this.Authorization,
     // required this.approvelList,
   });
   final Employee employee;
   final String request_id;
+  final String Authorization;
   // final ApprovelData approvelList;
 
   @override
@@ -124,7 +125,7 @@ class _NeedDetailNoneEditState extends State<NeedDetailNoneEdit> {
           ],
         ),
         actions: [],
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
       ),
       body: FutureBuilder<String>(
         future: futureLoadData,
@@ -133,7 +134,7 @@ class _NeedDetailNoneEditState extends State<NeedDetailNoneEdit> {
             return Center(child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircularProgressIndicator(color: Colors.orange,),
+                CircularProgressIndicator(color: Color(0xFFFF9900),),
                 SizedBox(width: 12,),
                 Text(
                   '$Loading...',
@@ -181,7 +182,7 @@ class _NeedDetailNoneEditState extends State<NeedDetailNoneEdit> {
                         borderRadius: BorderRadius.circular(15),
                         color: Colors.white,
                         border: Border.all(
-                          color: Colors.orange,
+                          color: Color(0xFFFF9900),
                           width: 1.0,
                         ),
                       ),
@@ -220,7 +221,7 @@ class _NeedDetailNoneEditState extends State<NeedDetailNoneEdit> {
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.white,
                       border: Border.all(
-                        color: Colors.orange,
+                        color: Color(0xFFFF9900),
                         width: 1.0,
                       ),
                     ),
@@ -279,7 +280,7 @@ class _NeedDetailNoneEditState extends State<NeedDetailNoneEdit> {
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.white,
                             border: Border.all(
-                              color: Colors.orange,
+                              color: Color(0xFFFF9900),
                               width: 1.0,
                             ),
                           ),
@@ -461,7 +462,7 @@ class _NeedDetailNoneEditState extends State<NeedDetailNoneEdit> {
         borderRadius: BorderRadius.circular(15),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -698,7 +699,7 @@ class _NeedDetailNoneEditState extends State<NeedDetailNoneEdit> {
                               //   saveItem[index].itemItem ?? '',
                               //   style: GoogleFonts.openSans(
                               //     fontSize: 18.0,
-                              //     color: Colors.orange,
+                              //     color: Color(0xFFFF9900),
                               //     fontWeight: FontWeight.bold,
                               //   ),
                               //   overflow: TextOverflow.ellipsis,
@@ -727,7 +728,7 @@ class _NeedDetailNoneEditState extends State<NeedDetailNoneEdit> {
                                                   .openSans(
                                                 fontSize: 18.0,
                                                 color:
-                                                Colors.orange,
+                                                Color(0xFFFF9900),
                                                 fontWeight:
                                                 FontWeight.bold,
                                               ),
@@ -953,7 +954,7 @@ class _NeedDetailNoneEditState extends State<NeedDetailNoneEdit> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'action_type': "$action_type",
           'need_id': "$need_id",
           'type_id': "$type_id",

@@ -70,7 +70,7 @@ class _TrandarShopState extends State<TrandarShop> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25),
                   border: Border.all(
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                     width: 1.0,
                   ),
                 ),
@@ -89,7 +89,7 @@ class _TrandarShopState extends State<TrandarShop> {
                     ),
                     prefixIcon: Icon(
                       Icons.search,
-                      color: Colors.orange,
+                      color: Color(0xFFFF9900),
                     ),
                     border: InputBorder.none,
                     suffixIcon: Container(
@@ -101,7 +101,7 @@ class _TrandarShopState extends State<TrandarShop> {
                               _searchController.clear();
                             },
                             icon: Icon(Icons.close),
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             iconSize: 18),
                       ),
                     ),
@@ -286,7 +286,7 @@ class _TrandarShopState extends State<TrandarShop> {
                         //                 child: Container(
                         //                   decoration: BoxDecoration(
                         //                     color: Colors.black,
-                        //                     // border: Border.all(color: Colors.orange),
+                        //                     // border: Border.all(color: Color(0xFFFF9900)),
                         //                     borderRadius:
                         //                         BorderRadius.circular(8),
                         //                   ),

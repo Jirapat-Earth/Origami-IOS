@@ -4,9 +4,10 @@ import '../imports.dart';
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
     Key? key,
-    required this.employee,
+    required this.employee, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
+  final String Authorization;
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -26,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
 
@@ -81,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                   ),
                   SizedBox(
                     width: 12,
@@ -114,11 +115,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-        color: Colors.grey.shade50,
-        child: _loading(),
-      ),
+      backgroundColor: Colors.white70,
+      body: _loading(),
     );
   }
 
@@ -156,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  flex: 1,
+                                  flex: 2,
                                   child: Container(
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
@@ -180,40 +178,57 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          '${profileData.emp_prefix} ${profileData.emp_firstname}  ${profileData.emp_lastname}',
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 18,
-                                            color: Color(0xFF555555),
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
+                                  flex: 5,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.1),
+                                          spreadRadius: 0,
+                                          blurRadius: 0,
+                                          offset: Offset(1, 3), // x, y
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Row(
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Column(
                                         children: [
-                                          Text(
-                                            "Nickname: ${profileData.emp_nickname}",
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 14,
-                                              color: Color(0xFF555555),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              '${profileData.emp_prefix} ${profileData.emp_firstname}  ${profileData.emp_lastname}',
+                                              style: GoogleFonts.openSans(
+                                                fontSize: 18,
+                                                color: Color(0xFF555555),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 8,
+                                            height: 8,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Nickname: ${profileData.emp_nickname}",
+                                                style: GoogleFonts.openSans(
+                                                  fontSize: 14,
+                                                  color: Color(0xFF555555),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -223,7 +238,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  flex: 1,
+                                  flex: 2,
                                   child: Container(
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
@@ -250,31 +265,34 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          'DNA',
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 16,
-                                            color: Color(0xFF555555),
-                                            fontWeight: FontWeight.bold,
+                                  flex: 5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'DNA',
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 16,
+                                              color: Color(0xFF555555),
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Container(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          profileData.dna_name,
-                                          style: GoogleFonts.openSans(
-                                              fontSize: 14, color: Color(0xFF555555)),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            profileData.dna_name,
+                                            style: GoogleFonts.openSans(
+                                                fontSize: 14, color: Color(0xFF555555)),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],

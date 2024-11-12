@@ -35,7 +35,7 @@ class _ProjectBudgetingState extends State<ProjectBudgeting> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -97,18 +97,18 @@ class _ProjectBudgetingState extends State<ProjectBudgeting> {
                 ),
                 prefixIcon: Icon(
                   Icons.search,
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                    color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                     width: 1.0,
                   ),
                   borderRadius: BorderRadius.circular(100),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                    color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                     width: 1.0,
                   ),
                   borderRadius: BorderRadius.circular(100),
@@ -181,7 +181,7 @@ class _ProjectBudgetingState extends State<ProjectBudgeting> {
         ),
         Container(
           decoration: BoxDecoration(
-            color: Colors.orange.shade400,
+            color: Color(0xFFFF9900),
           ),
           child: Padding(
             padding: EdgeInsets.all(16),
@@ -446,7 +446,7 @@ class _ProjectBudgetingState extends State<ProjectBudgeting> {
                 'Close',
                 style: GoogleFonts.openSans(
                   fontSize: 16,
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                   fontWeight: FontWeight.w700,
                 ),
               ),

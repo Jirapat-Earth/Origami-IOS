@@ -36,7 +36,7 @@ class DateOtherState extends State<DateOther> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),
@@ -90,7 +90,7 @@ class DateOtherState extends State<DateOther> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),
@@ -155,7 +155,7 @@ class DateOtherState extends State<DateOther> {
                 BorderRadius.circular(15),
                 color: Colors.white,
                 border: Border.all(
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                   width: 1.0,
                 ),
               ),
@@ -194,7 +194,7 @@ class DateOtherState extends State<DateOther> {
                 BorderRadius.circular(15),
                 color: Colors.white,
                 border: Border.all(
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                   width: 1.0,
                 ),
               ),

@@ -35,7 +35,7 @@ class _ProjectPhotoFileState extends State<ProjectPhotoFile> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -197,7 +197,7 @@ class _ProjectPhotoFileState extends State<ProjectPhotoFile> {
                     'Tap here to select an file/image.',
                     style: GoogleFonts.openSans(
                       fontSize: 14,
-                      color: Colors.orange.shade400,
+                      color: Color(0xFFFF9900),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -242,7 +242,7 @@ class _ProjectPhotoFileState extends State<ProjectPhotoFile> {
                     'Tap here to select an image.',
                     style: GoogleFonts.openSans(
                       fontSize: 14,
-                      color: Colors.orange.shade400,
+                      color: Color(0xFFFF9900),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -301,7 +301,7 @@ class _ProjectPhotoFileState extends State<ProjectPhotoFile> {
                     'Tap here for signature.',
                     style: GoogleFonts.openSans(
                       fontSize: 14,
-                      color: Colors.orange.shade400,
+                      color: Color(0xFFFF9900),
                       fontWeight: FontWeight.w500,
                     ),
                   ),

@@ -1,17 +1,17 @@
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:origami_ios/account/account_add/account_add_location.dart';
-import '../../activity/activity_add.dart';
+import '../../activity/add/activity_add.dart';
 import '../../imports.dart';
 
 
 class AccountAddView extends StatefulWidget {
   const AccountAddView({
     Key? key,
-    required this.employee,
+    required this.employee, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
-
+  final String Authorization;
   @override
   _AccountAddViewState createState() => _AccountAddViewState();
 }
@@ -88,7 +88,7 @@ class _AccountAddViewState extends State<AccountAddView> {
     return Scaffold(
       // backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -117,7 +117,7 @@ class _AccountAddViewState extends State<AccountAddView> {
         titleStyle: GoogleFonts.openSans(),
         backgroundColor: Colors.white,
         color: Colors.grey.shade400,
-        colorSelected: Colors.orange,
+        colorSelected: Color(0xFFFF9900),
         indexSelected: _selectedIndex,
         // paddingVertical: 25,
         onTap: _onItemTapped,
@@ -327,7 +327,7 @@ class _AccountAddViewState extends State<AccountAddView> {
                   'Tap here to select an Join User.',
                   style: GoogleFonts.openSans(
                     fontSize: 14,
-                    color: Colors.orange.shade400,
+                    color: Color(0xFFFF9900),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -521,18 +521,18 @@ class _AccountAddViewState extends State<AccountAddView> {
                                   ),
                                   prefixIcon: Icon(
                                     Icons.search,
-                                    color: Colors.orange,
+                                    color: Color(0xFFFF9900),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.orange,
+                                      color: Color(0xFFFF9900),
                                       width: 1.0,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.orange,
+                                      color: Color(0xFFFF9900),
                                       width: 1.0,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
@@ -629,7 +629,7 @@ class _AccountAddViewState extends State<AccountAddView> {
                                                       style:
                                                       GoogleFonts.openSans(
                                                         fontSize: 16,
-                                                        color: Colors.orange,
+                                                        color: Color(0xFFFF9900),
                                                         fontWeight:
                                                         FontWeight.w700,
                                                       ),

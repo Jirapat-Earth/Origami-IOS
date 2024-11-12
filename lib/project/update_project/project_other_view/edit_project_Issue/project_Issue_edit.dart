@@ -1,18 +1,6 @@
-import 'dart:convert';
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
-import 'package:origami_ios/project/project.dart';
-import 'package:origami_ios/project/create_project/project_add.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../login/login.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
+import '../../../../imports.dart';
 
 class EditProjectIssue extends StatefulWidget {
   const EditProjectIssue({
@@ -55,7 +43,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -309,7 +297,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
                         child: Checkbox(
                           value: _isChecked,
                           checkColor: Colors.white,
-                          activeColor: Colors.orange,
+                          activeColor: Color(0xFFFF9900),
                           onChanged: (bool? value) {
                             setState(() {
                               _isChecked = value ?? false;
@@ -334,7 +322,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -393,7 +381,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -452,7 +440,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -511,7 +499,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -570,7 +558,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -629,7 +617,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -688,7 +676,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -747,7 +735,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -858,7 +846,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -866,20 +854,20 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -906,7 +894,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -914,20 +902,20 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -956,7 +944,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -964,20 +952,20 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -1010,7 +998,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
             hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -1018,20 +1006,20 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
-                color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
                 width: 1,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -1042,8 +1030,8 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
               child: Center(
                 child: IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.calendar_month,color: Colors.orange,),
-                    // color: Colors.orange,
+                    icon: Icon(Icons.calendar_month,color: Color(0xFFFF9900),),
+                    // color: Color(0xFFFF9900),
                     iconSize: 22),
               ),
             ),
@@ -1070,7 +1058,7 @@ class _EditProjectIssueState extends State<EditProjectIssue> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),

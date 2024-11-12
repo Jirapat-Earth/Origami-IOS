@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../../activity/activity_add.dart';
+import '../../activity/add/activity_add.dart';
 import '../../imports.dart';
 
 class AccountAddLocation extends StatefulWidget {
@@ -155,7 +155,7 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
                           'Next >>',
                           style: GoogleFonts.openSans(
                             fontSize: 16,
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -178,7 +178,7 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
                           '<< Back',
                           style: GoogleFonts.openSans(
                             fontSize: 16,
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -194,13 +194,13 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            Icon(Icons.save, size: 20, color: Colors.orange),
+                            Icon(Icons.save, size: 20, color: Color(0xFFFF9900)),
                             SizedBox(width: 4),
                             Text(
                               'SAVE',
                               style: GoogleFonts.openSans(
                                 fontSize: 16,
-                                color: Colors.orange,
+                                color: Color(0xFFFF9900),
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -303,7 +303,7 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.white,
                                 border: Border.all(
-                                  color: Colors.orange,
+                                  color: Color(0xFFFF9900),
                                   width: 1.0,
                                 ),
                               ),
@@ -430,7 +430,7 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -525,7 +525,7 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
         hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -533,20 +533,20 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -597,17 +597,17 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
                 border: Border.all(
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                   width: 1.0,
                 ),
               ),
-              child: Icon(Icons.location_on, size: 22, color: Colors.orange),
+              child: Icon(Icons.location_on, size: 22, color: Color(0xFFFF9900)),
             ),
           ),
         ),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -615,20 +615,20 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -660,7 +660,7 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
                   Checkbox(
                     value: _isChecked,
                     checkColor: Colors.white,
-                    activeColor: Colors.orange,
+                    activeColor: Color(0xFFFF9900),
                     onChanged: (bool? value) {
                       setState(() {
                         _isChecked = value ?? false;
@@ -704,7 +704,7 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
             hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -712,20 +712,20 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
-                color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
                 width: 1,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -754,7 +754,7 @@ class _AccountAddLocationState extends State<AccountAddLocation> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),

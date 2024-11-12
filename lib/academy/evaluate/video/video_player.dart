@@ -7,13 +7,13 @@ class NetworkVideoPlayer extends StatefulWidget {
   final Employee employee;
   final AcademyRespond academy;
   final String Function(String) videoView;
-
+  final String Authorization;
   const NetworkVideoPlayer({
     Key? key,
     required this.videoUrl,
     required this.employee,
     required this.academy,
-    required this.videoView,
+    required this.videoView, required this.Authorization,
   }) : super(key: key);
 
   @override

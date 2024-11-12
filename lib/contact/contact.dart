@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../../../activity/activity_add.dart';
+import '../activity/add/activity_add.dart';
 import '../../../imports.dart';
 import 'contact_add/contact_add_view.dart';
 import 'contact_edit/contact_edit_view.dart';
@@ -8,11 +8,11 @@ import 'contact_edit/contact_edit_view.dart';
 class ContactScreen extends StatefulWidget {
   const ContactScreen({
     Key? key,
-    required this.employee, required this.pageInput,
+    required this.employee, required this.pageInput, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
-
+  final String Authorization;
   @override
   _ContactScreenState createState() => _ContactScreenState();
 }
@@ -50,7 +50,7 @@ class _ContactScreenState extends State<ContactScreen> {
             context,
             MaterialPageRoute(
               builder: (context) => ContactAddView(
-                employee: widget.employee,
+                employee: widget.employee,Authorization: widget.Authorization,
               ),
             ),
           ).then((value) {
@@ -74,7 +74,7 @@ class _ContactScreenState extends State<ContactScreen> {
           ),
         ),
         elevation: 0,
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
       ),
       body: SafeArea(
         child: _getOtherContact(),
@@ -104,7 +104,7 @@ class _ContactScreenState extends State<ContactScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                   ),
                   SizedBox(
                     width: 12,
@@ -156,18 +156,18 @@ class _ContactScreenState extends State<ContactScreen> {
                         ),
                         prefixIcon: Icon(
                           Icons.search,
-                          color: Colors.orange,
+                          color: Color(0xFFFF9900),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                             width: 1.0,
                           ),
                           borderRadius: BorderRadius.circular(100),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                             width: 1.0,
                           ),
                           borderRadius: BorderRadius.circular(100),
@@ -213,7 +213,7 @@ class _ContactScreenState extends State<ContactScreen> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ContactEditView(
-                    employee: widget.employee, pageInput: widget.pageInput,
+                    employee: widget.employee, Authorization: widget.Authorization,pageInput: widget.pageInput,
                   ),
                 ),
               ).then((value) {
@@ -240,7 +240,7 @@ class _ContactScreenState extends State<ContactScreen> {
                         backgroundColor: Colors.grey,
                         child: CircleAvatar(
                           radius: 24,
-                          backgroundColor: Colors.orange,
+                          backgroundColor: Color(0xFFFF9900),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child:
@@ -333,7 +333,7 @@ class _ContactScreenState extends State<ContactScreen> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'index': '0',
       },
     );

@@ -29,18 +29,19 @@ import '../../origami_view.dart';
 import 'need.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-
 class NeedDetail extends StatefulWidget {
   const NeedDetail({
     super.key,
     this.needTypeItem,
     required this.employee,
     required this.request_id,
+    required this.Authorization,
     // this.approvelList,
   });
   final NeedTypeItemRespond? needTypeItem;
   final Employee employee;
   final String request_id;
+  final String Authorization;
   // final ApprovelData? approvelList;
 
   @override
@@ -100,7 +101,7 @@ class _NeedDetailState extends State<NeedDetail> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),
@@ -127,8 +128,7 @@ class _NeedDetailState extends State<NeedDetail> {
                   child: Text(
                     '$Close',
                     style: GoogleFonts.openSans(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.teal),
+                        fontWeight: FontWeight.bold, color: Colors.teal),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -153,7 +153,7 @@ class _NeedDetailState extends State<NeedDetail> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),
@@ -180,8 +180,7 @@ class _NeedDetailState extends State<NeedDetail> {
                   child: Text(
                     '$Close',
                     style: GoogleFonts.openSans(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.teal),
+                        fontWeight: FontWeight.bold, color: Colors.teal),
                   ),
                   onPressed: () {
                     Navigator.pop(context);
@@ -365,7 +364,7 @@ class _NeedDetailState extends State<NeedDetail> {
           ],
         ),
         actions: [],
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
       ),
       body: (widget.request_id == '')
           ? _getContentWidget()
@@ -378,7 +377,7 @@ class _NeedDetailState extends State<NeedDetail> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircularProgressIndicator(
-                        color: Colors.orange,
+                        color: Color(0xFFFF9900),
                       ),
                       SizedBox(
                         width: 12,
@@ -438,7 +437,7 @@ class _NeedDetailState extends State<NeedDetail> {
                         borderRadius: BorderRadius.circular(15),
                         color: Colors.white,
                         border: Border.all(
-                          color: Colors.orange,
+                          color: Color(0xFFFF9900),
                           width: 1.0,
                         ),
                       ),
@@ -493,7 +492,7 @@ class _NeedDetailState extends State<NeedDetail> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(
-                        color: Colors.orange,
+                        color: Color(0xFFFF9900),
                         width: 1.0,
                       ),
                     ),
@@ -573,7 +572,7 @@ class _NeedDetailState extends State<NeedDetail> {
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.white,
                             border: Border.all(
-                              color: Colors.orange,
+                              color: Color(0xFFFF9900),
                               width: 1.0,
                             ),
                           ),
@@ -595,7 +594,10 @@ class _NeedDetailState extends State<NeedDetail> {
                                         fontSize: 14, color: Color(0xFF555555)),
                                   ),
                                   Spacer(),
-                                  Icon(Icons.calendar_month,color: Color(0xFF555555),),
+                                  Icon(
+                                    Icons.calendar_month,
+                                    color: Color(0xFF555555),
+                                  ),
                                 ],
                               ),
                             ),
@@ -624,7 +626,7 @@ class _NeedDetailState extends State<NeedDetail> {
                                   borderRadius: BorderRadius.circular(15),
                                   color: Colors.white,
                                   border: Border.all(
-                                    color: Colors.orange,
+                                    color: Color(0xFFFF9900),
                                     width: 1.0,
                                   ),
                                 ),
@@ -647,7 +649,10 @@ class _NeedDetailState extends State<NeedDetail> {
                                               color: Color(0xFF555555)),
                                         ),
                                         Spacer(),
-                                        Icon(Icons.calendar_month,color: Color(0xFF555555),),
+                                        Icon(
+                                          Icons.calendar_month,
+                                          color: Color(0xFF555555),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -859,7 +864,7 @@ class _NeedDetailState extends State<NeedDetail> {
                   }
                 },
                 child: Card(
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                   child: Container(
                     width: double.infinity,
                     height: 50,
@@ -899,7 +904,7 @@ class _NeedDetailState extends State<NeedDetail> {
         borderRadius: BorderRadius.circular(15),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -950,7 +955,7 @@ class _NeedDetailState extends State<NeedDetail> {
                                   : (priority.priority_name == 'Medium')
                                       ? Colors.yellow
                                       : (priority.priority_name == 'High')
-                                          ? Colors.orangeAccent
+                                          ? Color(0xFFFF9900)
                                           : (priority.priority_name ==
                                                   'Very high')
                                               ? Colors.redAccent
@@ -1099,7 +1104,7 @@ class _NeedDetailState extends State<NeedDetail> {
     //     height: 2,
     //     color: Colors.transparent,
     //   ),
-    //   dropdownColor: Colors.orange.shade50,
+    //   dropdownColor: Color(0xFFFF9900).shade50,
     //   borderRadius: BorderRadius.circular(15),
     //   padding: EdgeInsets.only(top: 4, bottom: 4, right: 8),
     //   isExpanded: true,
@@ -1120,6 +1125,7 @@ class _NeedDetailState extends State<NeedDetail> {
               builder: (context) => MiniProject(
                 callback: (String value) => editprojectText = value,
                 employee: widget.employee,
+                Authorization: widget.Authorization,
                 callbackId: (String value) => projectId = value,
               ),
             ),
@@ -1144,6 +1150,7 @@ class _NeedDetailState extends State<NeedDetail> {
               builder: (context) => MiniDepartment(
                 callback: (String value) => editDepartmentText = value,
                 employee: widget.employee,
+                Authorization: widget.Authorization,
                 callbackId: (String value) => departmentId = value,
               ),
             ),
@@ -1168,6 +1175,7 @@ class _NeedDetailState extends State<NeedDetail> {
               builder: (context) => MiniDivision(
                 callback: (String value) => editDivisionText = value,
                 employee: widget.employee,
+                Authorization: widget.Authorization,
                 callbackId: (String value) => divisionId = value,
               ),
             ),
@@ -1192,6 +1200,7 @@ class _NeedDetailState extends State<NeedDetail> {
               builder: (context) => MiniEmployee(
                 callback: (String value) => editEmployeeText = value,
                 employee: widget.employee,
+                Authorization: widget.Authorization,
                 callbackId: (String value) => employeeId = value,
               ),
             ),
@@ -1216,6 +1225,7 @@ class _NeedDetailState extends State<NeedDetail> {
               builder: (context) => MiniAccount(
                 callback: (String value) => editAccountText = value,
                 employee: widget.employee,
+                Authorization: widget.Authorization,
                 callbackId: (String value) => accountId = value,
               ),
             ),
@@ -1240,6 +1250,7 @@ class _NeedDetailState extends State<NeedDetail> {
               builder: (context) => MiniAsset(
                 callback: (String value) => editAssetText = value,
                 employee: widget.employee,
+                Authorization: widget.Authorization,
                 callbackId: (String value) => assetId = value,
               ),
             ),
@@ -1264,6 +1275,7 @@ class _NeedDetailState extends State<NeedDetail> {
               builder: (context) => MiniContact(
                 callback: (String value) => editContactText = value,
                 employee: widget.employee,
+                Authorization: widget.Authorization,
                 callbackId: (String value) => contactId = value,
               ),
             ),
@@ -1289,6 +1301,7 @@ class _NeedDetailState extends State<NeedDetail> {
                 callbackID: (String value) => selectItemId = value,
                 callbackNAME: (String value) => edititemText = value,
                 employee: widget.employee,
+                Authorization: widget.Authorization,
                 Item_type_id: widget.needTypeItem!.type_id ?? '',
               ),
             ),
@@ -1315,6 +1328,7 @@ class _NeedDetailState extends State<NeedDetail> {
                 callbackName: (String value) => unitText = editunitText = value,
                 callbackId: (String value) => editunit_id = value,
                 employee: widget.employee,
+                Authorization: widget.Authorization,
               ),
             ),
           );
@@ -1380,13 +1394,18 @@ class _NeedDetailState extends State<NeedDetail> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(null,color: Color(0xFF555555),),
+                  Icon(
+                    null,
+                    color: Color(0xFF555555),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 6),
                     child: Center(
                       child: Text(
                         '$Item',
-                        style: GoogleFonts.openSans(color: Color(0xFF555555),),
+                        style: GoogleFonts.openSans(
+                          color: Color(0xFF555555),
+                        ),
                       ),
                     ),
                   ),
@@ -1405,7 +1424,8 @@ class _NeedDetailState extends State<NeedDetail> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 6, right: 4),
                       child: Icon(
-                        Icons.library_books_outlined,color: Color(0xFF555555),
+                        Icons.library_books_outlined,
+                        color: Color(0xFF555555),
                       ),
                     ),
                   ),
@@ -1424,7 +1444,7 @@ class _NeedDetailState extends State<NeedDetail> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
-                              backgroundColor: Colors.orange,
+                              backgroundColor: Color(0xFFFF9900),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
@@ -1449,7 +1469,9 @@ class _NeedDetailState extends State<NeedDetail> {
                                             Expanded(
                                               child: Text(
                                                 '$Error_Item',
-                                                style: GoogleFonts.openSans(color: Color(0xFF555555),),
+                                                style: GoogleFonts.openSans(
+                                                  color: Color(0xFF555555),
+                                                ),
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
@@ -1555,7 +1577,7 @@ class _NeedDetailState extends State<NeedDetail> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
-                              backgroundColor: Colors.orange,
+                              backgroundColor: Color(0xFFFF9900),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0),
                               ),
@@ -1650,7 +1672,7 @@ class _NeedDetailState extends State<NeedDetail> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                   border: Border.all(
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                     width: 1.0,
                   ),
                 ),
@@ -1711,7 +1733,7 @@ class _NeedDetailState extends State<NeedDetail> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                   border: Border.all(
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                     width: 1.0,
                   ),
                 ),
@@ -1776,7 +1798,7 @@ class _NeedDetailState extends State<NeedDetail> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15.0),
                         border: Border.all(
-                          color: Colors.orange,
+                          color: Color(0xFFFF9900),
                           width: 1.0,
                         ),
                       ),
@@ -1805,7 +1827,9 @@ class _NeedDetailState extends State<NeedDetail> {
                           setState(() {
                             priceT = value;
                             price = double.parse(value);
-                            sum = (quantityT == '') ? 0 : quantity * double.parse(value);
+                            sum = (quantityT == '')
+                                ? 0
+                                : quantity * double.parse(value);
                             sumT = sum.toString();
                             print(sumT);
                           });
@@ -1861,7 +1885,7 @@ class _NeedDetailState extends State<NeedDetail> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                     width: 1.0,
                   ),
                 ),
@@ -1871,7 +1895,7 @@ class _NeedDetailState extends State<NeedDetail> {
                     (_amountController.text == '' ||
                             _priceController.text == '')
                         ? '0'
-                        : '${quantity*price}',
+                        : '${quantity * price}',
                     style: GoogleFonts.openSans(
                       fontSize: 16,
                       color: (_amountController.text == '' ||
@@ -1886,7 +1910,8 @@ class _NeedDetailState extends State<NeedDetail> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8,top: 8),
+          padding:
+              const EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -1928,7 +1953,7 @@ class _NeedDetailState extends State<NeedDetail> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: Colors.orange,
+                                color: Color(0xFFFF9900),
                                 width: 1.0,
                               ),
                             ),
@@ -1940,14 +1965,14 @@ class _NeedDetailState extends State<NeedDetail> {
                                   children: [
                                     Icon(
                                       Icons.add,
-                                      color: Colors.orange,
+                                      color: Color(0xFFFF9900),
                                     ),
                                     Text(
                                       '$Add_Image',
                                       style: GoogleFonts.openSans(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.orange,
+                                        color: Color(0xFFFF9900),
                                       ),
                                     ),
                                   ],
@@ -2004,7 +2029,9 @@ class _NeedDetailState extends State<NeedDetail> {
               backgroundColor: Colors.white,
               title: Text(
                 '',
-                style: GoogleFonts.openSans(color: Color(0xFF555555),),
+                style: GoogleFonts.openSans(
+                  color: Color(0xFF555555),
+                ),
               ),
             ),
             body: (saveItemList.length == 0)
@@ -2060,8 +2087,8 @@ class _NeedDetailState extends State<NeedDetail> {
                                                           style: GoogleFonts
                                                               .openSans(
                                                             fontSize: 18.0,
-                                                            color:
-                                                                Colors.orange,
+                                                            color: Color(
+                                                                0xFFFF9900),
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                           ),
@@ -2182,17 +2209,19 @@ class _NeedDetailState extends State<NeedDetail> {
                                                   });
                                                 },
                                                 child: Container(
-                                                    alignment:
-                                                        Alignment.bottomRight,
-                                                    height: 25,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
-                                                    ),
-                                                    child: FaIcon(FontAwesomeIcons.trashAlt,
-                                                      color: Colors.redAccent,
-                                                    ),)),
+                                                  alignment:
+                                                      Alignment.bottomRight,
+                                                  height: 25,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                  child: FaIcon(
+                                                    FontAwesomeIcons.trashAlt,
+                                                    color: Colors.redAccent,
+                                                  ),
+                                                )),
                                           ],
                                         ),
                                       ],
@@ -2359,38 +2388,38 @@ class _NeedDetailState extends State<NeedDetail> {
     return WillPopScope(
       onWillPop: () async {
         return await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            elevation: 0,
-            title: Text(
-              '$Exit$Bill',
-              style: GoogleFonts.openSans(
-                fontSize: 16,
-                color: Color(0xFF555555),
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    selectedImages = [];
-                    myList = [];
-                    imageItem = [];
-                  });
-                  Navigator.of(context).pop(false);
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  '$Ok',
+              context: context,
+              builder: (context) => AlertDialog(
+                elevation: 0,
+                title: Text(
+                  '$Exit$Bill',
                   style: GoogleFonts.openSans(
+                    fontSize: 16,
                     color: Color(0xFF555555),
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        selectedImages = [];
+                        myList = [];
+                        imageItem = [];
+                      });
+                      Navigator.of(context).pop(false);
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      '$Ok',
+                      style: GoogleFonts.openSans(
+                        color: Color(0xFF555555),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ) ??
+            ) ??
             false;
       },
       child: Container(
@@ -2417,7 +2446,9 @@ class _NeedDetailState extends State<NeedDetail> {
                       ),
                       Text(
                         '$Bill',
-                        style: GoogleFonts.openSans(color: Color(0xFF555555),),
+                        style: GoogleFonts.openSans(
+                          color: Color(0xFF555555),
+                        ),
                       ),
                       InkWell(
                         onTap: () => getImages(),
@@ -2431,13 +2462,11 @@ class _NeedDetailState extends State<NeedDetail> {
                 ),
                 body: selectedImages.isNotEmpty
                     ? SingleChildScrollView(child: _InPhoto())
-                    : _InPhoto()
-            ),
+                    : _InPhoto()),
           ),
         ),
       ),
     );
-
   }
 
   List<String> myList = [];
@@ -2496,7 +2525,7 @@ class _NeedDetailState extends State<NeedDetail> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
                                 border: Border.all(
-                                  color: Colors.orange.shade300,
+                                  color: Color(0xFFFF9900),
                                   width: 1.0,
                                 ),
                               ),
@@ -2524,23 +2553,21 @@ class _NeedDetailState extends State<NeedDetail> {
                                 selectedImages.length,
                                 (indexImage) {
                                   final base64String = imageToBase64(
-                                      selectedImages[indexImage].path,
-                                      myList);
+                                      selectedImages[indexImage].path, myList);
                                   print(base64String);
                                   return Padding(
                                     padding: const EdgeInsets.only(
                                         left: 4, right: 4),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.circular(10),
                                         color: (index == indexImage)
-                                            ? Colors.orange
+                                            ? Color(0xFFFF9900)
                                             : Colors.transparent,
                                         border: Border.all(
                                           color: (index == indexImage)
-                                              ? Colors.orange
-                                              : Colors.orange,
+                                              ? Color(0xFFFF9900)
+                                              : Color(0xFFFF9900),
                                           width: 1.0,
                                         ),
                                       ),
@@ -2595,7 +2622,7 @@ class _NeedDetailState extends State<NeedDetail> {
                 child: Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: Card(
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                     child: Container(
                       width: double.infinity,
                       height: 50,
@@ -2625,7 +2652,7 @@ class _NeedDetailState extends State<NeedDetail> {
                 child: Padding(
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: Card(
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                     child: Container(
                       width: double.infinity,
                       height: 50,
@@ -2725,7 +2752,9 @@ class _NeedDetailState extends State<NeedDetail> {
             SnackBar(
               content: Text(
                 'Nothing is selected',
-                style: GoogleFonts.openSans(color: Color(0xFF555555),),
+                style: GoogleFonts.openSans(
+                  color: Color(0xFF555555),
+                ),
               ),
             ),
           );
@@ -2750,6 +2779,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -2794,6 +2824,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -2836,6 +2867,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -2878,6 +2910,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -2921,6 +2954,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -2964,6 +2998,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -3007,6 +3042,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -3051,6 +3087,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -3094,6 +3131,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -3136,6 +3174,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -3200,6 +3239,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
           'request_id': widget.request_id,
           'need_type': widget.needTypeItem!.type_id,
           'need_subject': "$_searchSubject",
@@ -3221,11 +3261,13 @@ class _NeedDetailState extends State<NeedDetail> {
         if (jsonResponse['status'] == true) {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) =>  OrigamiPage(
-              employee: widget.employee,
-              popPage: 0,
-            )),
-                (Route<dynamic> route) => false, // ลบหน้าทั้งหมดใน stack
+            MaterialPageRoute(
+                builder: (context) => OrigamiPage(
+                      employee: widget.employee,
+                      Authorization: widget.Authorization,
+                      popPage: 0,
+                    )),
+            (Route<dynamic> route) => false, // ลบหน้าทั้งหมดใน stack
           );
           // Navigator.pushReplacement(
           //   context,
@@ -3261,6 +3303,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
           'action_type': "$action_type",
           'need_id': "$need_id",
           'type_id': "$type_id",
@@ -3309,6 +3352,7 @@ class _NeedDetailState extends State<NeedDetail> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
           'request_id': widget.request_id,
           // 'item_id': item_id,
           'item_sort': item_sort,

@@ -1,12 +1,12 @@
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import '../../../imports.dart';
-import '../activity/activity_add.dart';
+import '../activity/add/activity_add.dart';
 
 class WorkApplyPage extends StatefulWidget {
-  const WorkApplyPage({Key? key, required this.employee}) : super(key: key);
+  const WorkApplyPage({Key? key, required this.employee, required this.Authorization}) : super(key: key);
   final Employee employee;
-
+  final String Authorization;
   @override
   _WorkApplyPageState createState() => _WorkApplyPageState();
 }
@@ -61,7 +61,7 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),
@@ -98,7 +98,7 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -147,7 +147,7 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
                 // border: Border.all(
-                //   color: Colors.orange,
+                //   color: Color(0xFFFF9900),
                 //   width: 1.0,
                 // ),
               ),
@@ -158,7 +158,7 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
                     // border: Border.all(
-                    //   color: Colors.orange,
+                    //   color: Color(0xFFFF9900),
                     //   width: 1.0,
                     // ),
                   ),
@@ -189,7 +189,7 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
                   // border: Border.all(
-                  //   color: Colors.orange,
+                  //   color: Color(0xFFFF9900),
                   //   width: 1.0,
                   // ),
                 ),
@@ -198,7 +198,7 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
                     // border: Border.all(
-                    //   color: Colors.orange,
+                    //   color: Color(0xFFFF9900),
                     //   width: 1.0,
                     // ),
                   ),
@@ -225,7 +225,7 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.white,
                                   border: Border.all(
-                                    color: Colors.orange,
+                                    color: Color(0xFFFF9900),
                                     width: 1.0,
                                   ),
                                 ),
@@ -261,7 +261,7 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.white,
                                   border: Border.all(
-                                    color: Colors.orange,
+                                    color: Color(0xFFFF9900),
                                     width: 1.0,
                                   ),
                                 ),
@@ -297,7 +297,7 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
                             Checkbox(
                               value: _isChecked,
                               checkColor: Colors.white,
-                              activeColor: Colors.orange,
+                              activeColor: Color(0xFFFF9900),
                               onChanged: (bool? value) {
                                 setState(() {
                                   _isChecked = value ?? false;
@@ -326,7 +326,7 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
                 // border: Border.all(
-                //   color: Colors.orange,
+                //   color: Color(0xFFFF9900),
                 //   width: 1.0,
                 // ),
               ),
@@ -337,7 +337,7 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
                     // border: Border.all(
-                    //   color: Colors.orange,
+                    //   color: Color(0xFFFF9900),
                     //   width: 1.0,
                     // ),
                   ),
@@ -401,14 +401,14 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -430,7 +430,7 @@ class _WorkApplyPageState extends State<WorkApplyPage> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),

@@ -13,10 +13,10 @@ import 'need_approve_detail.dart';
 class NeedRequest extends StatefulWidget {
   const NeedRequest({
     super.key,
-    required this.employee,
+    required this.employee, required this.Authorization,
   });
   final Employee employee;
-
+  final String Authorization;
   @override
   _NeedRequestState createState() => _NeedRequestState();
 }
@@ -80,7 +80,7 @@ class _NeedRequestState extends State<NeedRequest> {
             return Center(child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircularProgressIndicator(color: Colors.orange,),
+                CircularProgressIndicator(color: Color(0xFFFF9900),),
                 SizedBox(width: 12,),
                 Text(
                   '$Loading...',
@@ -127,6 +127,7 @@ class _NeedRequestState extends State<NeedRequest> {
                               request_id: ApprovelList[indexA]
                                   .mny_request_id ??
                                   '',
+                                Authorization: widget.Authorization
                               // approvelList:ApprovelList[indexA],
                             ),
                           ),
@@ -138,7 +139,7 @@ class _NeedRequestState extends State<NeedRequest> {
                         ApprovelList[indexA].need_subject ?? '',
                         style: GoogleFonts.openSans(
                           fontSize: 18,
-                          color: Colors.orange,
+                          color: Color(0xFFFF9900),
                           fontWeight: FontWeight.bold,
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -679,6 +680,7 @@ class _NeedRequestState extends State<NeedRequest> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -713,6 +715,7 @@ class _NeedRequestState extends State<NeedRequest> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
           'need_id': "$need_id",
           'approve_flag': "$approve_flag",
           'comment': "$comment",

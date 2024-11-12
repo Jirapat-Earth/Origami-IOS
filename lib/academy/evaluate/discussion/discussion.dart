@@ -5,11 +5,11 @@ class Discussion extends StatefulWidget {
   Discussion({
     super.key,
     required this.employee,
-    required this.academy,
+    required this.academy, required this.Authorization,
   });
   final Employee employee;
   final AcademyRespond academy;
-
+  final String Authorization;
   @override
   _DiscussionState createState() => _DiscussionState();
 }
@@ -23,7 +23,7 @@ class _DiscussionState extends State<Discussion> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'academy_id': widget.academy.academy_id,
         'academy_type': widget.academy.academy_type,
       },
@@ -51,7 +51,7 @@ class _DiscussionState extends State<Discussion> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'academy_id': widget.academy.academy_id,
         'academy_type': widget.academy.academy_type,
         'discussion_id':discussionId,
@@ -386,7 +386,7 @@ class _DiscussionState extends State<Discussion> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   CircularProgressIndicator(
-                                    color: Colors.orange,
+                                    color: Color(0xFFFF9900),
                                   ),
                                   SizedBox(
                                     width: 12,
@@ -722,7 +722,7 @@ class _DiscussionState extends State<Discussion> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'academy_id': widget.academy.academy_id,
           'academy_type': widget.academy.academy_type,
           'discussion_id': discussion_id,

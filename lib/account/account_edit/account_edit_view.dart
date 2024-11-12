@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../../activity/activity_add.dart';
+import '../../activity/add/activity_add.dart';
 import '../../imports.dart';
 import 'detail/account_edit_detail.dart';
 import 'location/account_edit_location.dart';
@@ -10,11 +10,11 @@ class AccountEditView extends StatefulWidget {
   const AccountEditView({
     Key? key,
     required this.employee,
-    required this.pageInput,
+    required this.pageInput, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
-
+  final String Authorization;
   @override
   _AccountEditViewState createState() => _AccountEditViewState();
 }
@@ -115,7 +115,7 @@ class _AccountEditViewState extends State<AccountEditView> {
     return Scaffold(
       // backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -144,7 +144,7 @@ class _AccountEditViewState extends State<AccountEditView> {
         titleStyle: GoogleFonts.openSans(),
         backgroundColor: Colors.white,
         color: Colors.grey.shade400,
-        colorSelected: Colors.orange,
+        colorSelected: Color(0xFFFF9900),
         indexSelected: _selectedIndex,
         // paddingVertical: 25,
         onTap: _onItemTapped,
@@ -156,24 +156,24 @@ class _AccountEditViewState extends State<AccountEditView> {
     switch (_selectedIndex) {
       case 0:
         return AccountEditDetail(
-            employee: widget.employee, pageInput: widget.pageInput);
+            employee: widget.employee, Authorization: widget.Authorization,pageInput: widget.pageInput);
       case 1:
         return AccountEditLocation(
-            employee: widget.employee, pageInput: widget.pageInput);
+            employee: widget.employee, Authorization: widget.Authorization,pageInput: widget.pageInput);
       case 2:
         return ContactScreen(
-            employee: widget.employee, pageInput: widget.pageInput);
+            employee: widget.employee, Authorization: widget.Authorization,pageInput: widget.pageInput);
       case 3:
         return JoinUser();
       case 4:
         return IdocScreen(
-            employee: widget.employee, pageInput: widget.pageInput);
+            employee: widget.employee, Authorization: widget.Authorization,pageInput: widget.pageInput);
       case 5:
         return ProjectScreen(
-            employee: widget.employee, pageInput: widget.pageInput);
+            employee: widget.employee, Authorization: widget.Authorization,pageInput: widget.pageInput);
       case 6:
         return ActivityScreen(
-            employee: widget.employee, pageInput: widget.pageInput);
+            employee: widget.employee, Authorization: widget.Authorization,pageInput: widget.pageInput);
       default:
         return Container();
     }
@@ -370,7 +370,7 @@ class _AccountEditViewState extends State<AccountEditView> {
                   'Tap here to select an Join User.',
                   style: GoogleFonts.openSans(
                     fontSize: 14,
-                    color: Colors.orange.shade400,
+                    color: Color(0xFFFF9900),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -564,18 +564,18 @@ class _AccountEditViewState extends State<AccountEditView> {
                                   ),
                                   prefixIcon: Icon(
                                     Icons.search,
-                                    color: Colors.orange,
+                                    color: Color(0xFFFF9900),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.orange,
+                                      color: Color(0xFFFF9900),
                                       width: 1.0,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.orange,
+                                      color: Color(0xFFFF9900),
                                       width: 1.0,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
@@ -672,7 +672,7 @@ class _AccountEditViewState extends State<AccountEditView> {
                                                       style:
                                                           GoogleFonts.openSans(
                                                         fontSize: 16,
-                                                        color: Colors.orange,
+                                                        color: Color(0xFFFF9900),
                                                         fontWeight:
                                                             FontWeight.w700,
                                                       ),

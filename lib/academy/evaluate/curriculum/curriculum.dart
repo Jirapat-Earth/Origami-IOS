@@ -7,11 +7,11 @@ class Curriculum extends StatefulWidget {
   Curriculum({
     super.key,
     required this.employee,
-    required this.academy,
+    required this.academy, required this.Authorization,
   });
   final Employee employee;
   final AcademyRespond academy;
-
+  final String Authorization;
   @override
   _CurriculumState createState() => _CurriculumState();
 }
@@ -28,7 +28,7 @@ class _CurriculumState extends State<Curriculum> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'academy_id': widget.academy.academy_id,
         'academy_type': widget.academy.academy_type,
       },
@@ -103,6 +103,7 @@ class _CurriculumState extends State<Curriculum> {
                     videoId: url,
                     employee: widget.employee,
                     academy: widget.academy,
+                  Authorization: widget.Authorization,
                 videoView: (String value) {
                   video_viewed = value;
                   return SaveVideoTime();
@@ -122,6 +123,7 @@ class _CurriculumState extends State<Curriculum> {
                     videoUrl: url,
                     employee: widget.employee,
                     academy: widget.academy,
+                Authorization: widget.Authorization,
                     videoView: (String value) {
                       video_viewed = value;
                       return SaveVideoTime();
@@ -474,7 +476,7 @@ class _CurriculumState extends State<Curriculum> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'academy_id': widget.academy.academy_id,
           'academy_type': widget.academy.academy_type,
           'course_id': course_id,
@@ -538,7 +540,7 @@ class _CurriculumState extends State<Curriculum> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'academy_id': widget.academy.academy_id,
           'academy_type': widget.academy.academy_type,
           'course_id': course_id,

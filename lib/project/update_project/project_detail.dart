@@ -1,26 +1,29 @@
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import 'package:origami_ios/project/view/project_activity.dart';
-import 'package:origami_ios/project/view/project_skoop.dart';
+import 'package:origami_ios/project/update_project/project_other_view/project_other_view.dart';
 import '../../../imports.dart';
-import '../project_other_view/project_other_view.dart';
+import '../../activity/edit/activity_edit_now.dart';
+import '../../activity/skoop/skoop.dart';
+import 'project_activity.dart';
+import 'project_skoop.dart';
 
-class ProjectView extends StatefulWidget {
-  const ProjectView({
+class ProjectListUpdate extends StatefulWidget {
+  const ProjectListUpdate({
     Key? key,
     required this.employee,
     required this.project,
     required this.pageInput,
+    required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final ModelProject project;
   final String pageInput;
-
+  final String Authorization;
   @override
-  _ProjectViewState createState() => _ProjectViewState();
+  _ProjectListUpdateState createState() => _ProjectListUpdateState();
 }
 
-class _ProjectViewState extends State<ProjectView> {
+class _ProjectListUpdateState extends State<ProjectListUpdate> {
   TextEditingController _searchController = TextEditingController();
   ModelProject? project;
   String _search = "";
@@ -72,7 +75,7 @@ class _ProjectViewState extends State<ProjectView> {
     setState(() {
       _selectedIndex = index;
       if (index == 0) {
-        page = "Project Detail";
+        page = "Detail";
       } else if (index == 1) {
         page = "Project Activity";
       } else if (index == 2) {
@@ -90,7 +93,7 @@ class _ProjectViewState extends State<ProjectView> {
     return Scaffold(
       // backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -119,7 +122,7 @@ class _ProjectViewState extends State<ProjectView> {
         titleStyle: GoogleFonts.openSans(),
         backgroundColor: Colors.white,
         color: Colors.grey.shade400,
-        colorSelected: Colors.orange,
+        colorSelected: Color(0xFFFF9900),
         indexSelected: _selectedIndex,
         // paddingVertical: 25,
         onTap: _onItemTapped,
@@ -127,22 +130,38 @@ class _ProjectViewState extends State<ProjectView> {
     );
   }
 
+  // List<GetSkoopDetail> getSkoopDetail = [];
+  String skoopDetail = 'Close'; //'Close' or 'Plan'
   Widget _getContentWidget() {
     switch (_selectedIndex) {
       case 0:
         return _ProjectDetail();
       case 1:
-        return ProjectActivity();
+        return ActivityEditNow(
+          employee: widget.employee,
+          Authorization: widget.Authorization,
+          skoopDetail: null,
+        ); //'Close' or 'Plan'
       case 2:
-        return ProjectSkoop();
+        return SkoopScreen(
+          employee: widget.employee,
+          Authorization: widget.Authorization,
+          skoopDetail: null,
+        );
       case 3:
-        return CalendarScreen(employee: widget.employee, pageInput: widget.pageInput);
+        return CalendarScreen(
+            employee: widget.employee,
+            Authorization: widget.Authorization,
+            pageInput: widget.pageInput);
       default:
-        return ProjectOther(employee: widget.employee, pageInput: widget.pageInput);
+        return ProjectOther(
+            employee: widget.employee,
+            Authorization: widget.Authorization,
+            pageInput: widget.pageInput);
     }
   }
 
-  Widget _ProjectDetail(){
+  Widget _ProjectDetail() {
     return Card(
       elevation: 1,
       color: Colors.white,
@@ -171,14 +190,12 @@ class _ProjectViewState extends State<ProjectView> {
             _subData('Type', project?.project_type_name ?? ''),
             Row(
               children: [
-                Expanded(
-                    child: _subData('Date', project?.project_start ?? '')),
+                Expanded(child: _subData('Date', project?.project_start ?? '')),
                 Expanded(child: _subData('to', project?.project_end ?? '')),
               ],
             ),
             _subData('Description', project?.project_description ?? ''),
-            _subData(
-                'Sale Status', project?.project_sale_status_name ?? ''),
+            _subData('Sale Status', project?.project_sale_status_name ?? ''),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -253,8 +270,7 @@ class _ProjectViewState extends State<ProjectView> {
       body: {
         'comp_id': widget.employee.comp_id,
         'idemp': widget.employee.emp_id,
-        'user': 'origami',
-        'pass': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'projectId': widget.project.project_id,
       },
     );

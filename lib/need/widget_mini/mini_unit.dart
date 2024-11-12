@@ -9,11 +9,11 @@ import '../../../login/login.dart';
 import '../need_view/need_detail.dart';
 
 class MiniUnit extends StatefulWidget {
-  const MiniUnit({Key? key, required this.callbackName, required this.callbackId, required this.employee}) : super(key: key);
+  const MiniUnit({Key? key, required this.callbackName, required this.callbackId, required this.employee, required this.Authorization}) : super(key: key);
   final String Function(String) callbackName;
   final String Function(String) callbackId;
   final Employee employee;
-
+  final String Authorization;
   @override
   _MiniUnitState createState() => _MiniUnitState();
 }
@@ -47,7 +47,7 @@ class _MiniUnitState extends State<MiniUnit> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Card(color: Colors.orange,child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8)),),
+                Card(color: Color(0xFFFF9900),child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8)),),
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: Container(
@@ -55,7 +55,7 @@ class _MiniUnitState extends State<MiniUnit> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       border: Border.all(
-                        color: Colors.orange,
+                        color: Color(0xFFFF9900),
                         width: 1.0,
                       ),
                     ),
@@ -71,10 +71,10 @@ class _MiniUnitState extends State<MiniUnit> {
                           hintStyle: GoogleFonts.openSans(color: Color(0xFF555555),),
                           labelStyle: GoogleFonts.openSans(color: Color(0xFF555555),),
                           border: InputBorder.none,
-                          icon: Icon(Icons.search,color: Colors.orange,),
+                          icon: Icon(Icons.search,color: Color(0xFFFF9900),),
                           suffixIcon: Card(
                             elevation: 0,
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(25),
@@ -182,7 +182,7 @@ class _MiniUnitState extends State<MiniUnit> {
                       },
                       child: Row(
                         children: [
-                          Icon(Icons.navigate_before,color: Colors.orange,),
+                          Icon(Icons.navigate_before,color: Color(0xFFFF9900),),
                           Text(
                             "$Back",
                             style: GoogleFonts.openSans(
@@ -220,7 +220,7 @@ class _MiniUnitState extends State<MiniUnit> {
                     //         overflow: TextOverflow.ellipsis,
                     //         maxLines: 1,
                     //       ),
-                    //       Icon(Icons.navigate_next,color: Colors.orange,),
+                    //       Icon(Icons.navigate_next,color: Color(0xFFFF9900),),
                     //     ],
                     //   ),
                     // ),
@@ -249,7 +249,7 @@ class _MiniUnitState extends State<MiniUnit> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {

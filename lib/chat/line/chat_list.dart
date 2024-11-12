@@ -143,42 +143,46 @@ class _ChatListState extends State<ChatList> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
                                 border: Border.all(
-                                  color: Colors.orange,
+                                  color: Color(0xFFFF9900),
                                   width: 1.0,
                                 ),
                               ),
-                              child: TextField(
-                                controller: _searchController,
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  hintText: '$Search...',
-                                  hintStyle: GoogleFonts.openSans(
-                                    color: Color(0xFF555555),
-                                  ),
-                                  labelStyle: GoogleFonts.openSans(
-                                    color: Color(0xFF555555),
-                                  ),
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                    color: Colors.orange,
-                                  ),
-                                  border: InputBorder.none,
-                                  suffixIcon: Container(
-                                    alignment: Alignment.centerRight,
-                                    width: 10,
-                                    child: Center(
-                                      child: IconButton(
-                                          onPressed: () {
-                                            _searchController.clear();
-                                          },
-                                          icon: Icon(Icons.close),
-                                          color: Colors.orange,
-                                          iconSize: 16),
+                              child: TextFormField(
+                                  controller: _searchController,
+                                  keyboardType: TextInputType.text,
+                                  style: GoogleFonts.openSans(
+                                      color: Color(0xFF555555), fontSize: 14),
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 12),
+                                    hintText: '$Search...',
+                                    hintStyle: GoogleFonts.openSans(
+                                        fontSize: 14, color: Color(0xFF555555)),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    prefixIcon: Icon(
+                                      Icons.search,
+                                      color: Color(0xFFFF9900),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                                        width: 1.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
+                                        width: 1.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(100),
                                     ),
                                   ),
-                                ),
                               ),
                             ),
                             SizedBox(

@@ -1,15 +1,17 @@
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../../../activity/activity_add.dart';
+import '../activity/add/activity_add.dart';
 import '../../../imports.dart';
-import '../project/project_other_view/project_budgeting.dart';
+import '../project/update_project/project_other_view/project_budgeting.dart';
+
 
 class IdocEdit extends StatefulWidget {
   const IdocEdit({
-    Key? key, required this.employee, required this.pageInput,
+    Key? key, required this.employee, required this.pageInput, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
+  final String Authorization;
 
   @override
   _IdocEditState createState() => _IdocEditState();
@@ -117,7 +119,7 @@ class _IdocEditState extends State<IdocEdit> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -165,7 +167,7 @@ class _IdocEditState extends State<IdocEdit> {
         titleStyle: GoogleFonts.openSans(),
         backgroundColor: Colors.white,
         color: Colors.grey.shade400,
-        colorSelected: Colors.orange,
+        colorSelected: Color(0xFFFF9900),
         indexSelected: _selectedIndex,
         // paddingVertical: 25,
         onTap: _onItemTapped,
@@ -585,7 +587,7 @@ class _IdocEditState extends State<IdocEdit> {
                               'Tap here to select an File/Image.',
                               style: GoogleFonts.openSans(
                                 fontSize: 14,
-                                color: Colors.orange.shade400,
+                                color: Color(0xFFFF9900),
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -630,7 +632,7 @@ class _IdocEditState extends State<IdocEdit> {
                               'Tap here to select an image.',
                               style: GoogleFonts.openSans(
                                 fontSize: 14,
-                                color: Colors.orange.shade400,
+                                color: Color(0xFFFF9900),
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -834,7 +836,7 @@ class _IdocEditState extends State<IdocEdit> {
                   'Tap here to select an Join User.',
                   style: GoogleFonts.openSans(
                     fontSize: 14,
-                    color: Colors.orange.shade400,
+                    color: Color(0xFFFF9900),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -926,18 +928,18 @@ class _IdocEditState extends State<IdocEdit> {
                                   ),
                                   prefixIcon: Icon(
                                     Icons.search,
-                                    color: Colors.orange,
+                                    color: Color(0xFFFF9900),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.orange,
+                                      color: Color(0xFFFF9900),
                                       width: 1.0,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.orange,
+                                      color: Color(0xFFFF9900),
                                       width: 1.0,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
@@ -1034,7 +1036,7 @@ class _IdocEditState extends State<IdocEdit> {
                                                       style:
                                                           GoogleFonts.openSans(
                                                         fontSize: 16,
-                                                        color: Colors.orange,
+                                                        color: Color(0xFFFF9900),
                                                         fontWeight:
                                                             FontWeight.w700,
                                                       ),
@@ -1199,7 +1201,7 @@ class _IdocEditState extends State<IdocEdit> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -1258,7 +1260,7 @@ class _IdocEditState extends State<IdocEdit> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -1317,7 +1319,7 @@ class _IdocEditState extends State<IdocEdit> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -1376,7 +1378,7 @@ class _IdocEditState extends State<IdocEdit> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -1435,7 +1437,7 @@ class _IdocEditState extends State<IdocEdit> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -1494,7 +1496,7 @@ class _IdocEditState extends State<IdocEdit> {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -1585,7 +1587,7 @@ class _IdocEditState extends State<IdocEdit> {
         hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -1593,20 +1595,20 @@ class _IdocEditState extends State<IdocEdit> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -1635,7 +1637,7 @@ class _IdocEditState extends State<IdocEdit> {
         hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -1643,20 +1645,20 @@ class _IdocEditState extends State<IdocEdit> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -1692,7 +1694,7 @@ class _IdocEditState extends State<IdocEdit> {
             hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -1700,20 +1702,20 @@ class _IdocEditState extends State<IdocEdit> {
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
-                color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
                 width: 1,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -1725,7 +1727,7 @@ class _IdocEditState extends State<IdocEdit> {
                 child: IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.calendar_month),
-                    // color: Colors.orange,
+                    // color: Color(0xFFFF9900),
                     iconSize: 22),
               ),
             ),
@@ -1752,7 +1754,7 @@ class _IdocEditState extends State<IdocEdit> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),

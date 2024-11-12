@@ -8,10 +8,11 @@ class IdocScreen extends StatefulWidget {
   const IdocScreen({
     Key? key,
     required this.employee,
-    required this.pageInput,
+    required this.pageInput, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
+  final String Authorization;
 
   @override
   _IdocScreenState createState() => _IdocScreenState();
@@ -41,7 +42,7 @@ class _IdocScreenState extends State<IdocScreen> {
         ? Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              backgroundColor: Colors.orange,
+              backgroundColor: Color(0xFFFF9900),
               title: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -97,18 +98,18 @@ class _IdocScreenState extends State<IdocScreen> {
                 ),
                 prefixIcon: Icon(
                   Icons.search,
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                    color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                     width: 1.0,
                   ),
                   borderRadius: BorderRadius.circular(100),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                    color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                     width: 1.0,
                   ),
                   borderRadius: BorderRadius.circular(100),
@@ -136,6 +137,7 @@ class _IdocScreenState extends State<IdocScreen> {
                                 builder: (context) => IdocEdit(
                                   employee: widget.employee,
                                   pageInput: widget.pageInput,
+                                    Authorization: widget.Authorization
                                 ),
                               ),
                             );
@@ -174,7 +176,7 @@ class _IdocScreenState extends State<IdocScreen> {
                                         maxLines: 1,
                                         style: GoogleFonts.openSans(
                                           fontSize: 14,
-                                          color: Colors.orange,
+                                          color: Color(0xFFFF9900),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),

@@ -52,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
+        final String Authorization = jsonResponse['Authorization'];
         if (jsonResponse['status'] == true) {
           final List<dynamic> employeeJson = jsonResponse['employee_data'];
           List<Employee> employee = [];
@@ -70,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
               builder: (context) => OrigamiPage(
                 employee: employee1,
                 popPage: widget.popPage,
+                  Authorization:Authorization,
               ),
             ),
           );
@@ -189,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange,
+                            backgroundColor: Color(0xFFFF9900),
                           ),
                           onPressed: () => Navigator.pop(context),
                           child: Padding(

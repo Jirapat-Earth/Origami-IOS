@@ -10,10 +10,11 @@ import 'login_lineoa.dart';
 class ChatView extends StatefulWidget {
   const ChatView({
     Key? key,
-    required this.employee,
+    required this.employee, required this.pageInput, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
-
+  final String pageInput;
+  final String Authorization;
   @override
   _ChatViewState createState() => _ChatViewState();
 }

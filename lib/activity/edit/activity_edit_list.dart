@@ -1,26 +1,27 @@
 import 'package:http/http.dart' as http;
 import 'package:origami_ios/activity/signature_page/signature_page.dart';
 import 'package:origami_ios/activity/skoop/skoop.dart';
-import '../../../imports.dart';
+import '../../../../imports.dart';
 import 'package:intl/intl.dart';
 
-import '../project/create_project/project_add.dart';
+import '../../project/create_project/project_add.dart';
 import 'activity_edit_now.dart';
 
-class activityEdit extends StatefulWidget {
-  const activityEdit({
+class ActivityEditList extends StatefulWidget {
+  const ActivityEditList({
     Key? key,
     required this.employee,
     required this.activity,
+    required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final ModelActivity activity;
-
+  final String Authorization;
   @override
-  _activityEditState createState() => _activityEditState();
+  _ActivityEditListState createState() => _ActivityEditListState();
 }
 
-class _activityEditState extends State<activityEdit> {
+class _ActivityEditListState extends State<ActivityEditList> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _telController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
@@ -127,7 +128,7 @@ class _activityEditState extends State<activityEdit> {
       backgroundColor: Colors.white,
       // backgroundColor: Color(0xFFF5F5F5),
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -154,8 +155,9 @@ class _activityEditState extends State<activityEdit> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => activityEditNow(
+                        builder: (context) => ActivityEditNow(
                           employee: widget.employee,
+                          Authorization: widget.Authorization,
                           skoopDetail: getSkoopDetail[0],
                         ),
                       ),
@@ -189,7 +191,7 @@ class _activityEditState extends State<activityEdit> {
         titleStyle: GoogleFonts.openSans(),
         backgroundColor: Colors.white,
         color: Colors.grey.shade400,
-        colorSelected: Colors.orange,
+        colorSelected: Color(0xFFFF9900),
         indexSelected: _selectedIndex,
         // paddingVertical: 25,
         onTap: _onItemTapped,
@@ -245,7 +247,7 @@ class _activityEditState extends State<activityEdit> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                   ),
                   SizedBox(
                     width: 12,
@@ -295,7 +297,7 @@ class _activityEditState extends State<activityEdit> {
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.openSans(
                   fontSize: 14,
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                 ),
               ),
               SizedBox(height: 12),
@@ -368,7 +370,7 @@ class _activityEditState extends State<activityEdit> {
               maxLines: 1,
               style: GoogleFonts.openSans(
                 fontSize: 14,
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -391,7 +393,7 @@ class _activityEditState extends State<activityEdit> {
                   style: GoogleFonts.openSans(
                     fontSize: 14,
                     color: (skoopDetail?.status == 'Close')
-                        ? Colors.orange
+                        ? Color(0xFFFF9900)
                         : Colors.blue.shade300,
                     fontWeight: FontWeight.w500,
                   ),
@@ -480,7 +482,7 @@ class _activityEditState extends State<activityEdit> {
                 maxLines: 1,
                 style: GoogleFonts.openSans(
                   fontSize: 14,
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -740,7 +742,7 @@ class _activityEditState extends State<activityEdit> {
                     'Tap here to select an image.',
                     style: GoogleFonts.openSans(
                       fontSize: 14,
-                      color: Colors.orange.shade400,
+                      color: Color(0xFFFF9900),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -772,7 +774,7 @@ class _activityEditState extends State<activityEdit> {
                     'Tap here to select an image.',
                     style: GoogleFonts.openSans(
                       fontSize: 14,
-                      color: Colors.orange.shade400,
+                      color: Color(0xFFFF9900),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -955,7 +957,7 @@ class _activityEditState extends State<activityEdit> {
               'Tap here to select an Join User.',
               style: GoogleFonts.openSans(
                 fontSize: 14,
-                color: Colors.orange.shade400,
+                color: Color(0xFFFF9900),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -987,7 +989,7 @@ class _activityEditState extends State<activityEdit> {
                 maxLines: 1,
                 style: GoogleFonts.openSans(
                   fontSize: 14,
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -1114,72 +1116,116 @@ class _activityEditState extends State<activityEdit> {
 
   Widget _showSignatureImage() {
     return _signatureImage != null
-        ? Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-          border: Border.all(
-            color: Colors.grey,
-            width: 1.0,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.memory(
-            _signatureImage!,
-            height: 200,
-            width: double.infinity,
-          ),
-        ),
-      ),
-    )
-        : InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SignaturePage(
-              signatureImage: (Uint8List? value) {
-                setState(() {
-                  _signatureImage = value;
-                });
-              },
-            ),
-          ),
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.only(top: 8),
-        child: Column(
-          children: [
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 1.0,
+        ? InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SignaturePage(
+                    signatureImage: (Uint8List? value) {
+                      setState(() {
+                        _signatureImage = value;
+                      });
+                    },
+                  ),
                 ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.memory(
+                        _signatureImage!,
+                        height: 200,
+                        width: double.infinity,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    'Tap here for edit.',
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                      color: Color(0xFFFF9900),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(
-              height: 8,
-            ),
-            Text(
-              'Tap here for signature.',
-              style: GoogleFonts.openSans(
-                fontSize: 14,
-                color: Colors.orange.shade400,
-                fontWeight: FontWeight.w500,
+          )
+        : InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SignaturePage(
+                    signatureImage: (Uint8List? value) {
+                      setState(() {
+                        _signatureImage = value;
+                      });
+                    },
+                  ),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Column(
+                children: [
+                  Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          'Tap here for signature.',
+                          style: GoogleFonts.openSans(
+                            fontSize: 24,
+                            color: Colors.grey.shade300,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    'Tap here for signature.',
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                      color: Color(0xFFFF9900),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   Widget _DropdownSignature() {
@@ -1205,14 +1251,14 @@ class _activityEditState extends State<activityEdit> {
         ),
         items: signatures
             .map((TitleDown item) => DropdownMenuItem<TitleDown>(
-          value: item,
-          child: Text(
-            item.status_name,
-            style: GoogleFonts.openSans(
-              fontSize: 14,
-            ),
-          ),
-        ))
+                  value: item,
+                  child: Text(
+                    item.status_name,
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                    ),
+                  ),
+                ))
             .toList(),
         value: selectedSignature,
         onChanged: (value) {
@@ -1230,7 +1276,7 @@ class _activityEditState extends State<activityEdit> {
         ),
         dropdownStyleData: DropdownStyleData(
           maxHeight:
-          200, // Height for displaying up to 5 lines (adjust as needed)
+              200, // Height for displaying up to 5 lines (adjust as needed)
         ),
         menuItemStyleData: MenuItemStyleData(
           height: 40, // Height for each menu item
@@ -1329,7 +1375,8 @@ class _activityEditState extends State<activityEdit> {
               Stack(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 16,right: 16,top: 16),
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, top: 16),
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.7,
                       decoration: BoxDecoration(
@@ -1363,18 +1410,18 @@ class _activityEditState extends State<activityEdit> {
                                   ),
                                   prefixIcon: Icon(
                                     Icons.search,
-                                    color: Colors.orange,
+                                    color: Color(0xFFFF9900),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.orange,
+                                      color: Color(0xFFFF9900),
                                       width: 1.0,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.orange,
+                                      color: Color(0xFFFF9900),
                                       width: 1.0,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
@@ -1388,7 +1435,8 @@ class _activityEditState extends State<activityEdit> {
                             SizedBox(height: 8),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
                                 child: ListView.builder(
                                   itemCount: titleDown.length,
                                   itemBuilder: (context, index) {
@@ -1419,13 +1467,16 @@ class _activityEditState extends State<activityEdit> {
                                         Navigator.pop(context);
                                       },
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                                CrossAxisAlignment.center,
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(
@@ -1435,10 +1486,12 @@ class _activityEditState extends State<activityEdit> {
                                                   backgroundColor: Colors.grey,
                                                   child: CircleAvatar(
                                                     radius: 21,
-                                                    backgroundColor: Colors.white,
+                                                    backgroundColor:
+                                                        Colors.white,
                                                     child: ClipRRect(
                                                       borderRadius:
-                                                      BorderRadius.circular(100),
+                                                          BorderRadius.circular(
+                                                              100),
                                                       child: Image.network(
                                                         'https://dev.origami.life/images/default.png',
                                                         height: 100,
@@ -1453,33 +1506,42 @@ class _activityEditState extends State<activityEdit> {
                                               Expanded(
                                                 child: Column(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                                      MainAxisAlignment.start,
                                                   crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
                                                       'Jirapat Jangsawang',
                                                       maxLines: 1,
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: GoogleFonts.openSans(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style:
+                                                          GoogleFonts.openSans(
                                                         fontSize: 16,
-                                                        color: Colors.orange,
-                                                        fontWeight: FontWeight.w700,
+                                                        color:
+                                                            Color(0xFFFF9900),
+                                                        fontWeight:
+                                                            FontWeight.w700,
                                                       ),
                                                     ),
                                                     SizedBox(height: 8),
                                                     Text(
                                                       'Development (Mobile Application)',
                                                       maxLines: 1,
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: GoogleFonts.openSans(
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style:
+                                                          GoogleFonts.openSans(
                                                         fontSize: 14,
-                                                        color: Color(0xFF555555),
-                                                        fontWeight: FontWeight.w500,
+                                                        color:
+                                                            Color(0xFF555555),
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
                                                     ),
                                                     Divider(
-                                                        color: Colors.grey.shade300),
+                                                        color: Colors
+                                                            .grey.shade300),
                                                   ],
                                                 ),
                                               ),
@@ -1500,12 +1562,13 @@ class _activityEditState extends State<activityEdit> {
                   Row(
                     children: [
                       Expanded(child: Container()),
-                      IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.cancel,color: Colors.red)),
+                      IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: Icon(Icons.cancel, color: Colors.red)),
                     ],
                   ),
                 ],
               ),
-
             ],
           );
         }
@@ -1582,8 +1645,8 @@ class _activityEditState extends State<activityEdit> {
             child: TextFormField(
               controller: _searchController,
               keyboardType: TextInputType.text,
-              style: GoogleFonts.openSans(
-                  color: Color(0xFF555555), fontSize: 14),
+              style:
+                  GoogleFonts.openSans(color: Color(0xFF555555), fontSize: 14),
               decoration: InputDecoration(
                 isDense: true,
                 contentPadding: const EdgeInsets.symmetric(
@@ -1633,7 +1696,7 @@ class _activityEditState extends State<activityEdit> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'activity_id': widget.activity.activity_id,
         },
       );

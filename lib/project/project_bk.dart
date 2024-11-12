@@ -71,7 +71,7 @@
 //           ),
 //         ),
 //         elevation: 0,
-//         backgroundColor: Colors.orange,
+//         backgroundColor: Color(0xFFFF9900),
 //       ),
 //       body: _loading(),
 //     );
@@ -96,7 +96,7 @@
 //                     mainAxisAlignment: MainAxisAlignment.center,
 //                     children: [
 //                       CircularProgressIndicator(
-//                         color: Colors.orange,
+//                         color: Color(0xFFFF9900),
 //                       ),
 //                       SizedBox(width: 12),
 //                       Text(
@@ -150,18 +150,18 @@
 //               ),
 //               prefixIcon: Icon(
 //                 Icons.search,
-//                 color: Colors.orange,
+//                 color: Color(0xFFFF9900),
 //               ),
 //               enabledBorder: OutlineInputBorder(
 //                 borderSide: BorderSide(
-//                   color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+//                   color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
 //                   width: 1.0,
 //                 ),
 //                 borderRadius: BorderRadius.circular(100),
 //               ),
 //               focusedBorder: OutlineInputBorder(
 //                 borderSide: BorderSide(
-//                   color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+//                   color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
 //                   width: 1.0,
 //                 ),
 //                 borderRadius: BorderRadius.circular(100),
@@ -212,10 +212,10 @@
 //                                     top: 4, bottom: 4, right: 8),
 //                                 child: CircleAvatar(
 //                                   radius: 25,
-//                                   backgroundColor: Colors.orange,
+//                                   backgroundColor: Color(0xFFFF9900),
 //                                   child: CircleAvatar(
 //                                     radius: 24,
-//                                     backgroundColor: Colors.orange,
+//                                     backgroundColor: Color(0xFFFF9900),
 //                                     child: ClipRRect(
 //                                       borderRadius: BorderRadius.circular(50),
 //                                       child: Text(

@@ -102,7 +102,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                                 'คูปองส่วนลด ฿1.25',
                                 style: GoogleFonts.openSans(
                                   fontSize: 12,
-                                  color: Colors.orange,
+                                  color: Color(0xFFFF9900),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -212,7 +212,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.all(1),
                 foregroundColor: Colors.white,
-                backgroundColor: Colors.orange,
+                backgroundColor: Color(0xFFFF9900),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -326,7 +326,7 @@ class _ShopPageState extends State<ShopPage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
               border: Border.all(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
             ),
@@ -344,7 +344,7 @@ class _ShopPageState extends State<ShopPage> {
                 ),
                 prefixIcon: Icon(
                   Icons.search,
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                 ),
                 border: InputBorder.none,
                 suffixIcon: Container(
@@ -356,7 +356,7 @@ class _ShopPageState extends State<ShopPage> {
                           // _searchController.clear();
                         },
                         icon: Icon(Icons.close),
-                        color: Colors.orange,
+                        color: Color(0xFFFF9900),
                         iconSize: 18),
                   ),
                 ),
@@ -376,7 +376,7 @@ class _ShopPageState extends State<ShopPage> {
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.grey.shade100,
                     // border: Border.all(
-                    //   color: Colors.orange.shade100,
+                    //   color: Color(0xFFFF9900).shade100,
                     //   width: 1.0,
                     // ),
                   ),
@@ -423,7 +423,7 @@ class _ShopPageState extends State<ShopPage> {
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: (selectedIndex == index)
-                    ? Colors.orange
+                    ? Color(0xFFFF9900)
                     : Colors.orange.shade200),
           ),
         ));

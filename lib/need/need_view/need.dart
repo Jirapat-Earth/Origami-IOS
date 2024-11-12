@@ -29,10 +29,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class NeedsView extends StatefulWidget {
   const NeedsView({
     super.key,
-    required this.employee,
+    required this.employee, required this.Authorization,
   });
   final Employee employee;
-
+  final String Authorization;
   @override
   _NeedsViewState createState() => _NeedsViewState();
 }
@@ -63,7 +63,7 @@ class _NeedsViewState extends State<NeedsView> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Card(color: Colors.orange,child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8,)),),
+              // Card(color: Color(0xFFFF9900),child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8,)),),
               SizedBox(
                 height: 8,
               ),
@@ -183,7 +183,7 @@ class _NeedsViewState extends State<NeedsView> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Colors.orange,
+                  backgroundColor: Color(0xFFFF9900),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
@@ -264,7 +264,7 @@ class _NeedsViewState extends State<NeedsView> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
       },
     );
 
@@ -315,7 +315,7 @@ class _NeedsViewState extends State<NeedsView> {
           ),
         ),
         animatedIcon: AnimatedIcons.add_event,
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         foregroundColor: Colors.white,
         visible: true,
         curve: Curves.bounceIn,
@@ -368,6 +368,7 @@ class _NeedsViewState extends State<NeedsView> {
                         backgroundColor: Colors.transparent,
                         body: NeedDetail(
                           needTypeItem: NeedTypeItemOption[indexItem],
+                          Authorization: widget.Authorization,
                           employee: widget.employee,
                           request_id: '',
                           // detailItem: ,
@@ -397,7 +398,7 @@ class _NeedsViewState extends State<NeedsView> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(25),
                             border: Border.all(
-                              color: Colors.orange,
+                              color: Color(0xFFFF9900),
                               width: 1.0,
                             ),
                           ),
@@ -413,7 +414,7 @@ class _NeedsViewState extends State<NeedsView> {
                               ),
                               prefixIcon: Icon(
                                 Icons.search,
-                                color: Colors.orange,
+                                color: Color(0xFFFF9900),
                               ),
                               border: InputBorder.none,
                               suffixIcon: Container(
@@ -425,7 +426,7 @@ class _NeedsViewState extends State<NeedsView> {
                                         _searchController.clear();
                                       },
                                       icon: Icon(Icons.close),
-                                      color: Colors.orange,
+                                      color: Color(0xFFFF9900),
                                       iconSize: 18),
                                 ),
                               ),
@@ -463,7 +464,7 @@ class _NeedsViewState extends State<NeedsView> {
                         },
                         child: Icon(
                           Icons.filter_alt_outlined,
-                          color: Colors.orange,
+                          color: Color(0xFFFF9900),
                           size: 30,
                         ),
                       )
@@ -500,7 +501,7 @@ class _NeedsViewState extends State<NeedsView> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
                                   color: (index == _selectcolor)
-                                      ? Colors.orange
+                                      ? Color(0xFFFF9900)
                                       : Colors.grey.shade100,
                                 ),
                                 child: Padding(
@@ -550,7 +551,7 @@ class _NeedsViewState extends State<NeedsView> {
                                   height: 34,
                                   // width: 150,
                                   color: (index == _indexcolor)
-                                      ? Colors.orange
+                                      ? Color(0xFFFF9900)
                                       : Colors.grey.shade100,
                                   child: Center(
                                       child: Padding(
@@ -600,7 +601,7 @@ class _NeedsViewState extends State<NeedsView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                   ),
                   SizedBox(
                     width: 12,
@@ -667,7 +668,8 @@ class _NeedsViewState extends State<NeedsView> {
                                                 "All")
                                         ? NeedDetailApprove(
                                             employee: widget.employee,
-                                            request_id: needList[indexNl]
+                                      Authorization: widget.Authorization,      
+                                      request_id: needList[indexNl]
                                                     .mny_request_id ??
                                                 '',
                                             // approvelList:needList[indexNl],
@@ -676,6 +678,7 @@ class _NeedsViewState extends State<NeedsView> {
                                             needTypeItem:
                                                 NeedTypeItemOption[
                                                     indexI],
+                                      Authorization: widget.Authorization,
                                             employee: widget.employee,
                                             request_id: needList[indexNl]
                                                     .mny_request_id ??
@@ -692,7 +695,7 @@ class _NeedsViewState extends State<NeedsView> {
                             needList[indexNl].need_subject ?? '',
                             style: GoogleFonts.openSans(
                               fontSize: 18,
-                              color: Colors.orange,
+                              color: Color(0xFFFF9900),
                               fontWeight: FontWeight.bold,
                             ),
                             overflow: TextOverflow.ellipsis,
@@ -801,7 +804,7 @@ class _NeedsViewState extends State<NeedsView> {
                                             builder: (context) =>
                                                 OrigamiPage(
                                               employee: widget.employee,
-                                              popPage: 0,
+                                              popPage: 0, Authorization: widget.Authorization,
                                             ),
                                           ),
                                         );
@@ -849,7 +852,7 @@ class _NeedsViewState extends State<NeedsView> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -862,7 +865,7 @@ class _NeedsViewState extends State<NeedsView> {
               builder: (context) => MiniEmployee(
                 callback: (String value) => editEmployeeText = value,
                 employee: widget.employee,
-                callbackId: (String value) => ownerId = value,
+                callbackId: (String value) => ownerId = value, Authorization: widget.Authorization,
               ),
             ),
           );
@@ -907,7 +910,7 @@ class _NeedsViewState extends State<NeedsView> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -918,7 +921,7 @@ class _NeedsViewState extends State<NeedsView> {
             MaterialPageRoute(
               builder: (context) => MiniProject(
                 callback: (String value) => editprojectText = value,
-                employee: widget.employee,
+                employee: widget.employee,Authorization: widget.Authorization,
                 callbackId: (String value) => projectId = value,
               ),
             ),
@@ -963,7 +966,7 @@ class _NeedsViewState extends State<NeedsView> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          color: Colors.orange,
+          color: Color(0xFFFF9900),
           width: 1.0,
         ),
       ),
@@ -975,7 +978,7 @@ class _NeedsViewState extends State<NeedsView> {
             MaterialPageRoute(
               builder: (context) => MiniDepartment(
                 callback: (String value) => editDepartmentText = value,
-                employee: widget.employee,
+                employee: widget.employee,Authorization: widget.Authorization,
                 callbackId: (String value) => departmentId = value,
               ),
             ),
@@ -1024,7 +1027,7 @@ class _NeedsViewState extends State<NeedsView> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -1060,7 +1063,7 @@ class _NeedsViewState extends State<NeedsView> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -1099,7 +1102,7 @@ class _NeedsViewState extends State<NeedsView> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'start_date': firstDay,
         'end_date': lastDay,
         'filter_priority': filter_Priority,
@@ -1138,6 +1141,7 @@ class _NeedsViewState extends State<NeedsView> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -1180,6 +1184,7 @@ class _NeedsViewState extends State<NeedsView> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -1223,6 +1228,7 @@ class _NeedsViewState extends State<NeedsView> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -1268,6 +1274,7 @@ class _NeedsViewState extends State<NeedsView> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -1305,6 +1312,7 @@ class _NeedsViewState extends State<NeedsView> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
+          'Authorization': widget.Authorization,
           'request_id': "$request_id",
         },
       );

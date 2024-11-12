@@ -1,16 +1,16 @@
 import 'package:http/http.dart' as http;
-import '../../../imports.dart';
+import '../../../../imports.dart';
 import 'package:intl/intl.dart';
 
-import '../need/need_view/need_detail.dart';
+import '../../need/need_view/need_detail.dart';
 
 class activityAdd extends StatefulWidget {
   const activityAdd({
     Key? key,
-    required this.employee,
+    required this.employee, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
-
+  final String Authorization;
   @override
   _activityAddState createState() => _activityAddState();
 }
@@ -102,7 +102,7 @@ class _activityAddState extends State<activityAdd> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),
@@ -141,7 +141,7 @@ class _activityAddState extends State<activityAdd> {
       backgroundColor: Colors.white,
       // backgroundColor: Color(0xFFF5F5F5),
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -266,14 +266,14 @@ class _activityAddState extends State<activityAdd> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                        color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                        color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(10),
@@ -362,7 +362,7 @@ class _activityAddState extends State<activityAdd> {
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.openSans(
                                             fontSize: 16,
-                                            color: Colors.orange,
+                                            color: Color(0xFFFF9900),
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
@@ -397,7 +397,7 @@ class _activityAddState extends State<activityAdd> {
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.openSans(
                       fontSize: 14,
-                      color: Colors.orange,
+                      color: Color(0xFFFF9900),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -482,18 +482,18 @@ class _activityAddState extends State<activityAdd> {
                         ),
                         prefixIcon: Icon(
                           Icons.search,
-                          color: Colors.orange,
+                          color: Color(0xFFFF9900),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             width: 1.0,
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             width: 1.0,
                           ),
                           borderRadius: BorderRadius.circular(10),
@@ -588,7 +588,7 @@ class _activityAddState extends State<activityAdd> {
                                               overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.openSans(
                                                 fontSize: 16,
-                                                color: Colors.orange,
+                                                color: Color(0xFFFF9900),
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
@@ -661,14 +661,14 @@ class _activityAddState extends State<activityAdd> {
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -702,7 +702,7 @@ class _activityAddState extends State<activityAdd> {
               borderRadius: BorderRadius.circular(10),
               color: (ontap == true) ? Colors.white : Colors.grey.shade300,
               border: Border.all(
-                color: (ontap == true) ? Colors.orange : Colors.grey.shade400,
+                color: (ontap == true) ? Color(0xFFFF9900) : Colors.grey.shade400,
                 width: 1.0,
               ),
             ),
@@ -758,7 +758,7 @@ class _activityAddState extends State<activityAdd> {
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
               border: Border.all(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
             ),
@@ -810,7 +810,7 @@ class _activityAddState extends State<activityAdd> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white ,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -927,7 +927,7 @@ class _activityAddState extends State<activityAdd> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1043,7 +1043,7 @@ class _activityAddState extends State<activityAdd> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1160,7 +1160,7 @@ class _activityAddState extends State<activityAdd> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1277,7 +1277,7 @@ class _activityAddState extends State<activityAdd> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1394,7 +1394,7 @@ class _activityAddState extends State<activityAdd> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1511,7 +1511,7 @@ class _activityAddState extends State<activityAdd> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1645,7 +1645,7 @@ class _activityAddState extends State<activityAdd> {
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
               border: Border.all(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
             ),
@@ -1742,7 +1742,7 @@ class _activityAddState extends State<activityAdd> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'pass': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'type_id': type_id,
         'project_id': project_id,
         'account_id': account_id,
@@ -1785,7 +1785,7 @@ class _activityAddState extends State<activityAdd> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'type': 'project',
         },
       );
@@ -1818,7 +1818,7 @@ class _activityAddState extends State<activityAdd> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -1850,7 +1850,7 @@ class _activityAddState extends State<activityAdd> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -1882,7 +1882,7 @@ class _activityAddState extends State<activityAdd> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -1914,7 +1914,7 @@ class _activityAddState extends State<activityAdd> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -1947,7 +1947,7 @@ class _activityAddState extends State<activityAdd> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'index': '0',
         },
       );
@@ -1977,7 +1977,7 @@ class _activityAddState extends State<activityAdd> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'index': '0',
       },
     );

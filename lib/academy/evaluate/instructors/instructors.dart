@@ -2,10 +2,10 @@ import 'package:http/http.dart' as http;
 import '../../../imports.dart';
 
 class Instructors extends StatefulWidget {
-  Instructors({super.key, required this.employee, required this.academy, });
+  Instructors({super.key, required this.employee, required this.academy, required this.Authorization, });
   final Employee employee;
   final AcademyRespond academy;
-
+  final String Authorization;
   @override
   _InstructorsState createState() => _InstructorsState();
 }
@@ -19,7 +19,7 @@ class _InstructorsState extends State<Instructors> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'academy_id': widget.academy.academy_id,
         'academy_type': widget.academy.academy_type,
       },

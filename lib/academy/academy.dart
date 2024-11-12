@@ -4,9 +4,10 @@ import '../imports.dart';
 class AcademyPage extends StatefulWidget {
   AcademyPage({
     super.key,
-    required this.employee,
+    required this.employee, required this.Authorization,
   });
   final Employee employee;
+  final String Authorization;
   @override
   _AcademyPageState createState() => _AcademyPageState();
 }
@@ -239,7 +240,7 @@ class _AcademyPageState extends State<AcademyPage> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'pages': page,
         'search': _searchA,
       },
@@ -370,7 +371,7 @@ class _AcademyPageState extends State<AcademyPage> {
         titleStyle: GoogleFonts.openSans(),
         backgroundColor: Colors.white,
         color: Colors.grey.shade400,
-        colorSelected: Colors.orange,
+        colorSelected: Color(0xFFFF9900),
         indexSelected: _selectedIndex,
         // paddingVertical: 25,
         onTap: _onItemTapped,
@@ -426,7 +427,7 @@ class _AcademyPageState extends State<AcademyPage> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
                 border: Border.all(
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                   width: 1.0,
                 ),
               ),
@@ -445,7 +446,7 @@ class _AcademyPageState extends State<AcademyPage> {
                   ),
                   prefixIcon: const Icon(
                     Icons.search,
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                   ),
                   border: InputBorder.none,
                   suffixIcon: Container(
@@ -457,7 +458,7 @@ class _AcademyPageState extends State<AcademyPage> {
                           _searchController.clear();
                         },
                         icon: const Icon(Icons.close),
-                        color: Colors.orange,
+                        color: Color(0xFFFF9900),
                         iconSize: 16,
                       ),
                     ),
@@ -502,6 +503,7 @@ class _AcademyPageState extends State<AcademyPage> {
                       builder: (context) => EvaluateModule(
                         employee: widget.employee,
                         academy: academy[indexI],
+                        Authorization: widget.Authorization,
                         callback: () {
                           setState(() {
                             academyId = academy[indexI].academy_id;
@@ -593,6 +595,7 @@ class _AcademyPageState extends State<AcademyPage> {
                     builder: (context) => EvaluateModule(
                           employee: widget.employee,
                           academy: _academy[index],
+                      Authorization: widget.Authorization,
                           callback: () {
                             academyId = _academy[index].academy_id;
                             academyType = _academy[index].academy_type;
@@ -896,7 +899,7 @@ class _AcademyPageState extends State<AcademyPage> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'academy_id': academyId,
           'academy_type': academyType,
         },

@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../../../activity/activity_add.dart';
+import '../../../activity/add/activity_add.dart';
 import '../../../imports.dart';
 
 class AccountEditDetail extends StatefulWidget {
   const AccountEditDetail({
-    Key? key, required this.employee, required this.pageInput,
+    Key? key, required this.employee, required this.pageInput, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
-
+  final String Authorization;
   @override
   _AccountEditDetailState createState() => _AccountEditDetailState();
 }
@@ -179,7 +179,7 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
               'Tap here to select an image.',
               style: GoogleFonts.openSans(
                 fontSize: 14,
-                color: Colors.orange.shade400,
+                color: Color(0xFFFF9900),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -197,7 +197,7 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -323,7 +323,7 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
                   'Next >>',
                   style: GoogleFonts.openSans(
                     fontSize: 16,
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -396,7 +396,7 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
                   '<< Back',
                   style: GoogleFonts.openSans(
                     fontSize: 16,
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -409,13 +409,13 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
                 },
                 child: Row(
                   children: [
-                    Icon(Icons.save,size:20,color: Colors.orange),
+                    Icon(Icons.save,size:20,color: Color(0xFFFF9900)),
                     SizedBox(width: 4),
                     Text(
                       'SAVE',
                       style: GoogleFonts.openSans(
                         fontSize: 16,
-                        color: Colors.orange,
+                        color: Color(0xFFFF9900),
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -447,7 +447,7 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -542,7 +542,7 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
         hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -550,20 +550,20 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -590,7 +590,7 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
         hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -598,20 +598,20 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -653,7 +653,7 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
             hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -661,20 +661,20 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
-                color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
                 width: 1,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -713,7 +713,7 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
             hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -721,20 +721,20 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
-                color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
                 width: 1,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -746,7 +746,7 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
                 child: IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.calendar_month),
-                    // color: Colors.orange,
+                    // color: Color(0xFFFF9900),
                     iconSize: 22),
               ),
             ),
@@ -773,7 +773,7 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),

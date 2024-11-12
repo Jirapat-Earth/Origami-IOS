@@ -4,11 +4,11 @@ import '../../../imports.dart';
 
 class CalendarScreen extends StatefulWidget {
   CalendarScreen({
-    Key? key, required this.employee, required this.pageInput,
+    Key? key, required this.employee, required this.pageInput, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
-
+  final String Authorization;
   @override
   _CalendarScreenState createState() => _CalendarScreenState();
 }
@@ -49,7 +49,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         data: ThemeData(
           primaryColor: Colors.teal,
           colorScheme: ColorScheme.light(
-            primary: Colors.orange,
+            primary: Color(0xFFFF9900),
             onPrimary: Colors.white,
             onSurface: Colors.teal,
           ),

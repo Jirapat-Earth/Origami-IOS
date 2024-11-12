@@ -21,9 +21,10 @@ import 'package:path/path.dart' as path;
 class PettyCash extends StatefulWidget {
   PettyCash({
     super.key,
-    required this.employee,
+    required this.employee, required this.Authorization,
   });
   final Employee employee;
+  final String Authorization;
 
   @override
   _PettyCashState createState() => _PettyCashState();
@@ -167,7 +168,7 @@ class _PettyCashState extends State<PettyCash> {
                 ),
               ),
               elevation: 0,
-              backgroundColor: Colors.orange,
+              backgroundColor: Color(0xFFFF9900),
             )
           : Container(),
       body: loading(),
@@ -395,7 +396,7 @@ class _PettyCashState extends State<PettyCash> {
                       // Foreground LinearProgressIndicator (ใช้ ShaderMask สำหรับไล่ระดับสี)
                       ShaderMask(
                         shaderCallback: (bounds) => LinearGradient(
-                          colors: [Colors.orange, Colors.orange.shade200],
+                          colors: [Color(0xFFFF9900), Color(0xFFFF9900)],
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
                         ).createShader(bounds),
@@ -431,7 +432,7 @@ class _PettyCashState extends State<PettyCash> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15.0),
                                   border: Border.all(
-                                    color: Colors.orange,
+                                    color: Color(0xFFFF9900),
                                     width: 1.0,
                                   ),
                                 ),
@@ -459,7 +460,7 @@ class _PettyCashState extends State<PettyCash> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.0),
                           border: Border.all(
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             width: 1.0,
                           ),
                         ),
@@ -694,7 +695,7 @@ class _PettyCashState extends State<PettyCash> {
                           DataCell(
                             Checkbox(
                               checkColor: Colors.white,
-                              activeColor: Colors.orange,
+                              activeColor: Color(0xFFFF9900),
                               value: selectedIds.contains(item.used_id??''),
                               onChanged: (bool? isChecked) {
                                 _onCheckboxChanged(item.used_id??'', isChecked);
@@ -927,7 +928,7 @@ class _PettyCashState extends State<PettyCash> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircularProgressIndicator(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
               ),
               SizedBox(
                 width: 12,
@@ -1272,7 +1273,7 @@ class _PettyCashState extends State<PettyCash> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
                     border: Border.all(
-                      color: Colors.orange,
+                      color: Color(0xFFFF9900),
                       width: 1.0,
                     ),
                   ),
@@ -1391,7 +1392,7 @@ class _PettyCashState extends State<PettyCash> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
                     border: Border.all(
-                      color: Colors.orange,
+                      color: Color(0xFFFF9900),
                       width: 1.0,
                     ),
                   ),
@@ -1417,7 +1418,7 @@ class _PettyCashState extends State<PettyCash> {
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.orange),
+                        borderSide: BorderSide(color: Color(0xFFFF9900)),
                       ),
                     ),
                     onChanged: (value) {},
@@ -1452,7 +1453,7 @@ class _PettyCashState extends State<PettyCash> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
                     border: Border.all(
-                      color: Colors.orange,
+                      color: Color(0xFFFF9900),
                       width: 1.0,
                     ),
                   ),
@@ -1474,7 +1475,7 @@ class _PettyCashState extends State<PettyCash> {
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.orange),
+                        borderSide: BorderSide(color: Color(0xFFFF9900)),
                       ),
                     ),
                     onChanged: (value) {},
@@ -1513,7 +1514,7 @@ class _PettyCashState extends State<PettyCash> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.0),
                           border: Border.all(
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             width: 1.0,
                           ),
                         ),
@@ -1535,7 +1536,7 @@ class _PettyCashState extends State<PettyCash> {
                             ),
                             focusedBorder: UnderlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide(color: Colors.orange),
+                              borderSide: BorderSide(color: Color(0xFFFF9900)),
                             ),
                           ),
                           onChanged: (value) {},
@@ -1567,7 +1568,7 @@ class _PettyCashState extends State<PettyCash> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15.0),
                           border: Border.all(
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             width: 1.0,
                           ),
                         ),
@@ -1694,7 +1695,7 @@ class _PettyCashState extends State<PettyCash> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       border: Border.all(
-                        color: Colors.orange,
+                        color: Color(0xFFFF9900),
                         width: 1.0,
                       ),
                     ),
@@ -1739,7 +1740,7 @@ class _PettyCashState extends State<PettyCash> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
                       border: Border.all(
-                        color: Colors.orange,
+                        color: Color(0xFFFF9900),
                         width: 1.0,
                       ),
                     ),
@@ -1880,7 +1881,7 @@ class _PettyCashState extends State<PettyCash> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
       },
     );
 
@@ -1908,7 +1909,7 @@ class _PettyCashState extends State<PettyCash> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'cash_id': cash_id,
         'status_id': status_id,
       },
@@ -1933,7 +1934,7 @@ class _PettyCashState extends State<PettyCash> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'cash_id': cash_id,
         'used_id': used_id,
       },
@@ -1970,7 +1971,7 @@ class _PettyCashState extends State<PettyCash> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
       },
     );
     if (response.statusCode == 200) {
@@ -2031,7 +2032,7 @@ class _PettyCashState extends State<PettyCash> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'cash_id': cash_id,
         'used_id': used_id,
         'use_date': use_date,
@@ -2065,7 +2066,7 @@ class _PettyCashState extends State<PettyCash> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'cash_id': cash_id,
         'used_id': used_id,
       },
@@ -2094,7 +2095,7 @@ class _PettyCashState extends State<PettyCash> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
       },
     );
     if (response.statusCode == 200) {
@@ -2124,7 +2125,7 @@ class _PettyCashState extends State<PettyCash> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -2154,7 +2155,7 @@ class _PettyCashState extends State<PettyCash> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'cash_id': cash_id,
         'used_id': expense_used_id,
         'need_subject': need_subject,

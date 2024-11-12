@@ -1,18 +1,22 @@
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import 'package:origami_ios/project/project_other_view/project_budgeting.dart';
-import 'package:origami_ios/project/project_other_view/project_manday.dart';
-import 'package:origami_ios/project/project_other_view/project_need.dart';
-import 'package:origami_ios/project/project_other_view/project_photo_files.dart';
+import '../../update_project/project_other_view/project_budgeting.dart';
+import '../../update_project/project_other_view/project_manday.dart';
+import '../../update_project/project_other_view/project_need.dart';
+import '../../update_project/project_other_view/project_photo_files.dart';
 import '../../../imports.dart';
 import 'edit_project_Issue/project_Issue_log.dart';
 
 class ProjectOther extends StatefulWidget {
   const ProjectOther({
-    Key? key, required this.employee, required this.pageInput,
+    Key? key,
+    required this.employee,
+    required this.pageInput,
+    required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
+  final String Authorization;
   @override
   _ProjectOtherState createState() => _ProjectOtherState();
 }
@@ -163,7 +167,10 @@ class _ProjectOtherState extends State<ProjectOther> {
                             child: GridView.builder(
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: (isAndroid == true || isIPhone == true)?4:6,
+                                crossAxisCount:
+                                    (isAndroid == true || isIPhone == true)
+                                        ? 4
+                                        : 6,
                               ),
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -171,34 +178,38 @@ class _ProjectOtherState extends State<ProjectOther> {
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
-                                    if(index == 0){
+                                    if (index == 0) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => IdocScreen(employee: widget.employee, pageInput: widget.pageInput,),
+                                          builder: (context) => IdocScreen(
+                                            employee: widget.employee,
+                                            pageInput: widget.pageInput,
+                                            Authorization: widget.Authorization,
+                                          ),
                                         ),
                                       );
-                                    }else if(index == 1){
+                                    } else if (index == 1) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => ProjectPhotoFile(),
+                                          builder: (context) =>
+                                              ProjectPhotoFile(),
                                         ),
                                       );
-                                    }
-                                    else if(index == 2){
+                                    } else if (index == 2) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => ProjectNeed(),
                                         ),
                                       );
-                                    }
-                                    else if(index == 3){
+                                    } else if (index == 3) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => ProjectIssueLog(),
+                                          builder: (context) =>
+                                              ProjectIssueLog(),
                                         ),
                                       );
                                     }
@@ -218,33 +229,34 @@ class _ProjectOtherState extends State<ProjectOther> {
                                     //     ),
                                     //   );
                                     // }
-                                    else if(index == 4){
+                                    else if (index == 4) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => ProjectManday(),
                                         ),
                                       );
-                                    }
-                                    else if(index == 5){
+                                    } else if (index == 5) {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => ProjectBudgeting(),
+                                          builder: (context) =>
+                                              ProjectBudgeting(),
                                         ),
                                       );
                                     }
                                   },
                                   child: Column(
-                                    mainAxisAlignment:MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       CircleAvatar(
                                         radius: 35,
                                         backgroundColor: Colors.transparent,
                                         child: FaIcon(
                                           otherItems[index].icon,
-                                          // color: Colors.orange.shade300,
+                                          // color: Color(0xFFFF9900).shade300,
                                           size: 28,
                                         ),
                                       ),
@@ -312,7 +324,8 @@ class _ProjectOtherState extends State<ProjectOther> {
                                           'OFF',
                                           style: GoogleFonts.openSans(),
                                         ),
-                                        borderRadius: BorderRadius.circular(100),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
                                         width: 65,
                                         controller: _controller04,
                                       ),
@@ -320,7 +333,8 @@ class _ProjectOtherState extends State<ProjectOther> {
                                   ),
                                   SizedBox(height: 8),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -341,7 +355,8 @@ class _ProjectOtherState extends State<ProjectOther> {
                                       Row(
                                         children: [
                                           Icon(Icons.circle,
-                                              color: Colors.orange, size: 14),
+                                              color: Color(0xFFFF9900),
+                                              size: 14),
                                           SizedBox(width: 4),
                                           Text(
                                             'Height',
@@ -389,11 +404,11 @@ class _ProjectOtherState extends State<ProjectOther> {
                                     ],
                                   ),
                                   SizedBox(height: 8),
-                                  _service(_valueVHController, _qoutaVHController,
-                                      Colors.red),
+                                  _service(_valueVHController,
+                                      _qoutaVHController, Colors.red),
                                   SizedBox(height: 16),
                                   _service(_valueHController, _qoutaHController,
-                                      Colors.orange),
+                                      Color(0xFFFF9900)),
                                   SizedBox(height: 16),
                                   _service(_valueMController, _qoutaMController,
                                       Colors.yellow),
@@ -414,8 +429,8 @@ class _ProjectOtherState extends State<ProjectOther> {
                                         ),
                                       ),
                                       Expanded(
-                                          child:
-                                              _serviceText('', _autoQoutaController))
+                                          child: _serviceText(
+                                              '', _autoQoutaController))
                                     ],
                                   ),
                                   SizedBox(height: 10),
@@ -468,8 +483,8 @@ class _ProjectOtherState extends State<ProjectOther> {
                                         ),
                                       ),
                                       Expanded(
-                                          child:
-                                              _serviceCalendar('$endDate', 'endDate'))
+                                          child: _serviceCalendar(
+                                              '$endDate', 'endDate'))
                                     ],
                                   ),
                                   SizedBox(height: 8),
@@ -600,7 +615,7 @@ class _ProjectOtherState extends State<ProjectOther> {
                 child: IconButton(
                     onPressed: () {},
                     icon: Icon(Icons.calendar_month),
-                    // color: Colors.orange,
+                    // color: Color(0xFFFF9900),
                     iconSize: 22),
               ),
             ),
@@ -627,7 +642,7 @@ class _ProjectOtherState extends State<ProjectOther> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),

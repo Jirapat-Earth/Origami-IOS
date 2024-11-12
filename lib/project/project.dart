@@ -1,18 +1,19 @@
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import 'package:origami_ios/project/view/project_detail.dart';
 import '../../../imports.dart';
 import 'create_project/project_add.dart';
+import 'update_project/project_detail.dart';
 
 class ProjectScreen extends StatefulWidget {
   const ProjectScreen({
     Key? key,
     required this.employee,
     required this.pageInput,
+    required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
-
+  final String Authorization;
   @override
   _ProjectScreenState createState() => _ProjectScreenState();
 }
@@ -25,19 +26,27 @@ class _ProjectScreenState extends State<ProjectScreen> {
   void initState() {
     super.initState();
     if (widget.pageInput == 'project') {
-      // fetchModelProjectVoid();
-    } else if(widget.pageInput == 'contact'){
-
-    }
-    _searchController.addListener(() {
-      setState(() {
-        _search = _searchController.text;
-        allModelProject.clear();
-        fetchModelProjectVoid();
+      fetchModelProjectVoid();
+      _searchController.addListener(() {
+        setState(() {
+          _search = _searchController.text;
+          allModelProject.clear();
+          fetchModelProjectVoid();
+        });
       });
-
-      print("Current text: ${_searchController.text}");
-    });
+    } else if (widget.pageInput == 'contact') {
+      _searchController.addListener(() {
+        setState(() {
+          _search = _searchController.text;
+        });
+      });
+    } else if (widget.pageInput == 'account') {
+      _searchController.addListener(() {
+        setState(() {
+          _search = _searchController.text;
+        });
+      });
+    }
   }
 
   @override
@@ -54,8 +63,9 @@ class _ProjectScreenState extends State<ProjectScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => projectAdd(
+              builder: (context) => ProjectAdd(
                 employee: widget.employee,
+                Authorization: widget.Authorization,
                 pageInput: widget.pageInput,
               ),
             ),
@@ -83,7 +93,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
           ),
         ),
         elevation: 0,
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
       ),
       body: Column(
         children: [
@@ -110,18 +120,18 @@ class _ProjectScreenState extends State<ProjectScreen> {
                 ),
                 prefixIcon: Icon(
                   Icons.search,
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                    color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                     width: 1.0,
                   ),
                   borderRadius: BorderRadius.circular(100),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                    color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                     width: 1.0,
                   ),
                   borderRadius: BorderRadius.circular(100),
@@ -146,7 +156,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CircularProgressIndicator(
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                 ),
                 SizedBox(width: 12),
                 Text(
@@ -184,7 +194,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: ListView.builder(
-            itemCount: allModel.length+1,
+            itemCount: allModel.length + 1,
             itemBuilder: (context, index) {
               final project = allModel[index];
               return Padding(
@@ -197,8 +207,9 @@ class _ProjectScreenState extends State<ProjectScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ProjectView(
+                          builder: (context) => ProjectListUpdate(
                             employee: widget.employee,
+                            Authorization: widget.Authorization,
                             project: project,
                             pageInput: widget.pageInput,
                           ),
@@ -222,10 +233,10 @@ class _ProjectScreenState extends State<ProjectScreen> {
                               top: 4, bottom: 4, right: 8),
                           child: CircleAvatar(
                             radius: 25,
-                            backgroundColor: Colors.orange,
+                            backgroundColor: Color(0xFFFF9900),
                             child: CircleAvatar(
                               radius: 24,
-                              backgroundColor: Colors.orange,
+                              backgroundColor: Color(0xFFFF9900),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
                                 child: Text(
@@ -290,8 +301,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
       body: {
         'comp_id': widget.employee.comp_id,
         'idemp': widget.employee.emp_id,
-        'user': 'origami',
-        'pass': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'index': (_search != '') ? '0' : indexItems.toString(),
         'txt_search': _search,
       },
@@ -329,7 +339,6 @@ class _ProjectScreenState extends State<ProjectScreen> {
 
   bool isLoading = false;
   int? indexStr = 0;
-
 }
 
 class ModelProject {

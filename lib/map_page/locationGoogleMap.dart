@@ -17,7 +17,7 @@ class _LocationGoogleMapState extends State<LocationGoogleMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Text('Select location',style: GoogleFonts.openSans(
           color: Colors.white,
         ),),

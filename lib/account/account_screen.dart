@@ -16,11 +16,13 @@ import 'account_edit/account_edit_view.dart';
 class AccountList extends StatefulWidget {
   const AccountList({
     Key? key,
-    required this.employee, required this.pageInput,
+    required this.employee,
+    required this.pageInput,
+    required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
-
+  final String Authorization;
   @override
   _AccountListState createState() => _AccountListState();
 }
@@ -37,7 +39,6 @@ class _AccountListState extends State<AccountList> {
     _searchController.addListener(() {
       setState(() {
         _search = _searchController.text;
-
       });
       fetchModelAccount();
       print("Current text: ${_searchController.text}");
@@ -61,6 +62,7 @@ class _AccountListState extends State<AccountList> {
             MaterialPageRoute(
               builder: (context) => AccountAddView(
                 employee: widget.employee,
+                Authorization: widget.Authorization,
               ),
             ),
           ).then((value) {
@@ -84,7 +86,7 @@ class _AccountListState extends State<AccountList> {
           ),
         ),
         elevation: 0,
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
       ),
       body: SafeArea(
         child: _getAccountWidget(),
@@ -123,18 +125,18 @@ class _AccountListState extends State<AccountList> {
                   ),
                   prefixIcon: Icon(
                     Icons.search,
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                      color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                       width: 1.0,
                     ),
                     borderRadius: BorderRadius.circular(100),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                      color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                       width: 1.0,
                     ),
                     borderRadius: BorderRadius.circular(100),
@@ -145,56 +147,55 @@ class _AccountListState extends State<AccountList> {
           ),
           SizedBox(height: 8),
           Expanded(
-            child:FutureBuilder<void>(
-              future: fetchModelAccount(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(
-                          color: Colors.orange,
-                        ),
-                        SizedBox(width: 12),
-                        Text(
-                          '$Loading...',
-                          style: GoogleFonts.openSans(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF555555),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                } else if (allAccount.isEmpty) {
-                  return Center(
-                    child: Text(
-                      '$Empty',
-                      style: GoogleFonts.openSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey,
+              child: FutureBuilder<void>(
+            future: fetchModelAccount(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(
+                        color: Color(0xFFFF9900),
                       ),
+                      SizedBox(width: 12),
+                      Text(
+                        '$Loading...',
+                        style: GoogleFonts.openSans(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF555555),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              } else if (allAccount.isEmpty) {
+                return Center(
+                  child: Text(
+                    '$Empty',
+                    style: GoogleFonts.openSans(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey,
                     ),
-                  );
-                } else {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: ListView.builder(
-                        itemCount: allAccount.length +
-                            (isLoading ? 1 : 0), // เพิ่ม 1 ถ้ากำลังโหลด
-                        controller: _scrollController,
-                        itemBuilder: (context, index) {
-                          final account = allAccount[index];
-                          return _AccountData(account);
-                        }),
-                  );
-                }
-              },
-            )
-          ),
+                  ),
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: ListView.builder(
+                      itemCount: allAccount.length +
+                          (isLoading ? 1 : 0), // เพิ่ม 1 ถ้ากำลังโหลด
+                      controller: _scrollController,
+                      itemBuilder: (context, index) {
+                        final account = allAccount[index];
+                        return _AccountData(account);
+                      }),
+                );
+              }
+            },
+          )),
         ],
       ),
     );
@@ -216,7 +217,9 @@ class _AccountListState extends State<AccountList> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AccountEditView(
-                    employee: widget.employee, pageInput: widget.pageInput,
+                    employee: widget.employee,
+                    Authorization: widget.Authorization,
+                    pageInput: widget.pageInput,
                   ),
                 ),
               ).then((value) {
@@ -254,7 +257,7 @@ class _AccountListState extends State<AccountList> {
                         backgroundColor: Colors.grey,
                         child: CircleAvatar(
                           radius: 24,
-                          backgroundColor: Colors.orange,
+                          backgroundColor: Color(0xFFFF9900),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child: Text(
@@ -379,8 +382,7 @@ class _AccountListState extends State<AccountList> {
       body: {
         'comp_id': widget.employee.comp_id,
         'idemp': widget.employee.emp_id,
-        'user': 'origami',
-        'pass': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'index': (_search != '') ? '0' : indexItems.toString(),
         'txt_search': _search,
       },

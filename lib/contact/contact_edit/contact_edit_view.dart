@@ -22,11 +22,11 @@ import 'contact_edit_information.dart';
 class ContactEditView extends StatefulWidget {
   const ContactEditView({
     Key? key,
-    required this.employee, required this.pageInput,
+    required this.employee, required this.pageInput, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
-
+  final String Authorization;
   @override
   _ContactEditViewState createState() => _ContactEditViewState();
 }
@@ -91,7 +91,7 @@ class _ContactEditViewState extends State<ContactEditView> {
     return Scaffold(
       // backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -120,7 +120,7 @@ class _ContactEditViewState extends State<ContactEditView> {
         titleStyle: GoogleFonts.openSans(),
         backgroundColor: Colors.white,
         color: Colors.grey.shade400,
-        colorSelected: Colors.orange,
+        colorSelected: Color(0xFFFF9900),
         indexSelected: _selectedIndex,
         // paddingVertical: 25,
         onTap: _onItemTapped,
@@ -146,9 +146,9 @@ class _ContactEditViewState extends State<ContactEditView> {
           ),
         );
       case 3:
-        return ProjectScreen(employee: widget.employee, pageInput: widget.pageInput,);
+        return ProjectScreen(employee: widget.employee, Authorization: widget.Authorization,pageInput: widget.pageInput,);
       case 4:
-        return ActivityScreen(employee: widget.employee, pageInput: widget.pageInput,);
+        return ActivityScreen(employee: widget.employee, Authorization: widget.Authorization,pageInput: widget.pageInput,);
       default:
         return Container();
     }

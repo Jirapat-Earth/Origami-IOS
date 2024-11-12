@@ -7,13 +7,13 @@ class EvaluateModule extends StatefulWidget {
     super.key,
     required this.employee,
     required this.academy,
-    this.callback, this.selectedPage,
+    this.callback, this.selectedPage, required this.Authorization,
   });
   final Employee employee;
   final AcademyRespond academy;
   final VoidCallback? callback;
   final int? selectedPage;
-
+  final String Authorization;
   @override
   _EvaluateModuleState createState() => _EvaluateModuleState();
 }
@@ -40,7 +40,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'academy_id': widget.academy.academy_id,
           'academy_type': widget.academy.academy_type,
         },
@@ -116,7 +116,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
       backgroundColor: Colors.white,
       appBar: AppBar(
         foregroundColor: Colors.white,
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Text(
           '$academy',
           style: GoogleFonts.openSans(
@@ -136,7 +136,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CircularProgressIndicator(
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                 ),
                 SizedBox(
                   width: 12,
@@ -333,7 +333,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
                                     fastView.fastview_button ?? '',
                                     style: GoogleFonts.openSans(
                                       fontSize: 12,
-                                      color: Colors.orange,
+                                      color: Color(0xFFFF9900),
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -429,7 +429,7 @@ class _EvaluateModuleState extends State<EvaluateModule>
         Column(
           children: [
             TabBar(
-              indicatorColor: Colors.orange,
+              indicatorColor: Color(0xFFFF9900),
               onTap: (index) {
                 setState(() {
                   _selectedIndex = index;
@@ -625,21 +625,25 @@ class _EvaluateModuleState extends State<EvaluateModule>
         return Description(
           employee: widget.employee,
           academy: widget.academy,
+          Authorization: widget.Authorization,
         );
       case 1:
         return Curriculum(
           employee: widget.employee,
           academy: widget.academy,
+          Authorization: widget.Authorization,
         );
       case 2:
         return Instructors(
           employee: widget.employee,
           academy: widget.academy,
+          Authorization: widget.Authorization,
         );
       case 3:
         return Discussion(
           employee: widget.employee,
           academy: widget.academy,
+          Authorization: widget.Authorization,
         );
       case 4:
         return Announcements();
@@ -647,11 +651,13 @@ class _EvaluateModuleState extends State<EvaluateModule>
         return AttachFile(
           employee: widget.employee,
           academy: widget.academy,
+          Authorization: widget.Authorization,
         );
       case 6:
         return Certification(
           employee: widget.employee,
           academy: widget.academy,
+          Authorization: widget.Authorization,
         );
       default:
         return Container(

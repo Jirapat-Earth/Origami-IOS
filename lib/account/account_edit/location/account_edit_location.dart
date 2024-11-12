@@ -1,17 +1,18 @@
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../../../activity/activity_add.dart';
+import '../../../activity/add/activity_add.dart';
 import '../../../imports.dart';
 
 class AccountEditLocation extends StatefulWidget {
   const AccountEditLocation({
     Key? key,
     required this.employee,
-    required this.pageInput,
+    required this.pageInput, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
+  final String Authorization;
   @override
   _AccountEditLocationState createState() => _AccountEditLocationState();
 }
@@ -159,7 +160,7 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
                           'Next >>',
                           style: GoogleFonts.openSans(
                             fontSize: 16,
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -182,7 +183,7 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
                           '<< Back',
                           style: GoogleFonts.openSans(
                             fontSize: 16,
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -198,13 +199,13 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            Icon(Icons.save, size: 20, color: Colors.orange),
+                            Icon(Icons.save, size: 20, color: Color(0xFFFF9900)),
                             SizedBox(width: 4),
                             Text(
                               'SAVE',
                               style: GoogleFonts.openSans(
                                 fontSize: 16,
-                                color: Colors.orange,
+                                color: Color(0xFFFF9900),
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -307,7 +308,7 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.white,
                                 border: Border.all(
-                                  color: Colors.orange,
+                                  color: Color(0xFFFF9900),
                                   width: 1.0,
                                 ),
                               ),
@@ -414,7 +415,7 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
                   },
                     child: Padding(
                       padding: const EdgeInsets.all(12),
-                      child: Icon(Icons.location_on, size: 18, color: Colors.orange),
+                      child: Icon(Icons.location_on, size: 18, color: Color(0xFFFF9900)),
                     ))
               ],
             ),
@@ -443,7 +444,7 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -538,7 +539,7 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
         hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -546,20 +547,20 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -586,7 +587,7 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
         hintStyle: GoogleFonts.openSans(fontSize: 14, color: Color(0xFF555555)),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -594,20 +595,20 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -639,7 +640,7 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
                   Checkbox(
                     value: _isChecked,
                     checkColor: Colors.white,
-                    activeColor: Colors.orange,
+                    activeColor: Color(0xFFFF9900),
                     onChanged: (bool? value) {
                       setState(() {
                         _isChecked = value ?? false;
@@ -683,7 +684,7 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
             hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -691,20 +692,20 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
-                color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
                 width: 1,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -733,7 +734,7 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),

@@ -2,10 +2,10 @@ import 'package:http/http.dart' as http;
 import '../../../imports.dart';
 
 class AttachFile extends StatefulWidget {
-  AttachFile({super.key, required this.employee, required this.academy, });
+  AttachFile({super.key, required this.employee, required this.academy, required this.Authorization, });
   final Employee employee;
   final AcademyRespond academy;
-
+  final String Authorization;
   @override
   _AttachFileState createState() => _AttachFileState();
 }
@@ -19,7 +19,7 @@ class _AttachFileState extends State<AttachFile> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'academy_id': widget.academy.academy_id,
         'academy_type': widget.academy.academy_type,
       },
@@ -62,7 +62,7 @@ class _AttachFileState extends State<AttachFile> {
   // @override
   // Widget build(BuildContext context) {
   //   return RefreshIndicator(
-  //     color: Colors.orange,
+  //     color: Color(0xFFFF9900),
   //       onRefresh: _refresh,child: loading());
   // }
 

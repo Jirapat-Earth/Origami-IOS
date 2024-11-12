@@ -2,19 +2,19 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import '../../../imports.dart';
 
-class projectAdd extends StatefulWidget {
-  const projectAdd({
+class ProjectAdd extends StatefulWidget {
+  const ProjectAdd({
     Key? key,
-    required this.employee, required this.pageInput,
+    required this.employee, required this.pageInput, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
-
+  final String Authorization;
   @override
-  _projectAddState createState() => _projectAddState();
+  _ProjectAddState createState() => _ProjectAddState();
 }
 
-class _projectAddState extends State<projectAdd> {
+class _ProjectAddState extends State<ProjectAdd> {
   TextEditingController _codeController = TextEditingController();
   TextEditingController _projectController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
@@ -75,7 +75,7 @@ class _projectAddState extends State<projectAdd> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),
@@ -111,7 +111,7 @@ class _projectAddState extends State<projectAdd> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -246,13 +246,13 @@ class _projectAddState extends State<projectAdd> {
                     onPressed: () {},
                     icon:
                         Icon((title != 'Location') ? null : Icons.location_on),
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                     iconSize: 18),
               ),
             ),
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -260,20 +260,20 @@ class _projectAddState extends State<projectAdd> {
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
-                color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
                 width: 1,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -305,7 +305,7 @@ class _projectAddState extends State<projectAdd> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -325,7 +325,7 @@ class _projectAddState extends State<projectAdd> {
                   Spacer(),
                   Icon(
                     Icons.calendar_month,
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                   ),
                 ],
               ),
@@ -355,7 +355,7 @@ class _projectAddState extends State<projectAdd> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),

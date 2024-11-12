@@ -156,7 +156,7 @@ class _ContactAddInformationState extends State<ContactAddInformation> {
                   Checkbox(
                     value: _isChecked,
                     checkColor: Colors.white,
-                    activeColor: Colors.orange,
+                    activeColor: Color(0xFFFF9900),
                     onChanged: (bool? value) {
                       setState(() {
                         _isChecked = value ?? false;
@@ -231,7 +231,7 @@ class _ContactAddInformationState extends State<ContactAddInformation> {
               'Next >>',
               style: GoogleFonts.openSans(
                 fontSize: 16,
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -254,7 +254,7 @@ class _ContactAddInformationState extends State<ContactAddInformation> {
               '<< Back',
               style: GoogleFonts.openSans(
                 fontSize: 16,
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -270,13 +270,13 @@ class _ContactAddInformationState extends State<ContactAddInformation> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Icon(Icons.save, size: 20, color: Colors.orange),
+                Icon(Icons.save, size: 20, color: Color(0xFFFF9900)),
                 SizedBox(width: 4),
                 Text(
                   'SAVE',
                   style: GoogleFonts.openSans(
                     fontSize: 16,
-                    color: Colors.orange,
+                    color: Color(0xFFFF9900),
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -306,7 +306,7 @@ class _ContactAddInformationState extends State<ContactAddInformation> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -401,7 +401,7 @@ class _ContactAddInformationState extends State<ContactAddInformation> {
         hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -409,20 +409,20 @@ class _ContactAddInformationState extends State<ContactAddInformation> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -449,7 +449,7 @@ class _ContactAddInformationState extends State<ContactAddInformation> {
         hintStyle: GoogleFonts.openSans(fontSize: 14, color: Colors.grey),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange,
+            color: Color(0xFFFF9900),
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -457,20 +457,20 @@ class _ContactAddInformationState extends State<ContactAddInformation> {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
-            color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+            color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+            color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(10),

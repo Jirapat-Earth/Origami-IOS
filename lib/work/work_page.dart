@@ -4,9 +4,11 @@ import 'package:origami_ios/work/work_apply.dart';
 import '../../../imports.dart';
 
 class WorkPage extends StatefulWidget {
-  const WorkPage({Key? key, required this.employee}) : super(key: key);
+  const WorkPage(
+      {Key? key, required this.employee, required this.Authorization})
+      : super(key: key);
   final Employee employee;
-
+  final String Authorization;
   @override
   _WorkPageState createState() => _WorkPageState();
 }
@@ -43,6 +45,7 @@ class _WorkPageState extends State<WorkPage> {
               MaterialPageRoute(
                 builder: (context) => WorkApplyPage(
                   employee: widget.employee,
+                  Authorization: widget.Authorization,
                 ),
               ),
             );
@@ -60,7 +63,7 @@ class _WorkPageState extends State<WorkPage> {
             ),
           ),
           elevation: 0,
-          backgroundColor: Colors.orange,
+          backgroundColor: Color(0xFFFF9900),
         ),
         body: Column(
           children: [
@@ -68,7 +71,7 @@ class _WorkPageState extends State<WorkPage> {
               color: Colors.transparent,
               child: TabBar(
                 indicatorColor: Colors.transparent,
-                labelColor: Colors.orange,
+                labelColor: Color(0xFFFF9900),
                 unselectedLabelColor: Colors.orange.shade300,
                 labelStyle: GoogleFonts.openSans(
                   fontSize: 14,
@@ -86,13 +89,14 @@ class _WorkPageState extends State<WorkPage> {
                   FutureBuilder<List<ModelWorkList>>(
                       future: fetchModelWorkList(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return Center(
                               child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CircularProgressIndicator(
-                                color: Colors.orange,
+                                color: Color(0xFFFF9900),
                               ),
                               SizedBox(
                                 width: 12,
@@ -115,7 +119,8 @@ class _WorkPageState extends State<WorkPage> {
                               color: const Color(0xFF555555),
                             ),
                           ));
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
                           return Center(
                               child: Text(
                             '$Empty',
@@ -140,7 +145,8 @@ class _WorkPageState extends State<WorkPage> {
                               color: const Color(0xFF555555),
                             ),
                           ));
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
                           return Center(
                               child: Text(
                             '$Empty',
@@ -177,7 +183,7 @@ class _WorkPageState extends State<WorkPage> {
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
                 border: Border.all(
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                   width: 1.0,
                 ),
               ),
@@ -218,7 +224,7 @@ class _WorkPageState extends State<WorkPage> {
                         fontSize: 14,
                         color: (approve?.approve_comment != null)
                             ? Colors.green
-                            : Colors.orange,
+                            : Color(0xFFFF9900),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -263,7 +269,7 @@ class _WorkPageState extends State<WorkPage> {
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
               border: Border.all(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
             ),
@@ -503,7 +509,7 @@ class _WorkPageState extends State<WorkPage> {
                                 fontWeight: FontWeight.w500,
                                 color: (approve?.approve_comment != null)
                                     ? Colors.green
-                                    : Colors.orange,
+                                    : Color(0xFFFF9900),
                               ),
                             ),
                           ],
@@ -522,7 +528,7 @@ class _WorkPageState extends State<WorkPage> {
                 'Close',
                 style: GoogleFonts.openSans(
                   fontSize: 16,
-                  color: Colors.orange,
+                  color: Color(0xFFFF9900),
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -540,8 +546,7 @@ class _WorkPageState extends State<WorkPage> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'user': 'origami',
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
       },
     );
     if (response.statusCode == 200) {
@@ -562,8 +567,7 @@ class _WorkPageState extends State<WorkPage> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'user': 'origami',
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
       },
     );
     if (response.statusCode == 200) {

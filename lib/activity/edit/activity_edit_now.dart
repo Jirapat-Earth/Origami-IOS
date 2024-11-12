@@ -1,24 +1,24 @@
 import 'package:http/http.dart' as http;
 import 'package:origami_ios/activity/skoop/skoop.dart';
-import '../../../imports.dart';
-import '../need/need_view/need_detail.dart';
-import 'activity_add.dart';
+import '../../../../imports.dart';
+import '../../need/need_view/need_detail.dart';
+import '../add/activity_add.dart';
 import 'package:intl/intl.dart';
 
-class activityEditNow extends StatefulWidget {
-  const activityEditNow({
+class ActivityEditNow extends StatefulWidget {
+  const ActivityEditNow({
     Key? key,
     required this.employee,
-    required this.skoopDetail,
+    required this.skoopDetail, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final GetSkoopDetail? skoopDetail;
-
+  final String Authorization;
   @override
-  _activityEditNowState createState() => _activityEditNowState();
+  _ActivityEditNowState createState() => _ActivityEditNowState();
 }
 
-class _activityEditNowState extends State<activityEditNow> {
+class _ActivityEditNowState extends State<ActivityEditNow> {
   TextEditingController _subjectController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _costController = TextEditingController();
@@ -133,7 +133,7 @@ class _activityEditNowState extends State<activityEditNow> {
           data: ThemeData(
             primaryColor: Colors.teal,
             colorScheme: ColorScheme.light(
-              primary: Colors.orange,
+              primary: Color(0xFFFF9900),
               onPrimary: Colors.white,
               onSurface: Colors.teal,
             ),
@@ -178,47 +178,47 @@ class _activityEditNowState extends State<activityEditNow> {
     return Scaffold(
       backgroundColor: Colors.orange.shade50,
       // backgroundColor: Color(0xFFF5F5F5),
-      appBar: AppBar(
-        backgroundColor: Colors.orange,
-        title: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            '',
-            style: GoogleFonts.openSans(
-              fontSize: 24,
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        actions: [
-          InkWell(
-            onTap: () {
-              _fetchUpDateActivity();
-            },
-            child: Row(
-              children: [
-                Text(
-                  'DONE',
-                  style: GoogleFonts.openSans(
-                    fontSize: 14,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(width: 16)
-              ],
-            ),
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Color(0xFFFF9900),
+      //   title: Align(
+      //     alignment: Alignment.centerLeft,
+      //     child: Text(
+      //       '',
+      //       style: GoogleFonts.openSans(
+      //         fontSize: 24,
+      //         color: Colors.white,
+      //         fontWeight: FontWeight.w500,
+      //       ),
+      //     ),
+      //   ),
+      //   leading: IconButton(
+      //     icon: Icon(
+      //       Icons.arrow_back_ios,
+      //       color: Colors.white,
+      //     ),
+      //     onPressed: () => Navigator.pop(context),
+      //   ),
+      //   actions: [
+      //     InkWell(
+      //       onTap: () {
+      //         _fetchUpDateActivity();
+      //       },
+      //       child: Row(
+      //         children: [
+      //           Text(
+      //             'DONE',
+      //             style: GoogleFonts.openSans(
+      //               fontSize: 14,
+      //               color: Colors.white,
+      //               fontWeight: FontWeight.w500,
+      //             ),
+      //           ),
+      //           SizedBox(width: 16)
+      //         ],
+      //       ),
+      //     ),
+      //   ],
+      // ),
       body: SafeArea(
         child: Container(
           color: Colors.white,
@@ -325,7 +325,7 @@ class _activityEditNowState extends State<activityEditNow> {
                                       fontSize: 14, color: Color(0xFF555555)),
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.orange,
+                                      color: Color(0xFFFF9900),
                                       width: 1.0,
                                     ),
                                     borderRadius: BorderRadius.circular(100),
@@ -349,7 +349,7 @@ class _activityEditNowState extends State<activityEditNow> {
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color:
-                                          Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                                          Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                                       width: 1.0,
                                     ),
                                     borderRadius: BorderRadius.circular(10),
@@ -442,7 +442,7 @@ class _activityEditNowState extends State<activityEditNow> {
                                                       style:
                                                           GoogleFonts.openSans(
                                                         fontSize: 16,
-                                                        color: Colors.orange,
+                                                        color: Color(0xFFFF9900),
                                                         fontWeight:
                                                             FontWeight.w700,
                                                       ),
@@ -483,12 +483,38 @@ class _activityEditNowState extends State<activityEditNow> {
                                   overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.openSans(
                                     fontSize: 14,
-                                    color: Colors.orange,
+                                    color: Color(0xFFFF9900),
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
                               ),
                             ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8,right: 8, bottom: 8),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Color(0xFFFF9900),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                          ),
+                          onPressed: () {
+                            // _fetchUpDateActivity();
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            child: Center(
+                              child: Text(
+                                '$Save',
+                                style: GoogleFonts.openSans(fontSize: 16.0),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -513,7 +539,7 @@ class _activityEditNowState extends State<activityEditNow> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => SkoopScreen(
-                              employee: widget.employee,
+                              employee: widget.employee,Authorization: widget.Authorization,
                               skoopDetail: widget.skoopDetail,
                             ),
                           ),
@@ -545,7 +571,8 @@ class _activityEditNowState extends State<activityEditNow> {
                   ),
                 ],
               ),
-              SizedBox(height: 8)
+              SizedBox(height: 8),
+
             ],
           ),
         ),
@@ -647,18 +674,18 @@ class _activityEditNowState extends State<activityEditNow> {
                         ),
                         prefixIcon: Icon(
                           Icons.search,
-                          color: Colors.orange,
+                          color: Color(0xFFFF9900),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             width: 1.0,
                           ),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             width: 1.0,
                           ),
                           borderRadius: BorderRadius.circular(10),
@@ -752,7 +779,7 @@ class _activityEditNowState extends State<activityEditNow> {
                                               overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.openSans(
                                                 fontSize: 16,
-                                                color: Colors.orange,
+                                                color: Color(0xFFFF9900),
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             ),
@@ -822,7 +849,7 @@ class _activityEditNowState extends State<activityEditNow> {
                 GoogleFonts.openSans(fontSize: 14, color: Color(0xFF555555)),
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(100),
@@ -830,20 +857,20 @@ class _activityEditNowState extends State<activityEditNow> {
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
-                color: Colors.orange, // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
                 width: 1,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(10),
@@ -877,7 +904,7 @@ class _activityEditNowState extends State<activityEditNow> {
               borderRadius: BorderRadius.circular(10),
               color: (ontap == true) ? Colors.white : Colors.grey.shade300,
               border: Border.all(
-                color: (ontap == true) ? Colors.orange : Colors.grey.shade400,
+                color: (ontap == true) ? Color(0xFFFF9900) : Colors.grey.shade400,
                 width: 1.0,
               ),
             ),
@@ -933,7 +960,7 @@ class _activityEditNowState extends State<activityEditNow> {
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
               border: Border.all(
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
                 width: 1.0,
               ),
             ),
@@ -983,7 +1010,7 @@ class _activityEditNowState extends State<activityEditNow> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1097,7 +1124,7 @@ class _activityEditNowState extends State<activityEditNow> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1211,7 +1238,7 @@ class _activityEditNowState extends State<activityEditNow> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1325,7 +1352,7 @@ class _activityEditNowState extends State<activityEditNow> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1439,7 +1466,7 @@ class _activityEditNowState extends State<activityEditNow> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1553,7 +1580,7 @@ class _activityEditNowState extends State<activityEditNow> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1670,7 +1697,7 @@ class _activityEditNowState extends State<activityEditNow> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
             border: Border.all(
-              color: Colors.orange,
+              color: Color(0xFFFF9900),
               width: 1.0,
             ),
           ),
@@ -1916,41 +1943,6 @@ class _activityEditNowState extends State<activityEditNow> {
   String cost = '';
   String contact_list = '';
 
-  Future<void> fetchAddActivity() async {
-    final uri = Uri.parse("https://dev.origami.life/crm/activity.php");
-    final response = await http.post(
-      uri,
-      body: {
-        'comp_id': widget.employee.comp_id,
-        'emp_id': widget.employee.emp_id,
-        'pass': widget.employee.auth_password,
-        'type_id': type_id,
-        'project_id': project_id,
-        'account_id': account_id,
-        'contact_id': contact_id,
-        'status_id': status_id,
-        'priority_id': priority_id,
-        'place_id': place_id,
-        'location': location,
-        'location_lat': location_lat,
-        'location_long': location_long,
-        'activity_name': activity_name,
-        'description': description,
-        'start_date': start_date,
-        'start_time': start_time,
-        'end_date': end_date,
-        'end_time': end_time,
-        'cost': cost,
-        'contact_list': contact_list,
-      },
-    );
-    if (response.statusCode == 200) {
-      print('true');
-    } else {
-      throw Exception('Failed to load projects');
-    }
-  }
-
   ActivityProject? selectedProject;
   List<ActivityProject> projectList = [];
   Future<void> fetchActivityProject() async {
@@ -1962,7 +1954,7 @@ class _activityEditNowState extends State<activityEditNow> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'type': 'project',
         },
       );
@@ -1995,7 +1987,7 @@ class _activityEditNowState extends State<activityEditNow> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -2026,7 +2018,7 @@ class _activityEditNowState extends State<activityEditNow> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -2058,7 +2050,7 @@ class _activityEditNowState extends State<activityEditNow> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -2090,7 +2082,7 @@ class _activityEditNowState extends State<activityEditNow> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {
@@ -2123,7 +2115,7 @@ class _activityEditNowState extends State<activityEditNow> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'index': '0',
         },
       );
@@ -2154,7 +2146,7 @@ class _activityEditNowState extends State<activityEditNow> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
         'index': '0',
       },
     );
@@ -2179,7 +2171,7 @@ class _activityEditNowState extends State<activityEditNow> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'activity_id': widget.skoopDetail?.activity_id,
           'type_id': type_id,
           'project_id': project_id,
@@ -2224,7 +2216,7 @@ class _activityEditNowState extends State<activityEditNow> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'start_date': widget.skoopDetail?.start_date,
           'start_time': widget.skoopDetail?.time_start,
           'end_date': widget.skoopDetail?.end_date,
@@ -2252,7 +2244,7 @@ class _activityEditNowState extends State<activityEditNow> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
           'activity_id': widget.skoopDetail?.activity_id ?? '',
         },
       );

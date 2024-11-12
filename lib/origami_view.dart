@@ -1,14 +1,16 @@
 import 'package:http/http.dart' as http;
+import 'package:origami_ios/time_sample/time_sample.dart';
 import '../imports.dart';
 
 class OrigamiPage extends StatefulWidget {
   const OrigamiPage({
     super.key,
     required this.employee,
-    required this.popPage,
+    required this.popPage, required this.Authorization,
   });
   final Employee employee;
   final int popPage;
+  final String Authorization;
   @override
   State<OrigamiPage> createState() => _OrigamiPageState();
 }
@@ -68,12 +70,12 @@ class _OrigamiPageState extends State<OrigamiPage> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 1,
-          foregroundColor: Colors.orange,
+          foregroundColor: Color(0xFFFF9900),
           backgroundColor: Colors.white,
           title: Text(
             _listTitle[_index],
             style: GoogleFonts.openSans(
-                fontWeight: FontWeight.bold, color: Colors.orange),
+                fontWeight: FontWeight.bold, color: Color(0xFFFF9900)),
           ),
           actions: <Widget>[
             InkWell(
@@ -248,7 +250,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
                             child: FaIcon(FontAwesomeIcons.fileText,
                                 size: 18,
                                 color: (_index == 0 || _index == 1)
-                                    ? Colors.orange
+                                    ? Color(0xFFFF9900)
                                     : Color(0xFF555555)),
                           ),
                           SizedBox(
@@ -258,7 +260,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
                             '$need',
                             style: GoogleFonts.openSans(
                                 color: (_index == 0 || _index == 1)
-                                    ? Colors.orange
+                                    ? Color(0xFFFF9900)
                                     : Color(0xFF555555)),
                           ),
                         ],
@@ -288,13 +290,13 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                 trailing: FaIcon(FontAwesomeIcons.handHoldingUsd,
                                     size: 18,
                                     color: (_index == 0)
-                                        ? Colors.orange
+                                        ? Color(0xFFFF9900)
                                         : Color(0xFF555555)),
                                 title: Text(
                                   '$need',
                                   style: GoogleFonts.openSans(
                                       color: (_index == 0)
-                                          ? Colors.orange
+                                          ? Color(0xFFFF9900)
                                           : Color(0xFF555555)),
                                 ),
                                 selected: _index == 0,
@@ -319,13 +321,13 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                 trailing: FaIcon(FontAwesomeIcons.checkDouble,
                                     size: 18,
                                     color: (_index == 1)
-                                        ? Colors.orange
+                                        ? Color(0xFFFF9900)
                                         : Color(0xFF555555)),
                                 title: Text(
                                   '$request',
                                   style: GoogleFonts.openSans(
                                       color: (_index == 1)
-                                          ? Colors.orange
+                                          ? Color(0xFFFF9900)
                                           : Color(0xFF555555)),
                                 ),
                                 selected: _index == 1,
@@ -350,13 +352,13 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                 trailing: FaIcon(FontAwesomeIcons.wallet,
                                     size: 18,
                                     color: (_index == 8)
-                                        ? Colors.orange
+                                        ? Color(0xFFFF9900)
                                         : Color(0xFF555555)),
                                 title: Text(
                                   'Petty Cash',
                                   style: GoogleFonts.openSans(
                                       color: (_index == 8)
-                                          ? Colors.orange
+                                          ? Color(0xFFFF9900)
                                           : Color(0xFF555555)),
                                 ),
                                 selected: _index == 8,
@@ -409,7 +411,6 @@ class _OrigamiPageState extends State<OrigamiPage> {
         Container(
           child: _viewMenu(11, 'Work', Icons.keyboard_arrow_right, Icons.work),
         ),
-
         Container(
           child: _viewMenu(2, 'Academy', Icons.keyboard_arrow_right,
               FontAwesomeIcons.university),
@@ -446,44 +447,48 @@ class _OrigamiPageState extends State<OrigamiPage> {
 
   Widget _buildPage() {
     final pages = {
-      0: NeedsView(employee: widget.employee),
-      1: NeedRequest(employee: widget.employee),
-      2: AcademyPage(employee: widget.employee),
-      3: TranslatePage(employee: widget.employee),
+      0: NeedsView(employee: widget.employee,Authorization:widget.Authorization,),
+      1: NeedRequest(employee: widget.employee,Authorization:widget.Authorization,),
+      2: AcademyPage(employee: widget.employee,Authorization:widget.Authorization,),
+      3: TranslatePage(employee: widget.employee,Authorization:widget.Authorization,),
       4: Text('Index 6: LogOut', style: optionStyle),
       5: TimeSample(
         employee: widget.employee,
         timeStamp: timeStampObject,
+          Authorization:widget.Authorization,
       ),
       6: ProfilePage(
-        employee: widget.employee,
+        employee: widget.employee,Authorization:widget.Authorization,
       ),
       7: ChatView(
-        employee: widget.employee,
+        employee: widget.employee, pageInput: '',Authorization:widget.Authorization,
       ),
       8: PettyCash(
-        employee: widget.employee,
+        employee: widget.employee,Authorization:widget.Authorization,
       ),
       9: ActivityScreen(
         employee: widget.employee,
-        pageInput: 'activity',
+        pageInput: 'activity',Authorization:widget.Authorization,
       ),
       10: ProjectScreen(
         employee: widget.employee,
-        pageInput: 'project',
+        pageInput: 'project',Authorization:widget.Authorization,
       ),
-      11: WorkPage(employee: widget.employee),
+      11: WorkPage(employee: widget.employee,Authorization:widget.Authorization,),
       12: ContactScreen(
         employee: widget.employee,
         pageInput: 'contact',
+        Authorization:widget.Authorization,
       ),
       13: AccountList(
         employee: widget.employee,
         pageInput: 'account',
+        Authorization:widget.Authorization,
       ),
       14: CalendarScreen(
         employee: widget.employee,
         pageInput: 'calendar',
+        Authorization:widget.Authorization,
       ),
     };
     return pages[_index] ?? Container();
@@ -502,7 +507,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
             ),
             child: ListTile(
               trailing: Icon(icons,
-                  color: (_index == page) ? Colors.orange : Color(0xFF555555)),
+                  color: (_index == page) ? Color(0xFFFF9900) : Color(0xFF555555)),
               title: Row(
                 children: [
                   Container(
@@ -514,7 +519,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
                     child: FaIcon(faIcon,
                         size: 18,
                         color: (_index == page)
-                            ? Colors.orange
+                            ? Color(0xFFFF9900)
                             : Color(0xFF555555)),
                   ),
                   SizedBox(
@@ -524,7 +529,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
                     title,
                     style: GoogleFonts.openSans(
                         color: (_index == page)
-                            ? Colors.orange
+                            ? Color(0xFFFF9900)
                             : Color(0xFF555555)),
                   ),
                 ],
@@ -657,7 +662,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
             ),
             child: ListTile(
               trailing: Icon(Icons.keyboard_arrow_right,
-                  color: (_index == 5) ? Colors.orange : Color(0xFF555555)),
+                  color: (_index == 5) ? Color(0xFFFF9900) : Color(0xFF555555)),
               title: Row(
                 children: [
                   Container(
@@ -668,7 +673,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
                     ),
                     child: Icon(Icons.autorenew_sharp,
                         color:
-                            (_index == 5) ? Colors.orange : Color(0xFF555555)),
+                            (_index == 5) ? Color(0xFFFF9900) : Color(0xFF555555)),
                   ),
                   SizedBox(
                     width: 8,
@@ -677,7 +682,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
                     'Test',
                     style: GoogleFonts.openSans(
                         color:
-                            (_index == 5) ? Colors.orange : Color(0xFF555555)),
+                            (_index == 5) ? Color(0xFFFF9900) : Color(0xFF555555)),
                   ),
                 ],
               ),
@@ -703,7 +708,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => WorkPage(
-                      employee: widget.employee,
+                      employee: widget.employee, Authorization: widget.Authorization
                     ),
                   ),
                 );
@@ -720,23 +725,23 @@ class _OrigamiPageState extends State<OrigamiPage> {
         //   padding: const EdgeInsets.only(top: 4, bottom: 4, left: 6, right: 6),
         //   child: Container(
         //     decoration: BoxDecoration(
-        //       color: Colors.orange.shade50,
+        //       color: Color(0xFFFF9900).shade50,
         //       borderRadius: BorderRadius.circular(10),
         //     ),
         //     child: ListTile(
         //       trailing: Icon(Icons.keyboard_arrow_right,
-        //           color: (_index == 7) ? Colors.orange : Color(0xFF555555)),
+        //           color: (_index == 7) ? Color(0xFFFF9900) : Color(0xFF555555)),
         //       title: Row(
         //         children: [
         //           Container(
         //             padding: EdgeInsets.all(8),
         //             decoration: BoxDecoration(
-        //               color: Colors.orange.shade200,
+        //               color: Color(0xFFFF9900).shade200,
         //               borderRadius: BorderRadius.circular(10),
         //             ),
         //             child: Icon(Icons.mark_chat_unread_outlined,
         //                 color:
-        //                     (_index == 7) ? Colors.orange : Color(0xFF555555)),
+        //                     (_index == 7) ? Color(0xFFFF9900) : Color(0xFF555555)),
         //           ),
         //           SizedBox(
         //             width: 8,
@@ -745,7 +750,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
         //             'TestChat',
         //             style: GoogleFonts.openSans(
         //                 color:
-        //                     (_index == 7) ? Colors.orange : Color(0xFF555555)),
+        //                     (_index == 7) ? Color(0xFFFF9900) : Color(0xFF555555)),
         //           ),
         //         ],
         //       ),
@@ -844,7 +849,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
                         'Branch',
                         style: GoogleFonts.openSans(
                           fontSize: 22,
-                          color: Colors.orange,
+                          color: Color(0xFFFF9900),
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -923,7 +928,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'auth_password': widget.employee.auth_password,
+        'Authorization': widget.Authorization,
       },
     );
     if (response.statusCode == 200) {

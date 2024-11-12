@@ -39,7 +39,7 @@ class _ProjectMandayState extends State<ProjectManday> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFF9900),
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -89,18 +89,18 @@ class _ProjectMandayState extends State<ProjectManday> {
               ),
               prefixIcon: Icon(
                 Icons.search,
-                color: Colors.orange,
+                color: Color(0xFFFF9900),
               ),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.orange, // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                  color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
                   width: 1.0,
                 ),
                 borderRadius: BorderRadius.circular(100),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                  color: Colors.orange, // ขอบสีส้มตอนที่โฟกัส
+                  color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
                   width: 1.0,
                 ),
                 borderRadius: BorderRadius.circular(100),
@@ -291,7 +291,7 @@ class _ProjectMandayState extends State<ProjectManday> {
                       borderRadius:BorderRadius.all(Radius.circular(100)),
                       valueColor:
                       AlwaysStoppedAnimation<Color>(
-                          Colors.orange.shade500),
+                          Color(0xFFFF9900)),
                     ),
                     Center(
                       child: Text(
@@ -435,7 +435,7 @@ class _ProjectMandayState extends State<ProjectManday> {
                     lineWidth: 4.0,
                     percent: 0.30,
                     center: new Text("30%"),
-                    progressColor: Colors.orange,
+                    progressColor: Color(0xFFFF9900),
                   ),
                   SizedBox(height: 8),
                   Text(

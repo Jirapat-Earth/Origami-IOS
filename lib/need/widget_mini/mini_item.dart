@@ -9,12 +9,12 @@ import '../../../login/login.dart';
 import '../need_view/need_detail.dart';
 
 class MiniItem extends StatefulWidget {
-  const MiniItem({Key? key,required this.Item_type_id, required this.employee, required this.callbackID, required this.callbackNAME}) : super(key: key);
+  const MiniItem({Key? key,required this.Item_type_id, required this.employee, required this.callbackID, required this.callbackNAME, required this.Authorization}) : super(key: key);
   final String Function(String) callbackID;
   final String Function(String) callbackNAME;
   final String Item_type_id;
   final Employee employee;
-
+  final String Authorization;
   @override
   _MiniItemState createState() => _MiniItemState();
 }
@@ -48,7 +48,7 @@ class _MiniItemState extends State<MiniItem> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Card(color: Colors.orange,child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8)),),
+                Card(color: Color(0xFFFF9900),child: Padding(padding: EdgeInsets.only(left: 40,right: 40,top: 8)),),
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: Container(
@@ -56,7 +56,7 @@ class _MiniItemState extends State<MiniItem> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       border: Border.all(
-                        color: Colors.orange,
+                        color: Color(0xFFFF9900),
                         width: 1.0,
                       ),
                     ),
@@ -72,10 +72,10 @@ class _MiniItemState extends State<MiniItem> {
                           hintStyle: GoogleFonts.openSans(color: Color(0xFF555555),),
                           labelStyle: GoogleFonts.openSans(color: Color(0xFF555555),),
                           border: InputBorder.none,
-                          icon: Icon(Icons.search,color: Colors.orange,),
+                          icon: Icon(Icons.search,color: Color(0xFFFF9900),),
                           suffixIcon: Card(
                             elevation: 0,
-                            color: Colors.orange,
+                            color: Color(0xFFFF9900),
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(25),
@@ -139,7 +139,7 @@ class _MiniItemState extends State<MiniItem> {
                       //         style: GoogleFonts.openSans(
                       //           fontSize: 18,
                       //           decoration: TextDecoration.underline,
-                      //           // color: Colors.orange,
+                      //           // color: Color(0xFFFF9900),
                       //         ),),
                       //       SizedBox(width: 8,),
                       //       Icon(Icons.arrow_drop_down,color:Color(0xFF555555),)
@@ -204,7 +204,7 @@ class _MiniItemState extends State<MiniItem> {
                       },
                       child: Row(
                         children: [
-                          Icon(Icons.navigate_before,color: Colors.orange,),
+                          Icon(Icons.navigate_before,color: Color(0xFFFF9900),),
                           Text(
                             "$Back",
                             style: GoogleFonts.openSans(
@@ -242,7 +242,7 @@ class _MiniItemState extends State<MiniItem> {
                     //         overflow: TextOverflow.ellipsis,
                     //         maxLines: 1,
                     //       ),
-                    //       Icon(Icons.navigate_next,color: Colors.orange,),
+                    //       Icon(Icons.navigate_next,color: Color(0xFFFF9900),),
                     //     ],
                     //   ),
                     // ),
@@ -272,7 +272,7 @@ class _MiniItemState extends State<MiniItem> {
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
-          'auth_password': widget.employee.auth_password,
+          'Authorization': widget.Authorization,
         },
       );
       if (response.statusCode == 200) {

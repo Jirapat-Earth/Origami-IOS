@@ -116,7 +116,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
                                             itemsList[index].productName,
                                             style: GoogleFonts.openSans(
                                               fontSize: 18,
-                                              color: Colors.orange,
+                                              color: Color(0xFFFF9900),
                                               fontWeight: FontWeight.w700,
                                             ),
                                           ),
@@ -364,7 +364,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.all(1),
                             foregroundColor: Colors.white,
-                            backgroundColor: Colors.orange,
+                            backgroundColor: Color(0xFFFF9900),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -495,7 +495,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
                                                   'คูปองส่วนลด',
                                                   style: GoogleFonts.openSans(
                                                     fontSize: 18,
-                                                    color: Colors.orange,
+                                                    color: Color(0xFFFF9900),
                                                     fontWeight: FontWeight.w700,
                                                   ),
                                                 ),
@@ -562,7 +562,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(1),
                     foregroundColor: Colors.white,
-                    backgroundColor: Colors.orange,
+                    backgroundColor: Color(0xFFFF9900),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
