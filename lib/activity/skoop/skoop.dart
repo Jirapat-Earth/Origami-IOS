@@ -88,53 +88,53 @@ class _SkoopScreenState extends State<SkoopScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Skoop',
-          style: GoogleFonts.openSans(
-            fontSize: 30,
-            color: Color(0xFFFF9900),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Color(0xFFFF9900),
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        actions: [
-          InkWell(
-            onTap: () {
-              if (description == '') {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('The Skoop is Required.'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-              } else {
-                fetchSkoopActivity();
-              }
-            },
-            child: Row(
-              children: [
-                Text(
-                  'DONE',
-                  style: GoogleFonts.openSans(
-                    fontSize: 14,
-                    color: Color(0xFFFF9900),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(width: 16)
-              ],
-            ),
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white,
+      //   title: Text(
+      //     'Skoop',
+      //     style: GoogleFonts.openSans(
+      //       fontSize: 30,
+      //       color: Color(0xFFFF9900),
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      //   leading: IconButton(
+      //     icon: Icon(
+      //       Icons.arrow_back_ios,
+      //       color: Color(0xFFFF9900),
+      //     ),
+      //     onPressed: () => Navigator.pop(context),
+      //   ),
+      //   actions: [
+      //     InkWell(
+      //       onTap: () {
+      //         if (description == '') {
+      //           ScaffoldMessenger.of(context).showSnackBar(
+      //             SnackBar(
+      //               content: Text('The Skoop is Required.'),
+      //               duration: Duration(seconds: 2),
+      //             ),
+      //           );
+      //         } else {
+      //           fetchSkoopActivity();
+      //         }
+      //       },
+      //       child: Row(
+      //         children: [
+      //           Text(
+      //             'DONE',
+      //             style: GoogleFonts.openSans(
+      //               fontSize: 14,
+      //               color: Color(0xFFFF9900),
+      //               fontWeight: FontWeight.w500,
+      //             ),
+      //           ),
+      //           SizedBox(width: 16)
+      //         ],
+      //       ),
+      //     ),
+      //   ],
+      // ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -397,10 +397,10 @@ class _SkoopScreenState extends State<SkoopScreen> {
 
   Future<void> fetchSkoopActivity() async {
     final uri =
-        Uri.parse("https://www.origami.life/crm/ios_skoop_activity.php");
+        Uri.parse("$host/crm/ios_skoop_activity.php");
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,

@@ -339,7 +339,7 @@ class _activityAddState extends State<activityAdd> {
                                           child: Image.network(
                                             (contact.contact_image == null)
                                                 ? 'https://dev.origami.life/images/default.png'
-                                                : 'https://www.origami.life//crm/${contact.contact_image}',
+                                                : '$host//crm/${contact.contact_image}',
                                             height: 100,
                                             width: 100,
                                             fit: BoxFit.cover,
@@ -565,7 +565,7 @@ class _activityAddState extends State<activityAdd> {
                                               child: Image.network(
                                                 (contact.contact_image == null)
                                                     ? 'https://dev.origami.life/images/default.png'
-                                                    : 'https://www.origami.life//crm/${contact.contact_image}',
+                                                    : '$host//crm/${contact.contact_image}',
                                                 height: 100,
                                                 width: 100,
                                                 fit: BoxFit.cover,
@@ -1735,10 +1735,10 @@ class _activityAddState extends State<activityAdd> {
   }
 
   Future<void> fetchAddActivity() async {
-    final uri = Uri.parse("https://www.origami.life/crm/ios_add_activity.php");
+    final uri = Uri.parse("$host/crm/ios_add_activity.php");
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
@@ -1778,10 +1778,10 @@ class _activityAddState extends State<activityAdd> {
   List<ActivityProject> projectList = [];
   Future<void> fetchActivityProject() async {
     final uri =
-        Uri.parse('https://www.origami.life/crm/ios_activity_project.php');
+        Uri.parse('$host/crm/ios_activity_project.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -1811,10 +1811,10 @@ class _activityAddState extends State<activityAdd> {
   List<AccountData> accountList = [];
   Future<void> fetchActivityAccount() async {
     final uri =
-    Uri.parse('https://www.origami.life/api/origami/need/account.php?page&search');
+    Uri.parse('$host/api/origami/need/account.php?page&search');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -1843,10 +1843,10 @@ class _activityAddState extends State<activityAdd> {
   List<ActivityType> typeList = [];
   Future<void> fetchActivityType() async {
     final uri =
-    Uri.parse('https://www.origami.life/crm/ios_activity_type.php');
+    Uri.parse('$host/crm/ios_activity_type.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -1875,10 +1875,10 @@ class _activityAddState extends State<activityAdd> {
   List<ActivityStatus> statusList = [];
   Future<void> fetchActivityStatus() async {
     final uri =
-    Uri.parse('https://www.origami.life/crm/ios_activity_status.php');
+    Uri.parse('$host/crm/ios_activity_status.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -1907,10 +1907,10 @@ class _activityAddState extends State<activityAdd> {
   List<ActivityPriority> priorityList = [];
   Future<void> fetchActivityPriority() async {
     final uri =
-    Uri.parse('https://www.origami.life/crm/ios_activity_priority.php');
+    Uri.parse('$host/crm/ios_activity_priority.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -1940,10 +1940,10 @@ class _activityAddState extends State<activityAdd> {
   List<ActivityContact> addNewContactList = [];
   Future<void> fetchActivityContact() async {
     final uri =
-        Uri.parse('https://www.origami.life/crm/ios_activity_contact.php');
+        Uri.parse('$host/crm/ios_activity_contact.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -1971,9 +1971,9 @@ class _activityAddState extends State<activityAdd> {
 
   Future<List<ActivityContact>> fetchAddContact() async {
     final uri =
-        Uri.parse("https://www.origami.life/crm/ios_activity_contact.php");
+        Uri.parse("$host/crm/ios_activity_contact.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,

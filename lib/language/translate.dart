@@ -16,6 +16,7 @@ void Translate() {
   }
 }
 
+String host = 'https://www.origami.life';
 // origami view
 String need = '';
 String request = '';

@@ -13,9 +13,9 @@ class AttachFile extends StatefulWidget {
 class _AttachFileState extends State<AttachFile> {
 
   Future<List<AttachFileData>> fetchAttach() async {
-    final uri = Uri.parse("https://www.origami.life/api/origami/academy/attachfile.php");
+    final uri = Uri.parse("$host/api/origami/academy/attachfile.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,

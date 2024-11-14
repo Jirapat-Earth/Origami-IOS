@@ -8,7 +8,7 @@
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:http/http.dart' as http;
 // import 'package:origami_ios/project/project_add.dart';
-// import 'package:origami_ios/project/project_detail.dart';
+// import 'package:origami_ios/project/project_list_edit.dart';
 // import 'package:url_launcher/url_launcher.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 // import '../../login/login.dart';
@@ -280,9 +280,9 @@
 //   List<ModelProject> newProjects = [];
 //   ModelProject? loadNew;
 //   Future<List<ModelProject>> fetchModelProjectVoid() async {
-//     final uri = Uri.parse("https://www.origami.life/crm/project.php");
+//     final uri = Uri.parse("$host/crm/project.php");
 //     final response = await http.post(
-//       uri,
+//       uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
 //       body: {
 //         'comp_id': widget.employee.comp_id,
 //         'idemp': widget.employee.emp_id,

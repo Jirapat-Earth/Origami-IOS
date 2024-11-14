@@ -1875,9 +1875,9 @@ class _PettyCashState extends State<PettyCash> {
 
   Future<List<CashData>> fetchCash() async {
     final uri =
-        Uri.parse("https://www.origami.life/api/origami/pettyCash/cash.php");
+        Uri.parse("$host/api/origami/pettyCash/cash.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
@@ -1903,9 +1903,9 @@ class _PettyCashState extends State<PettyCash> {
   String status_id = '';
   Future<List<UsedData>> fetchUsed() async {
     final uri =
-        Uri.parse("https://www.origami.life/api/origami/pettyCash/used.php");
+        Uri.parse("$host/api/origami/pettyCash/used.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
@@ -1928,9 +1928,9 @@ class _PettyCashState extends State<PettyCash> {
   DetailData? detailData;
   Future<void> fetchDetail() async {
     final uri =
-        Uri.parse("https://www.origami.life/api/origami/pettyCash/detail.php");
+        Uri.parse("$host/api/origami/pettyCash/detail.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
@@ -1965,9 +1965,9 @@ class _PettyCashState extends State<PettyCash> {
   List<StatusCash> statusList = [];
   Future<void> fetchStatus() async {
     final uri =
-        Uri.parse("https://www.origami.life/api/origami/pettyCash/status.php");
+        Uri.parse("$host/api/origami/pettyCash/status.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
@@ -2026,9 +2026,9 @@ class _PettyCashState extends State<PettyCash> {
 
   Future<void> fetchSaveCash() async {
     final uri =
-        Uri.parse("https://www.origami.life/api/origami/pettyCash/save.php");
+        Uri.parse("$host/api/origami/pettyCash/save.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
@@ -2060,9 +2060,9 @@ class _PettyCashState extends State<PettyCash> {
   String used_id = '';
   Future<void> fetchDeleteCash() async {
     final uri =
-        Uri.parse("https://www.origami.life/api/origami/pettyCash/delete.php");
+        Uri.parse("$host/api/origami/pettyCash/delete.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
@@ -2089,9 +2089,9 @@ class _PettyCashState extends State<PettyCash> {
   List<UnitData> unitList2 = [];
   Future<void> fetchUnit() async {
     final uri = Uri.parse(
-        "https://www.origami.life/api/origami/need/unit.php?page=$unitNumber&search=$unitName");
+        "$host/api/origami/need/unit.php?page=$unitNumber&search=$unitName");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
@@ -2118,10 +2118,10 @@ class _PettyCashState extends State<PettyCash> {
   List<ItemData> itemList = [];
   Future<void> fetchItem() async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/item.php?page=$item_number&search=$item_name&need_type=EP');
+        '$host/api/origami/need/item.php?page=$item_number&search=$item_name&need_type=EP');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2149,9 +2149,9 @@ class _PettyCashState extends State<PettyCash> {
   String need_description = '';
   Future<void> fetchExpenseCash() async {
     final uri =
-        Uri.parse("https://www.origami.life/api/origami/pettyCash/expense.php");
+        Uri.parse("$host/api/origami/pettyCash/expense.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,

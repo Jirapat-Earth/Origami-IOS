@@ -263,10 +263,10 @@ class _MiniProjectState extends State<MiniProject> {
   String? project_id = "";
   Future<void> fetchProject(project_number, project_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/project.php?page=$project_number&search=$project_name');
+        '$host/api/origami/need/project.php?page=$project_number&search=$project_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,

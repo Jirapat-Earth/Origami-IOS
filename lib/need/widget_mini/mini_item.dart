@@ -265,10 +265,10 @@ class _MiniItemState extends State<MiniItem> {
   String? Item_type_id = "";
   Future<void> fetchItem(item_number, item_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/item.php?page=$item_number&search=$item_name&need_type=${widget.Item_type_id}');
+        '$host/api/origami/need/item.php?page=$item_number&search=$item_name&need_type=${widget.Item_type_id}');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,

@@ -506,3 +506,9 @@ class ModelType {
   String name;
   ModelType({required this.id, required this.name});
 }
+
+class TitleDown {
+  String status_id;
+  String status_name;
+  TitleDown({required this.status_id, required this.status_name});
+}

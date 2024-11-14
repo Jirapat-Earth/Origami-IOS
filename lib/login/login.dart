@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../imports.dart';
 
@@ -41,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
       );
       return;
     } else if (username.isNotEmpty && password.isNotEmpty) {
-      final uri = Uri.parse('https://www.origami.life/api/origami/signin.php');
+      final uri = Uri.parse('$host/api/origami/signin.php');
       final response = await http.post(
         uri,
         body: {
@@ -71,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
               builder: (context) => OrigamiPage(
                 employee: employee1,
                 popPage: widget.popPage,
-                  Authorization:Authorization,
+                Authorization: Authorization,
               ),
             ),
           );
@@ -81,7 +82,6 @@ class _LoginPageState extends State<LoginPage> {
           //     builder: (context) => TrandarShop(),
           //   ),
           // );
-
         } else {
           // If login fails, show error message
           ScaffoldMessenger.of(context).showSnackBar(
@@ -143,12 +143,10 @@ class _LoginPageState extends State<LoginPage> {
     if (username.isNotEmpty && password.isNotEmpty) {
       if (widget.num == 0) {
         _login();
-      }else{
+      } else {
         prefs.clear();
       }
-
     }
-
   }
 
   Widget _listItem() {
@@ -177,7 +175,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Text(
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-                        style: GoogleFonts.openSans(color: Color(0xFF555555),),
+                        style: GoogleFonts.openSans(
+                          color: Color(0xFF555555),
+                        ),
                       ),
                     ],
                   ),
@@ -196,10 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () => Navigator.pop(context),
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                left: 60,
-                                right: 60,
-                                bottom: 16,
-                                top: 16),
+                                left: 60, right: 60, bottom: 16, top: 16),
                             child: Text(
                               'Log in',
                               style: GoogleFonts.openSans(
@@ -212,20 +209,19 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 16,),
+                        SizedBox(
+                          height: 16,
+                        ),
                         ElevatedButton(
                           onPressed: _login,
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                left: 60,
-                                right: 60,
-                                bottom: 16,
-                                top: 16),
+                                left: 60, right: 60, bottom: 16, top: 16),
                             child: Text(
                               'Contact',
                               style: GoogleFonts.openSans(
                                 color: Color(0xFF555555),
-                                fontSize:18,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -239,11 +235,16 @@ class _LoginPageState extends State<LoginPage> {
               Expanded(
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 16,bottom: 16,left: 30,right: 30),
+                    padding: const EdgeInsets.only(
+                        top: 16, bottom: 16, left: 30, right: 30),
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.network(
-                            "https://t3.ftcdn.net/jpg/02/92/36/80/360_F_292368014_9EgJRdKkquD0THERDS3ZqEj94WsSoHAo.jpg",height: 160,width: double.infinity,fit: BoxFit.fill,),
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        "https://t3.ftcdn.net/jpg/02/92/36/80/360_F_292368014_9EgJRdKkquD0THERDS3ZqEj94WsSoHAo.jpg",
+                        height: 160,
+                        width: double.infinity,
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                 ),
@@ -254,8 +255,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-
 
   _loadSelectedRadio() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -282,16 +281,20 @@ class _LoginPageState extends State<LoginPage> {
         // เช็คว่ามีการกดปุ่มย้อนกลับครั้งล่าสุดหรือไม่ และเวลาห่างจากปัจจุบันมากกว่า 2 วินาทีหรือไม่
         final now = DateTime.now();
         final maxDuration = Duration(seconds: 2);
-        final isWarning = lastPressed == null || now.difference(lastPressed!) > maxDuration;
+        final isWarning =
+            lastPressed == null || now.difference(lastPressed!) > maxDuration;
 
         if (isWarning) {
           // ถ้ายังไม่ได้กดสองครั้งภายในเวลาที่กำหนด ให้แสดง SnackBar แจ้งเตือน
           lastPressed = DateTime.now();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Press back again to exit',style: GoogleFonts.openSans(
-                color: Colors.white,
-              ),),
+              content: Text(
+                'Press back again to exit',
+                style: GoogleFonts.openSans(
+                  color: Colors.white,
+                ),
+              ),
               duration: maxDuration,
             ),
           );
@@ -309,7 +312,8 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/logoOrigami/default_bg.png'),
+                    image:
+                        AssetImage('assets/images/logoOrigami/default_bg.png'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -321,7 +325,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Padding(
                           padding: EdgeInsets.all(16.0),
                           child: Card(
-                            color: Colors.white60,
+                            color: Color.fromRGBO(0, 0, 0, 0.05),
                             child: Padding(
                               padding: const EdgeInsets.all(24.0),
                               child: Column(
@@ -337,12 +341,12 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   _isLoading
                                       ? Center(
-                                    child: LoadingAnimationWidget
-                                        .staggeredDotsWave(
-                                      size: 75,
-                                      color: Colors.amber,
-                                    ),
-                                  )
+                                          child: LoadingAnimationWidget
+                                              .staggeredDotsWave(
+                                            size: 75,
+                                            color: Colors.amber,
+                                          ),
+                                        )
                                       : Container(),
                                   Form(
                                     key: _formKey,
@@ -350,47 +354,69 @@ class _LoginPageState extends State<LoginPage> {
                                       children: [
                                         TextFormField(
                                           controller: _usernameController,
+                                          style: GoogleFonts.openSans(
+                                            color: Colors.white,
+                                          ),
                                           decoration: InputDecoration(
                                             labelText: 'Email',
                                             labelStyle: GoogleFonts.openSans(
-                                              color: Color(0xFF555555),
+                                              color: Colors.white,
                                             ),
                                             hintStyle: GoogleFonts.openSans(
-                                              color: Color(0xFF555555),
+                                              color: Colors.white,
                                             ),
                                             prefixIcon: Icon(
                                               Icons.person,
-                                              color: Color(0xFF555555),
+                                              color: Colors.white,
                                             ),
-                                            focusedBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(color: Color(0xFF555555)),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFFFF9900),
+                                                width: 1.0,
+                                              ),
+                                              borderRadius: BorderRadius.circular(10),
                                             ),
-                                            // border: new OutlineInputBorder(
-                                            //   borderRadius: const BorderRadius.all(
-                                            //     const Radius.circular(8.0),
-                                            //   ),
-                                            //   borderSide: new BorderSide(
-                                            //     color: Colors.red,
-                                            //     width: 1.0,
-                                            //   ),
-                                            // ),
+                                            disabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                              borderSide: BorderSide(
+                                                color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                                                width: 1,
+                                              ),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                                                width: 1.0,
+                                              ),
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
+                                                width: 1.0,
+                                              ),
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
                                           ),
                                         ),
                                         SizedBox(height: 16.0),
                                         TextFormField(
                                           controller: _passwordController,
+                                          style: GoogleFonts.openSans(
+                                            color: Colors.white,
+                                          ),
                                           obscureText: isPass,
                                           decoration: InputDecoration(
                                             labelText: 'Password',
                                             labelStyle: GoogleFonts.openSans(
-                                              color: Color(0xFF555555),
+                                              color: Colors.white,
                                             ),
                                             hintStyle: GoogleFonts.openSans(
-                                              color: Color(0xFF555555),
+                                              color: Colors.white,
                                             ),
                                             prefixIcon: Icon(
                                               Icons.lock,
-                                              color: Color(0xFF555555),
+                                              color: Colors.white,
                                             ),
                                             suffixIcon: Container(
                                               alignment: Alignment.centerRight,
@@ -399,18 +425,71 @@ class _LoginPageState extends State<LoginPage> {
                                                 child: IconButton(
                                                     onPressed: () {
                                                       setState(() {
-                                                        (isPass == true)?isPass = false:isPass = true;
+                                                        (isPass == true)
+                                                            ? isPass = false
+                                                            : isPass = true;
                                                       });
                                                     },
-                                                    icon: Icon(isPass?Icons.remove_red_eye:Icons.remove_red_eye_outlined),
-                                                    color: Color(0xFF555555),
+                                                    icon: Icon(isPass
+                                                        ? Icons.remove_red_eye
+                                                        : Icons
+                                                            .remove_red_eye_outlined),
+                                                    color: Colors.white,
                                                     iconSize: 18),
                                               ),
                                             ),
-                                            focusedBorder: UnderlineInputBorder(
-                                              borderSide: BorderSide(color: Color(0xFF555555)),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFFFF9900),
+                                                width: 1.0,
+                                              ),
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            disabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                              borderSide: BorderSide(
+                                                color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                                                width: 1,
+                                              ),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                                                width: 1.0,
+                                              ),
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
+                                                width: 1.0,
+                                              ),
+                                              borderRadius: BorderRadius.circular(10),
                                             ),
                                           ),
+                                        ),
+                                        SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            Spacer(),
+                                            TextButton(
+                                              onPressed: () {  },
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    Icon(Icons.lock_open,color: Colors.white,size: 20),
+                                                    SizedBox(width: 8),
+                                                    Text('Forgot Pwd?',style: GoogleFonts.openSans(
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         SizedBox(height: 16.0),
                                         ElevatedButton(
@@ -419,7 +498,8 @@ class _LoginPageState extends State<LoginPage> {
                                             foregroundColor: Colors.white,
                                             backgroundColor: Colors.white,
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(15),
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
                                             ),
                                           ),
                                           onPressed: _login,
@@ -516,7 +596,6 @@ class Employee {
       auth_password: json['auth_password'] ?? '',
       dna_logo: json['dna_logo'] ?? '',
     );
-
   }
 }
 

@@ -19,9 +19,9 @@ class _CertificationState extends State<Certification> {
 
   Future<List<CertificationData>> fetchCertification() async {
     final uri = Uri.parse(
-        "https://www.origami.life/api/origami/academy/certification.php");
+        "$host/api/origami/academy/certification.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
@@ -205,16 +205,16 @@ class _CertificationState extends State<Certification> {
                                                   child: Image.network(
                                                     (certificate.certificationName ==
                                                             'Certificate Bronze')
-                                                        ? 'https://www.origami.life/images/certification/1.png?v=2'
+                                                        ? '$host/images/certification/1.png?v=2'
                                                         : (certificate
                                                                     .certificationName ==
                                                                 'Certificate Platinum')
-                                                            ? 'https://www.origami.life/images/certification/3.png?v=2'
+                                                            ? '$host/images/certification/3.png?v=2'
                                                             : (certificate
                                                                         .certificationName ==
                                                                     'Certificate Gold')
-                                                                ? 'https://www.origami.life/images/certification/2.png?v=2'
-                                                                : 'https://www.origami.life/images/certification/4.png?v=2',
+                                                                ? '$host/images/certification/2.png?v=2'
+                                                                : '$host/images/certification/4.png?v=2',
                                                     width: constraints.maxWidth,
                                                     fit: BoxFit.fill,
                                                   ),
@@ -451,7 +451,7 @@ class _CertificationState extends State<Certification> {
     try {
       final response = await http.post(
         Uri.parse(
-            'https://www.origami.life/api/origami/academy/certificationDownload.php'),
+            '$host/api/origami/academy/certificationDownload.php'),
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,

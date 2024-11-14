@@ -947,10 +947,10 @@ class _NeedDetailNoneEditState extends State<NeedDetailNoneEdit> {
   int i = 0;
   Future<void> fetchDetail(action_type, need_id, type_id) async {
     final uri =
-    Uri.parse('https://www.origami.life/api/origami/need/detail.php');
+    Uri.parse('$host/api/origami/need/detail.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,

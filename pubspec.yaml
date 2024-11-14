@@ -89,6 +89,7 @@ dev_dependencies:
   file_picker: ^8.0.5
   percent_indicator: ^4.2.3
   device_info_plus: ^10.1.2
+  flutter_image_compress: ^2.3.0
 
 
 # For information on the generic Dart part of this file, see the
@@ -139,6 +140,7 @@ flutter:
     - assets/images/stamp/stamp_button_out.png
     - assets/images/ic_calen.png
     - assets/images/busienss1.jpg
+    - assets/images/success.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

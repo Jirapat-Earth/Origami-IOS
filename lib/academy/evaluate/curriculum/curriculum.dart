@@ -22,9 +22,9 @@ class _CurriculumState extends State<Curriculum> {
 
   Future<CurriculumData> fetchCurriculum() async {
     final uri = Uri.parse(
-        "https://www.origami.life/api/origami/academy/curriculum.php");
+        "$host/api/origami/academy/curriculum.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
@@ -472,7 +472,7 @@ class _CurriculumState extends State<Curriculum> {
   Future<void> Content() async {
     try {
       final response = await http.post(
-        Uri.parse('https://www.origami.life/api/origami/academy/content.php'),
+        Uri.parse('$host/api/origami/academy/content.php'),
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -536,7 +536,7 @@ class _CurriculumState extends State<Curriculum> {
   SaveVideoTime() async {
     try {
       final response = await http.post(
-        Uri.parse('https://www.origami.life/api/origami/academy/content.php'),
+        Uri.parse('$host/api/origami/academy/content.php'),
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,

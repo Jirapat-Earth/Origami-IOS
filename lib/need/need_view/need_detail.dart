@@ -2333,7 +2333,7 @@ class _NeedDetailState extends State<NeedDetail> {
                                                                             10),
                                                                 child: Image
                                                                     .network(
-                                                                  'https://www.origami.life//images/ogm_logo.png?v=1723543870265',
+                                                                  '$host//images/ogm_logo.png?v=1723543870265',
                                                                   height: 120,
                                                                   width: 120,
                                                                   fit: BoxFit
@@ -2349,7 +2349,7 @@ class _NeedDetailState extends State<NeedDetail> {
                                                   //                     .circular(
                                                   //                         10),
                                                   //           ),
-                                                  //   child: Image.network('https://www.origami.life//images/ogm_logo.png?v=1723543870265',s),
+                                                  //   child: Image.network('$host//images/ogm_logo.png?v=1723543870265',s),
                                                   // ),
                                                 ),
                                               );
@@ -2772,10 +2772,10 @@ class _NeedDetailState extends State<NeedDetail> {
   String? project_name = "";
   Future<void> fetchProject(project_number, project_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/project.php?page=$project_number&search=$project_name');
+        '$host/api/origami/need/project.php?page=$project_number&search=$project_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2817,10 +2817,10 @@ class _NeedDetailState extends State<NeedDetail> {
   String? account_name = "";
   Future<void> fetchAccount(account_number, account_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/account.php?page=$account_number&search=$account_name');
+        '$host/api/origami/need/account.php?page=$account_number&search=$account_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2860,10 +2860,10 @@ class _NeedDetailState extends State<NeedDetail> {
   String? contact_name = "";
   Future<void> fetchContact(contact_number, contact_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/contact.php?page=$contact_number&search=$contact_name');
+        '$host/api/origami/need/contact.php?page=$contact_number&search=$contact_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2903,10 +2903,10 @@ class _NeedDetailState extends State<NeedDetail> {
   String? department_name = "";
   Future<void> fetchDepartment(department_number, department_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/department.php?page=$department_number&search=$department_name');
+        '$host/api/origami/need/department.php?page=$department_number&search=$department_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2947,10 +2947,10 @@ class _NeedDetailState extends State<NeedDetail> {
   String? asset_name = "";
   Future<void> fetchAsset(asset_number, asset_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/asset.php?page=$asset_number&search=$asset_name');
+        '$host/api/origami/need/asset.php?page=$asset_number&search=$asset_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2991,10 +2991,10 @@ class _NeedDetailState extends State<NeedDetail> {
   String? division_name = "";
   Future<void> fetchDivision(division_number, division_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/division.php?page=$division_number&search=$division_name');
+        '$host/api/origami/need/division.php?page=$division_number&search=$division_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -3035,10 +3035,10 @@ class _NeedDetailState extends State<NeedDetail> {
   String? employee_name = "";
   Future<void> fetchEmployee(employee_number, employee_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/employee.php?page=$employee_number&search=$employee_name');
+        '$host/api/origami/need/employee.php?page=$employee_number&search=$employee_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -3080,10 +3080,10 @@ class _NeedDetailState extends State<NeedDetail> {
   String? Item_type_id = "";
   Future<void> fetchItem(item_number, item_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/item.php?page=$item_number&search=$item_name&need_type=$Item_type_id');
+        '$host/api/origami/need/item.php?page=$item_number&search=$item_name&need_type=$Item_type_id');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -3124,10 +3124,10 @@ class _NeedDetailState extends State<NeedDetail> {
   String? unit_name = "";
   Future<void> fetchUnit(unit_number, unit_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/unit.php?page=$unit_number&search=$unit_name');
+        '$host/api/origami/need/unit.php?page=$unit_number&search=$unit_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -3167,10 +3167,10 @@ class _NeedDetailState extends State<NeedDetail> {
   String? priority_name = "";
   Future<void> fetchPriority(priority_number, priority_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/priority.php?page=$priority_number&search=$priority_name');
+        '$host/api/origami/need/priority.php?page=$priority_number&search=$priority_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -3225,7 +3225,7 @@ class _NeedDetailState extends State<NeedDetail> {
   bool isLoading = false;
   bool isSave = false;
   Future<void> fetchSave() async {
-    final uri = Uri.parse('https://www.origami.life/api/origami/need/save.php');
+    final uri = Uri.parse('$host/api/origami/need/save.php');
     String jsonNeedItem =
         jsonEncode(saveItemList.map((item) => item.toJson()).toList());
     print(jsonNeedItem);
@@ -3235,7 +3235,7 @@ class _NeedDetailState extends State<NeedDetail> {
 
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -3296,10 +3296,10 @@ class _NeedDetailState extends State<NeedDetail> {
   int i = 0;
   Future<void> fetchDetail(action_type, need_id, type_id) async {
     final uri =
-        Uri.parse('https://www.origami.life/api/origami/need/detail.php');
+        Uri.parse('$host/api/origami/need/detail.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -3345,10 +3345,10 @@ class _NeedDetailState extends State<NeedDetail> {
 
   Future<void> fetchDeleteItem(item_sort) async {
     final uri =
-        Uri.parse('https://www.origami.life/api/origami/need/delete-item.php');
+        Uri.parse('$host/api/origami/need/delete-item.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,

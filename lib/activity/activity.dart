@@ -364,9 +364,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
   int indexItems = 0;
   List<ModelActivity> allActivity = [];
   Future<void> fetchModelActivityVoid() async {
-    final uri = Uri.parse("https://www.origami.life/crm/activity.php");
+    final uri = Uri.parse("$host/crm/activity.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'idemp': widget.employee.emp_id,

@@ -263,10 +263,10 @@ class _MiniAccountState extends State<MiniAccount> {
   String? data_Id = "";
   Future<void> fetchAccount(Account_number, Account_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/account.php?page=$Account_number&search=$Account_name');
+        '$host/api/origami/need/account.php?page=$Account_number&search=$Account_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,

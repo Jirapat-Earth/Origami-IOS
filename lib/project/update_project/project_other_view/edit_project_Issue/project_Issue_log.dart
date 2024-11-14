@@ -154,7 +154,7 @@ class _ProjectIssueLogState extends State<ProjectIssueLog> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(50),
                                       child: Image.network(
-                                        'https://www.origami.life/uploads/employee/5/employee/19777.jpg?v=1729754401',
+                                        '$host/uploads/employee/5/employee/19777.jpg?v=1729754401',
                                         fit: BoxFit.fill,
                                       ),
                                     ),

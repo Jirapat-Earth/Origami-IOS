@@ -417,7 +417,7 @@ class _ActivityEditNowState extends State<ActivityEditNow> {
                                                         (contact.contact_image ==
                                                                 null)
                                                             ? 'https://dev.origami.life/images/default.png'
-                                                            : 'https://www.origami.life//crm/${contact.contact_image}',
+                                                            : '$host//crm/${contact.contact_image}',
                                                         height: 100,
                                                         width: 100,
                                                         fit: BoxFit.cover,
@@ -756,7 +756,7 @@ class _ActivityEditNowState extends State<ActivityEditNow> {
                                               child: Image.network(
                                                 (contact.contact_image == null)
                                                     ? 'https://dev.origami.life/images/default.png'
-                                                    : 'https://www.origami.life//crm/${contact.contact_image}',
+                                                    : '$host//crm/${contact.contact_image}',
                                                 height: 100,
                                                 width: 100,
                                                 fit: BoxFit.cover,
@@ -1947,10 +1947,10 @@ class _ActivityEditNowState extends State<ActivityEditNow> {
   List<ActivityProject> projectList = [];
   Future<void> fetchActivityProject() async {
     final uri =
-        Uri.parse('https://www.origami.life/crm/ios_activity_project.php');
+        Uri.parse('$host/crm/ios_activity_project.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -1980,10 +1980,10 @@ class _ActivityEditNowState extends State<ActivityEditNow> {
   List<AccountData> accountList = [];
   Future<void> fetchActivityAccount() async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/account.php?page&search');
+        '$host/api/origami/need/account.php?page&search');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2011,10 +2011,10 @@ class _ActivityEditNowState extends State<ActivityEditNow> {
   ActivityType? selectedType;
   List<ActivityType> typeList = [];
   Future<void> fetchActivityType() async {
-    final uri = Uri.parse('https://www.origami.life/crm/ios_activity_type.php');
+    final uri = Uri.parse('$host/crm/ios_activity_type.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2043,10 +2043,10 @@ class _ActivityEditNowState extends State<ActivityEditNow> {
   List<ActivityStatus> statusList = [];
   Future<void> fetchActivityStatus() async {
     final uri =
-        Uri.parse('https://www.origami.life/crm/ios_activity_status.php');
+        Uri.parse('$host/crm/ios_activity_status.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2075,10 +2075,10 @@ class _ActivityEditNowState extends State<ActivityEditNow> {
   List<ActivityPriority> priorityList = [];
   Future<void> fetchActivityPriority() async {
     final uri =
-        Uri.parse('https://www.origami.life/crm/ios_activity_priority.php');
+        Uri.parse('$host/crm/ios_activity_priority.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2108,10 +2108,10 @@ class _ActivityEditNowState extends State<ActivityEditNow> {
   List<ActivityContact> addNewContactList = [];
   Future<void> fetchActivityContact() async {
     final uri =
-        Uri.parse('https://www.origami.life/crm/ios_activity_contact.php');
+        Uri.parse('$host/crm/ios_activity_contact.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2140,9 +2140,9 @@ class _ActivityEditNowState extends State<ActivityEditNow> {
 
   Future<List<ActivityContact>> fetchAddContact() async {
     final uri =
-        Uri.parse("https://www.origami.life/crm/ios_activity_contact.php");
+        Uri.parse("$host/crm/ios_activity_contact.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
@@ -2163,11 +2163,11 @@ class _ActivityEditNowState extends State<ActivityEditNow> {
   String skoop_detail = '';
   Future<void> _fetchUpDateActivity() async {
     // final uri =
-    //     Uri.parse('https://www.origami.life/crm/ios_update_activity.php');
-    final uri = Uri.parse('https://www.origami.life/test');
+    //     Uri.parse('$host/crm/ios_update_activity.php');
+    final uri = Uri.parse('$host/test');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2209,10 +2209,10 @@ class _ActivityEditNowState extends State<ActivityEditNow> {
 
   Future<void> _fetchCloseActivity() async {
     final uri =
-        Uri.parse('https://www.origami.life/crm/ios_close_activity.php');
+        Uri.parse('$host/crm/ios_close_activity.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -2237,10 +2237,10 @@ class _ActivityEditNowState extends State<ActivityEditNow> {
 
   Future<void> _fetchDeleteActivity() async {
     final uri =
-        Uri.parse('https://www.origami.life/crm/ios_delete_activity.php');
+        Uri.parse('$host/crm/ios_delete_activity.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,

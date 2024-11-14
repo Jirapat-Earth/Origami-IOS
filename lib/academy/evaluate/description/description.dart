@@ -17,9 +17,9 @@ class _DescriptionState extends State<Description> {
 
   Future<List<DescriptionData>> fetchDescription() async {
     final uri =
-    Uri.parse("https://www.origami.life/api/origami/academy/description.php");
+    Uri.parse("$host/api/origami/academy/description.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,

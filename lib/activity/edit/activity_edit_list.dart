@@ -1689,10 +1689,10 @@ class _ActivityEditListState extends State<ActivityEditList> {
   GetSkoopDetail? skoopDetail;
   List<GetSkoopDetail> getSkoopDetail = [];
   Future<void> _fetchSkoopDetail() async {
-    final uri = Uri.parse('https://www.origami.life/crm/ios_activity_info.php');
+    final uri = Uri.parse('$host/crm/ios_activity_info.php');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -1717,10 +1717,10 @@ class _ActivityEditListState extends State<ActivityEditList> {
   }
 
 //   Future<void> fetchSkoopActivity() async {
-//   final uri = Uri.parse("https://www.origami.life/crm/ios_upload_activity.php");
+//   final uri = Uri.parse("$host/crm/ios_upload_activity.php");
 //   try {
 //     final response = await http.post(
-//       uri,
+//       uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
 //       body: {
 //         'comp_id': widget.employee.comp_id,
 //         'emp_id': widget.employee.emp_id,
@@ -1740,4 +1740,10 @@ class _ActivityEditListState extends State<ActivityEditList> {
 //     throw Exception('Failed to load personal data: $e');
 //   }
 // }
+}
+
+class TitleDown {
+  String status_id;
+  String status_name;
+  TitleDown({required this.status_id, required this.status_name});
 }

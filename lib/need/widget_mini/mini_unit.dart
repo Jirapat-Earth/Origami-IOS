@@ -242,10 +242,10 @@ class _MiniUnitState extends State<MiniUnit> {
   String? Unit_id = "";
   Future<void> fetchUnit(Unit_number, Unit_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/unit.php?page=$Unit_number&search=$Unit_name');
+        '$host/api/origami/need/unit.php?page=$Unit_number&search=$Unit_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,

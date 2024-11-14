@@ -1,22 +1,21 @@
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import '../../../imports.dart';
+import '../create_project/project_add.dart';
 
-class ProjectAdd extends StatefulWidget {
-  const ProjectAdd({
+class ProjectEdit extends StatefulWidget {
+  const ProjectEdit({
     Key? key,
-    required this.employee,
-    required this.pageInput,
-    required this.Authorization,
+    required this.employee, required this.pageInput, required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
   final String Authorization;
   @override
-  _ProjectAddState createState() => _ProjectAddState();
+  _ProjectEditState createState() => _ProjectEditState();
 }
 
-class _ProjectAddState extends State<ProjectAdd> {
+class _ProjectEditState extends State<ProjectEdit> {
   TextEditingController _codeController = TextEditingController();
   TextEditingController _projectController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
@@ -28,8 +27,8 @@ class _ProjectAddState extends State<ProjectAdd> {
   @override
   void initState() {
     super.initState();
-    _fatchApi();
     showDate();
+    _fatchApi();
     _codeController.addListener(() {
       print("Current text: ${_codeController.text}");
     });
@@ -108,6 +107,7 @@ class _ProjectAddState extends State<ProjectAdd> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -1172,14 +1172,14 @@ class _ProjectAddState extends State<ProjectAdd> {
             ),
             items: SaleDataList
                 .map((item) => DropdownMenuItem<SaleData>(
-                      value: item,
-                      child: Text(
-                        item.sale_name,
-                        style: GoogleFonts.openSans(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ))
+              value: item,
+              child: Text(
+                item.sale_name,
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                ),
+              ),
+            ))
                 .toList(),
             value: selectedSaleData,
             onChanged: (value) {
@@ -1198,7 +1198,7 @@ class _ProjectAddState extends State<ProjectAdd> {
             ),
             dropdownStyleData: DropdownStyleData(
               maxHeight:
-                  200, // Height for displaying up to 5 lines (adjust as needed)
+              200, // Height for displaying up to 5 lines (adjust as needed)
             ),
             menuItemStyleData: MenuItemStyleData(
               height: 40, // Height for each menu item
@@ -1283,14 +1283,14 @@ class _ProjectAddState extends State<ProjectAdd> {
             ),
             items: ProjectModelList
                 .map((item) => DropdownMenuItem<ProjectModelData>(
-                      value: item,
-                      child: Text(
-                        item.project_model_name,
-                        style: GoogleFonts.openSans(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ))
+              value: item,
+              child: Text(
+                item.project_model_name,
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                ),
+              ),
+            ))
                 .toList(),
             value: selectedProjectModel,
             onChanged: (value) {
@@ -1309,7 +1309,7 @@ class _ProjectAddState extends State<ProjectAdd> {
             ),
             dropdownStyleData: DropdownStyleData(
               maxHeight:
-                  200, // Height for displaying up to 5 lines (adjust as needed)
+              200, // Height for displaying up to 5 lines (adjust as needed)
             ),
             menuItemStyleData: MenuItemStyleData(
               height: 40, // Height for each menu item
@@ -1774,160 +1774,4 @@ class _ProjectAddState extends State<ProjectAdd> {
     }
   }
 
-}
-
-class ContactData {
-  final String contact_id;
-  final String contact_name;
-
-  ContactData({
-    required this.contact_id,
-    required this.contact_name,
-  });
-
-  factory ContactData.fromJson(Map<String, dynamic> json) {
-    return ContactData(
-      contact_id: json['contact_id'],
-      contact_name: json['contact_name'],
-    );
-  }
-}
-
-class AccountData {
-  final String? account_id;
-  final String? account_name;
-
-  AccountData({
-    this.account_id,
-    this.account_name,
-  });
-
-  factory AccountData.fromJson(Map<String, dynamic> json) {
-    return AccountData(
-      account_id: json['account_id'],
-      account_name: json['account_name'],
-    );
-  }
-}
-
-class SourceData {
-  final String source_id;
-  final String source_name;
-
-  SourceData({
-    required this.source_id,
-    required this.source_name,
-  });
-
-  factory SourceData.fromJson(Map<String, dynamic> json) {
-    return SourceData(
-      source_id: json['source_id'],
-      source_name: json['source_name'],
-    );
-  }
-}
-
-class TypeData {
-  final String type_id;
-  final String type_name;
-
-  TypeData({
-    required this.type_id,
-    required this.type_name,
-  });
-
-  factory TypeData.fromJson(Map<String, dynamic> json) {
-    return TypeData(
-      type_id: json['type_id'],
-      type_name: json['type_name'],
-    );
-  }
-}
-
-class CategoryData {
-  final String categories_id;
-  final String categories_name;
-
-  CategoryData({
-    required this.categories_id,
-    required this.categories_name,
-  });
-
-  factory CategoryData.fromJson(Map<String, dynamic> json) {
-    return CategoryData(
-      categories_id: json['categories_id'],
-      categories_name: json['categories_name'],
-    );
-  }
-}
-
-class ProcessData {
-  final String process_id;
-  final String process_name;
-
-  ProcessData({
-    required this.process_id,
-    required this.process_name,
-  });
-
-  factory ProcessData.fromJson(Map<String, dynamic> json) {
-    return ProcessData(
-      process_id: json['process_id'],
-      process_name: json['process_name'],
-    );
-  }
-}
-
-class PriorityData {
-  final String priority_id;
-  final String priority_name;
-
-  PriorityData({
-    required this.priority_id,
-    required this.priority_name,
-  });
-
-  factory PriorityData.fromJson(Map<String, dynamic> json) {
-    return PriorityData(
-      priority_id: json['priority_id'],
-      priority_name: json['priority_name'],
-    );
-  }
-}
-
-class SubStatusData {
-  final String sub_status_id;
-  final String sub_status_name;
-
-  SubStatusData({
-    required this.sub_status_id,
-    required this.sub_status_name,
-  });
-
-  factory SubStatusData.fromJson(Map<String, dynamic> json) {
-    return SubStatusData(
-      sub_status_id: json['sub_status_id'],
-      sub_status_name: json['sub_status_name'],
-    );
-  }
-}
-
-class SaleData {
-  final String sale_id;
-  final String sale_name;
-
-  SaleData({
-    required this.sale_id,
-    required this.sale_name,
-  });
-}
-
-class ProjectModelData {
-  final String project_model_id;
-  final String project_model_name;
-
-  ProjectModelData({
-    required this.project_model_id,
-    required this.project_model_name,
-  });
 }

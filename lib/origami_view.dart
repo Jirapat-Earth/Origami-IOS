@@ -456,6 +456,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
         employee: widget.employee,
         timeStamp: timeStampObject,
           Authorization:widget.Authorization,
+        descriptionTime: descriptionTime, fetchBranchCallback: () => fetchBranch(),
       ),
       6: ProfilePage(
         employee: widget.employee,Authorization:widget.Authorization,
@@ -790,6 +791,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
     );
   }
 
+  int index_branch = 0;
   Widget _getBranch() {
     return FutureBuilder<List<GetTimeStampSim>>(
       future: fetchBranch(),
@@ -860,6 +862,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
                         itemCount: snapshot.data?.length,
                         itemBuilder: (context, index) {
                           final branch = snapshot.data?[index];
+                          index_branch = index;
                           return Column(
                             children: [
                               InkWell(
@@ -921,23 +924,26 @@ class _OrigamiPageState extends State<OrigamiPage> {
     );
   }
 
+  String descriptionTime = '';
   Future<List<GetTimeStampSim>> fetchBranch() async {
-    final uri = Uri.parse("https://www.origami.life/api/load_branch.php");
+    final uri = Uri.parse("$host/api/origami/time/default.php");
     final response = await http.post(
       uri,
+      headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
-        'Authorization': widget.Authorization,
+        // 'Authorization': widget.Authorization,
       },
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      final List<dynamic> dataJson = jsonResponse['data'];
+      final List<dynamic> dataJson = jsonResponse['branch_data'];
+      descriptionTime = jsonResponse['comp_description'];
       setState(() {
         timeStampList =
             dataJson.map((json) => GetTimeStampSim.fromJson(json)).toList();
-        timeStampObject = timeStampList[0];
+        timeStampObject = timeStampList[index_branch];
       });
       return dataJson.map((json) => GetTimeStampSim.fromJson(json)).toList();
     } else {

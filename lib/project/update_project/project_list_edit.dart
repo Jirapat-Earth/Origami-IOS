@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:origami_ios/project/update_project/project_edit.dart';
 import 'package:origami_ios/project/update_project/project_other_view/project_other_view.dart';
 import '../../../imports.dart';
 import '../../activity/edit/activity_edit_now.dart';
@@ -77,11 +78,11 @@ class _ProjectListUpdateState extends State<ProjectListUpdate> {
       if (index == 0) {
         page = "Detail";
       } else if (index == 1) {
-        page = "Project Activity";
+        page = "Activity";
       } else if (index == 2) {
-        page = "Project Skoop";
+        page = "Skoop";
       } else if (index == 3) {
-        page = "Project Calendar";
+        page = "Calendar";
       } else if (index == 4) {
         page = "Other";
       }
@@ -137,10 +138,10 @@ class _ProjectListUpdateState extends State<ProjectListUpdate> {
       case 0:
         return _ProjectDetail();
       case 1:
-        return ActivityEditNow(
+        return ActivityScreen(
           employee: widget.employee,
           Authorization: widget.Authorization,
-          skoopDetail: null,
+          pageInput: widget.pageInput,
         ); //'Close' or 'Plan'
       case 2:
         return SkoopScreen(
@@ -165,37 +166,80 @@ class _ProjectListUpdateState extends State<ProjectListUpdate> {
     return Card(
       elevation: 1,
       color: Colors.white,
-      // color: Color(0xFFF5F5F5),
       child: Padding(
         padding: EdgeInsets.only(
-          left: 15,
-          right: 15,
+          left: 8,
+          right: 8,
           top: 8,
         ),
         child: Column(
           children: [
-            SizedBox(height: 8),
-            Text(
-              'Origami',
-              maxLines: 2,
-              style: GoogleFonts.openSans(
-                fontSize: 30,
-                color: Color(0xFF555555),
-                fontWeight: FontWeight.bold,
+            InkWell(
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProjectEdit(
+                      employee: widget.employee,
+                      Authorization: widget.Authorization,
+                      pageInput: widget.pageInput,
+                    ),
+                  ),
+                ).then((value) {
+                  // if (widget.pageInput == 'contact') {
+                  // } else {
+                  //   setState(() {
+                  //     indexStr = 0;
+                  //     allModelProject.clear();
+                  //     fetchModelProjectVoid();
+                  //   });
+                  // }
+                });
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 0,
+                      blurRadius: 0,
+                      offset: Offset(0, 3), // x, y
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 8),
+                      Text(
+                        'Origami',
+                        maxLines: 2,
+                        style: GoogleFonts.openSans(
+                          fontSize: 30,
+                          color: Color(0xFF555555),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      _subData('Main Contact', project?.owner_name ?? ''),
+                      _subData('Company', project?.project_account ?? ''),
+                      _subData('Type', project?.project_type ?? ''),
+                      Row(
+                        children: [
+                          Expanded(child: _subData('Date', project?.project_create ?? '')),
+                          Expanded(child: _subData('to', project?.last_activity ?? '')),
+                        ],
+                      ),
+                      _subData('Description', project?.project_name ?? ''),
+                      _subData('Sale Status', project?.project_sale_status ?? ''),
+                    ],
+                  ),
+                ),
               ),
             ),
-            SizedBox(height: 16),
-            _subData('Main Contact', project?.main_contact ?? ''),
-            _subData('Company', project?.m_company ?? ''),
-            _subData('Type', project?.project_type_name ?? ''),
-            Row(
-              children: [
-                Expanded(child: _subData('Date', project?.project_start ?? '')),
-                Expanded(child: _subData('to', project?.project_end ?? '')),
-              ],
-            ),
-            _subData('Description', project?.project_description ?? ''),
-            _subData('Sale Status', project?.project_sale_status_name ?? ''),
+            SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -234,7 +278,7 @@ class _ProjectListUpdateState extends State<ProjectListUpdate> {
       padding: const EdgeInsets.only(bottom: 5),
       child: Card(
         elevation: 0,
-        color: Colors.white,
+        color: Colors.transparent,
         child: Row(
           children: [
             Text(
@@ -264,9 +308,9 @@ class _ProjectListUpdateState extends State<ProjectListUpdate> {
   }
 
   Future<void> fetchDeleteProject() async {
-    final uri = Uri.parse("https://www.origami.life/crm/delete_project.php");
+    final uri = Uri.parse("$host/crm/delete_project.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'idemp': widget.employee.emp_id,

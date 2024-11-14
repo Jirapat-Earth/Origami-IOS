@@ -540,9 +540,9 @@ class _WorkPageState extends State<WorkPage> {
   }
 
   Future<List<ModelWorkList>> fetchModelWorkList() async {
-    final uri = Uri.parse("https://www.origami.life/api/get_list_work.php");
+    final uri = Uri.parse("$host/api/get_list_work.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,
@@ -561,9 +561,9 @@ class _WorkPageState extends State<WorkPage> {
   }
 
   Future<List<ModelWork>> fetchModelWork() async {
-    final uri = Uri.parse("https://www.origami.life/api/get_work.php");
+    final uri = Uri.parse("$host/api/get_work.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,

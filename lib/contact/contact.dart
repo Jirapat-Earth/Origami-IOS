@@ -258,7 +258,7 @@ class _ContactScreenState extends State<ContactScreen> {
                                 Image.network(
                               (contact.contact_image == null)
                                   ? 'https://dev.origami.life/images/default.png'
-                                  : 'https://www.origami.life//crm/${contact.contact_image}',
+                                  : '$host//crm/${contact.contact_image}',
                               height: 100,
                               width: 100,
                               fit: BoxFit.cover,
@@ -327,9 +327,9 @@ class _ContactScreenState extends State<ContactScreen> {
   List<ModelContact> loadData = [];
   Future<List<ModelContact>> fetchModelContact() async {
     final uri =
-        Uri.parse("https://www.origami.life/crm/ios_activity_contact.php");
+        Uri.parse("$host/crm/ios_activity_contact.php");
     final response = await http.post(
-      uri,
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
         'emp_id': widget.employee.emp_id,

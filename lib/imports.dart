@@ -58,3 +58,4 @@ export 'package:syncfusion_flutter_calendar/calendar.dart';
 export 'package:file_picker/file_picker.dart';
 export 'package:permission_handler/permission_handler.dart';
 export 'package:percent_indicator/percent_indicator.dart';
+export 'package:flutter_image_compress/flutter_image_compress.dart';

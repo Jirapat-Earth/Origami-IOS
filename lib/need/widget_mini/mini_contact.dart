@@ -262,10 +262,10 @@ class _MiniContactState extends State<MiniContact> {
   String? data_Id = "";
   Future<void> fetchContact(Contact_number, Contact_name) async {
     final uri = Uri.parse(
-        'https://www.origami.life/api/origami/need/contact.php?page=$Contact_number&search=$Contact_name');
+        '$host/api/origami/need/contact.php?page=$Contact_number&search=$Contact_name');
     try {
       final response = await http.post(
-        uri,
+        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,

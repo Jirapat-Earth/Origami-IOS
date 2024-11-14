@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import '../../../imports.dart';
 import 'create_project/project_add.dart';
-import 'update_project/project_detail.dart';
+import 'update_project/project_list_edit.dart';
 
 class ProjectScreen extends StatefulWidget {
   const ProjectScreen({
@@ -26,12 +26,12 @@ class _ProjectScreenState extends State<ProjectScreen> {
   void initState() {
     super.initState();
     if (widget.pageInput == 'project') {
-      fetchModelProjectVoid();
+      fetchModelProject();
       _searchController.addListener(() {
         setState(() {
           _search = _searchController.text;
           allModelProject.clear();
-          fetchModelProjectVoid();
+          fetchModelProject();
         });
       });
     } else if (widget.pageInput == 'contact') {
@@ -75,7 +75,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
               setState(() {
                 indexStr = 0;
                 allModelProject.clear();
-                fetchModelProjectVoid();
+                fetchModelProject();
               });
             }
           });
@@ -147,7 +147,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
 
   Widget _loading() {
     return FutureBuilder<void>(
-      future: (widget.pageInput == 'project') ? fetchModelProjectVoid() : null,
+      future: (widget.pageInput == 'project') ? fetchModelProject() : null,
       builder: (context, snapshot) {
         final allModel = allModelProject;
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -219,7 +219,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                         setState(() {
                           indexStr = 0;
                           allModel.clear();
-                          fetchModelProjectVoid(); // เรียกฟังก์ชันโหลด API ใหม่
+                          fetchModelProject(); // เรียกฟังก์ชันโหลด API ใหม่
                         });
                       });
                     },
@@ -260,7 +260,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${project.project_name!}',
+                                project.project_name,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.openSans(
@@ -270,7 +270,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                                 ),
                               ),
                               Text(
-                                project.m_company!,
+                                project.project_account,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.openSans(
@@ -294,24 +294,25 @@ class _ProjectScreenState extends State<ProjectScreen> {
 
   int indexItems = 0;
   List<ModelProject> allModelProject = [];
-  Future<void> fetchModelProjectVoid() async {
-    final uri = Uri.parse("https://www.origami.life/crm/project.php");
+  Future<void> fetchModelProject() async {
+    final uri =
+        Uri.parse("$host/api/origami/crm/project/get.php?search=$_search");
     final response = await http.post(
       uri,
+      headers: {'Authorization': 'Bearer ${widget.Authorization}'},
       body: {
         'comp_id': widget.employee.comp_id,
-        'idemp': widget.employee.emp_id,
+        'emp_id': widget.employee.emp_id,
         'Authorization': widget.Authorization,
-        'index': (_search != '') ? '0' : indexItems.toString(),
+        'index': (_search != '') ? '' : indexItems.toString(),
         'txt_search': _search,
       },
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      final List<dynamic> dataJson = jsonResponse['data'];
-      int max = jsonResponse['max'];
-      int sum = jsonResponse['sum'];
+      final List<dynamic> dataJson = jsonResponse['project_data'];
+      int limit = jsonResponse['limit'];
       List<ModelProject> newProjects =
           dataJson.map((json) => ModelProject.fromJson(json)).toList();
       newProjects.toSet().toList();
@@ -320,14 +321,14 @@ class _ProjectScreenState extends State<ProjectScreen> {
 
       // เช็คเงื่อนไขตามที่ต้องการ
       // if (_search == '') {
-      //   if (sum > indexItems) {
+      //   if (limit > indexItems) {
       //     indexItems = indexItems + max;
-      //     if (indexItems >= sum) {
+      //     if (indexItems >= limit) {
       //       indexItems = 0;
       //       _search == '0';
       //     }
-      //     await fetchModelProjectVoid(); // โหลดข้อมูลใหม่เมื่อ index เปลี่ยน
-      //   } else if (sum <= indexItems) {
+      //     await fetchModelProject(); // โหลดข้อมูลใหม่เมื่อ index เปลี่ยน
+      //   } else if (limit <= indexItems) {
       //     indexItems = 0;
       //     _search == '0';
       //   }
@@ -342,79 +343,82 @@ class _ProjectScreenState extends State<ProjectScreen> {
 }
 
 class ModelProject {
-  String? project_id;
-  String? project_name;
-  String? project_latitude;
-  String? project_longtitude;
-  String? project_start;
-  String? project_end;
-  String? project_all_total;
-  String? m_company;
-  String? project_create_date;
-  String? emp_id;
-  String? project_value;
-  String? project_type_name;
-  String? project_description;
-  String? project_sale_status_name;
-  String? project_oppo_reve;
-  String? comp_id;
-  String? typeIds;
-  String? salestatusIds;
-  String? main_contact;
-  String? cont_id;
-  String? projct_location;
-  String? cus_id;
+  final String project_id;
+  final String project_code;
+  final String project_name;
+  final String project_create;
+  final String owner_name;
+  final String owner_avatar;
+  final String last_activity;
+  final String project_account;
+  final String project_sale_nonsale;
+  final String project_type;
+  final String project_status;
+  final String project_process;
+  final String project_sale_status;
+  final String opportunity_line1;
+  final String opportunity_line2;
+  final String opportunity_line3;
+  final String project_category;
+  final String project_source;
+  final String project_model;
+  final String project_pin;
+  final String project_display;
+  final String can_edit;
+  final String can_delete;
 
   ModelProject({
-    this.project_id,
-    this.project_name,
-    this.project_latitude,
-    this.project_longtitude,
-    this.project_start,
-    this.project_end,
-    this.project_all_total,
-    this.m_company,
-    this.project_create_date,
-    this.emp_id,
-    this.project_value,
-    this.project_type_name,
-    this.project_description,
-    this.project_sale_status_name,
-    this.project_oppo_reve,
-    this.comp_id,
-    this.typeIds,
-    this.salestatusIds,
-    this.main_contact,
-    this.cont_id,
-    this.projct_location,
-    this.cus_id,
+    required this.project_id,
+    required this.project_code,
+    required this.project_name,
+    required this.project_create,
+    required this.owner_name,
+    required this.owner_avatar,
+    required this.last_activity,
+    required this.project_account,
+    required this.project_sale_nonsale,
+    required this.project_type,
+    required this.project_status,
+    required this.project_process,
+    required this.project_sale_status,
+    required this.opportunity_line1,
+    required this.opportunity_line2,
+    required this.opportunity_line3,
+    required this.project_category,
+    required this.project_source,
+    required this.project_model,
+    required this.project_pin,
+    required this.project_display,
+    required this.can_edit,
+    required this.can_delete,
   });
 
   // สร้างฟังก์ชันเพื่อแปลง JSON ไปเป็น Object ของ Academy
   factory ModelProject.fromJson(Map<String, dynamic> json) {
     return ModelProject(
       project_id: json['project_id'],
+      project_code: json['project_code'],
       project_name: json['project_name'],
-      project_latitude: json['project_latitude'],
-      project_longtitude: json['project_longtitude'],
-      project_start: json['project_start'],
-      project_end: json['project_end'],
-      project_all_total: json['project_all_total'],
-      m_company: json['m_company'],
-      project_create_date: json['project_create_date'],
-      emp_id: json['emp_id'],
-      project_value: json['project_value'],
-      project_type_name: json['project_type_name'],
-      project_description: json['project_description'],
-      project_sale_status_name: json['project_sale_status_name'],
-      project_oppo_reve: json['project_oppo_reve'],
-      comp_id: json['comp_id'],
-      typeIds: json['typeIds'],
-      salestatusIds: json['salestatusIds'],
-      main_contact: json['main_contact'],
-      cont_id: json['cont_id'],
-      projct_location: json['projct_location'],
-      cus_id: json['cus_id'],
+      project_create: json['project_create'],
+      owner_name: json['owner_name'],
+      owner_avatar: json['owner_avatar'],
+      last_activity: json['last_activity'],
+      project_account: json['project_account'],
+      project_sale_nonsale: json['project_sale_nonsale'],
+      project_type: json['project_type'],
+      project_status: json['project_status'],
+      project_process: json['project_process'],
+      project_sale_status: json['project_sale_status'],
+      opportunity_line1: json['opportunity_line1'],
+      opportunity_line2: json['opportunity_line2'],
+      opportunity_line3: json['opportunity_line3'],
+      project_category: json['project_category'],
+      project_source: json['project_source'],
+      project_model: json['project_model'],
+      project_pin: json['project_pin'],
+      project_display: json['project_display'],
+      can_edit: json['can_edit'],
+      can_delete: json['can_delete'],
     );
   }
 }
