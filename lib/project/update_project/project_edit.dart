@@ -6,11 +6,15 @@ import '../create_project/project_add.dart';
 class ProjectEdit extends StatefulWidget {
   const ProjectEdit({
     Key? key,
-    required this.employee, required this.pageInput, required this.Authorization,
+    required this.employee,
+    required this.pageInput,
+    required this.Authorization,
+    required this.project,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
   final String Authorization;
+  final ModelProject project;
   @override
   _ProjectEditState createState() => _ProjectEditState();
 }
@@ -18,17 +22,21 @@ class ProjectEdit extends StatefulWidget {
 class _ProjectEditState extends State<ProjectEdit> {
   TextEditingController _codeController = TextEditingController();
   TextEditingController _projectController = TextEditingController();
+  TextEditingController _projectValueController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _contactController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
   LatLng? _selectedLocation; // สำหรับเก็บตำแหน่งที่เลือก
   String _search = '';
+
   @override
   void initState() {
     super.initState();
     showDate();
     _fatchApi();
+    _fetchCategory();
+    _fetchGetData(widget.project);
     _codeController.addListener(() {
       print("Current text: ${_codeController.text}");
     });
@@ -44,6 +52,26 @@ class _ProjectEditState extends State<ProjectEdit> {
     _searchController.addListener(() {
       _search = _searchController.text;
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _codeController.dispose();
+    _projectController.dispose();
+    _projectValueController.dispose();
+    _descriptionController.dispose();
+    _contactController.dispose();
+    _locationController.dispose();
+  }
+
+  _fetchGetData(ModelProject project){
+    _codeController.text = project.project_code;
+    _projectController.text = project.project_name;
+    _projectValueController.text = project.project_value;
+    _descriptionController.text = project.project_description;
+    _contactController.text = project.contact_name;
+    _locationController.text = project.project_location;
   }
 
   String currentTime = '';
@@ -64,12 +92,16 @@ class _ProjectEditState extends State<ProjectEdit> {
 
   DateTime _selectedDateEnd = DateTime.now();
   String showlastDay = '';
+  String project_create = '';
+  String last_activity = '';
   void showDate() {
-    DateFormat formatter = DateFormat('dd/MM/yyyy');
+    DateFormat formatter = DateFormat('yyyy/MM/dd');
     showlastDay = formatter.format(_selectedDateEnd);
+    project_create = widget.project.project_create ?? '';
+    last_activity = widget.project.last_activity ?? '';
   }
 
-  Future<void> _requestDateEnd(BuildContext context) async {
+  Future<void> _requestDateEnd(BuildContext context, int start_end) async {
     await showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -94,8 +126,13 @@ class _ProjectEditState extends State<ProjectEdit> {
                   onDateChanged: (DateTime newDate) {
                     setState(() {
                       _selectedDateEnd = newDate;
-                      DateFormat formatter = DateFormat('dd/MM/yyyy');
+                      DateFormat formatter = DateFormat('yyyy/MM/dd');
                       showlastDay = formatter.format(_selectedDateEnd);
+                      if (start_end == 0) {
+                        project_create = showlastDay.toString();
+                      } else {
+                        last_activity = showlastDay.toString();
+                      }
                     });
                     Navigator.pop(context);
                   },
@@ -107,7 +144,6 @@ class _ProjectEditState extends State<ProjectEdit> {
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -161,28 +197,35 @@ class _ProjectEditState extends State<ProjectEdit> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _textBody('Project', _projectController, true),
+                _textBody('Project', widget.project.project_name,
+                    _projectController, true),
                 _DropdownContact('Contact'),
                 _DropdownAccount('Account'),
-                _DropdownSale('Sale/Non Sale'),//0,1 => Sale Project , Non Sale Project
-                _DropdownModel('Project Model'),//0,1 => internal , external
-                _textBody('Cost Value', _projectController, true),
+                _DropdownSale(
+                    'Sale/Non Sale'), //0,1 => Sale Project , Non Sale Project
+                _DropdownModel('Project Model'), //0,1 => internal , external
+                if(widget.project.project_sale_nonsale_id == '0')
+                _DropdownApprove('Approve Quotation'),
+                _textBody('Cost Value', widget.project.project_value, _projectValueController, true),
                 _DropdownSource('Source'),
-                _textBody('Description', _descriptionController, true),
+                _textBody('Description', widget.project.project_description, _descriptionController, true),
                 Row(
                   children: [
                     Expanded(child: _DropdownType('Type')),
                     SizedBox(width: 8),
-                    Expanded(child: _textBody('Code', _codeController, true)),
+                    Expanded(
+                        child: _textBody('Code', widget.project.project_code,
+                            _codeController, true)),
                   ],
                 ),
                 _DropdownCategory('Categories'),
-                _DateBody('Start Date'),
+                _DateBody('Start Date', project_create, 0),
                 SizedBox(height: 8),
-                _DateBody('End Date'),
+                _DateBody('End Date', last_activity, 1),
+                SizedBox(height: 8),
                 _DropdownProcess('Project Process'),
                 _DropdownSubStatus('Sub Status'),
-                _DropdownPriority('Project Priority'),
+                _DropdownProjectPriority('Project Priority'),
                 InkWell(
                     onTap: () {
                       Navigator.push(
@@ -197,8 +240,10 @@ class _ProjectEditState extends State<ProjectEdit> {
                           ),
                         ),
                       );
+                      _searchController.clear();
                     },
-                    child: _textBody('Location', _locationController, false)),
+                    child: _textBody(
+                        'Location', widget.project.project_location, _locationController, false)),
               ],
             ),
           ),
@@ -211,14 +256,26 @@ class _ProjectEditState extends State<ProjectEdit> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.openSans(
-            fontSize: 14,
-            color: Color(0xFF555555),
-            fontWeight: FontWeight.w700,
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: title,
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Color(0xFF555555),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: ' *',
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(height: 8),
@@ -234,7 +291,7 @@ class _ProjectEditState extends State<ProjectEdit> {
           child: DropdownButton2<ContactData>(
             isExpanded: true,
             hint: Text(
-              'Select $title',
+              widget.project.contact_name,
               style: GoogleFonts.openSans(
                 color: Color(0xFF555555),
               ),
@@ -244,16 +301,16 @@ class _ProjectEditState extends State<ProjectEdit> {
             ),
             items: contactList
                 .map((item) => DropdownMenuItem<ContactData>(
-              value: item,
-              child: Text(
-                item.contact_name ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.openSans(
-                  fontSize: 14,
-                ),
-              ),
-            ))
+                      value: item,
+                      child: Text(
+                        item.contact_name ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.openSans(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ))
                 .toList(),
             value: selectedContact,
             onChanged: (value) {
@@ -273,7 +330,7 @@ class _ProjectEditState extends State<ProjectEdit> {
             ),
             dropdownStyleData: DropdownStyleData(
               maxHeight:
-              200, // Height for displaying up to 5 lines (adjust as needed)
+                  200, // Height for displaying up to 5 lines (adjust as needed)
             ),
             menuItemStyleData: MenuItemStyleData(
               height: 40, // Height for each menu item
@@ -323,18 +380,31 @@ class _ProjectEditState extends State<ProjectEdit> {
       ],
     );
   }
+
   Widget _DropdownAccount(String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.openSans(
-            fontSize: 14,
-            color: Color(0xFF555555),
-            fontWeight: FontWeight.w700,
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: title,
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Color(0xFF555555),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: ' *',
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(height: 8),
@@ -350,7 +420,7 @@ class _ProjectEditState extends State<ProjectEdit> {
           child: DropdownButton2<AccountData>(
             isExpanded: true,
             hint: Text(
-              'Select $title',
+              widget.project.account_name ?? '',
               style: GoogleFonts.openSans(
                 color: Color(0xFF555555),
               ),
@@ -358,19 +428,17 @@ class _ProjectEditState extends State<ProjectEdit> {
             style: GoogleFonts.openSans(
               color: Color(0xFF555555),
             ),
-            items: AccountList
-                .map((item) => DropdownMenuItem<AccountData>(
-              value: item,
-              child: Text(
-                item.account_name ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.openSans(
-                  fontSize: 14,
-                ),
-              ),
-            ))
-                .toList(),
+            items: AccountList.map((item) => DropdownMenuItem<AccountData>(
+                  value: item,
+                  child: Text(
+                    item.account_name ?? 'Unknown',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                    ),
+                  ),
+                )).toList(),
             value: selectedAccount,
             onChanged: (value) {
               setState(() {
@@ -389,7 +457,7 @@ class _ProjectEditState extends State<ProjectEdit> {
             ),
             dropdownStyleData: DropdownStyleData(
               maxHeight:
-              200, // Height for displaying up to 5 lines (adjust as needed)
+                  200, // Height for displaying up to 5 lines (adjust as needed)
             ),
             menuItemStyleData: MenuItemStyleData(
               height: 40, // Height for each menu item
@@ -439,18 +507,31 @@ class _ProjectEditState extends State<ProjectEdit> {
       ],
     );
   }
+
   Widget _DropdownType(String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.openSans(
-            fontSize: 14,
-            color: Color(0xFF555555),
-            fontWeight: FontWeight.w700,
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: title,
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Color(0xFF555555),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: ' *',
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(height: 8),
@@ -466,7 +547,7 @@ class _ProjectEditState extends State<ProjectEdit> {
           child: DropdownButton2<TypeData>(
             isExpanded: true,
             hint: Text(
-              'Select $title',
+              widget.project.project_type_name,
               style: GoogleFonts.openSans(
                 color: Color(0xFF555555),
               ),
@@ -474,19 +555,17 @@ class _ProjectEditState extends State<ProjectEdit> {
             style: GoogleFonts.openSans(
               color: Color(0xFF555555),
             ),
-            items: TypeList
-                .map((item) => DropdownMenuItem<TypeData>(
-              value: item,
-              child: Text(
-                item.type_name ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.openSans(
-                  fontSize: 14,
-                ),
-              ),
-            ))
-                .toList(),
+            items: TypeList.map((item) => DropdownMenuItem<TypeData>(
+                  value: item,
+                  child: Text(
+                    item.type_name ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                    ),
+                  ),
+                )).toList(),
             value: selectedType,
             onChanged: (value) {
               setState(() {
@@ -505,7 +584,7 @@ class _ProjectEditState extends State<ProjectEdit> {
             ),
             dropdownStyleData: DropdownStyleData(
               maxHeight:
-              200, // Height for displaying up to 5 lines (adjust as needed)
+                  200, // Height for displaying up to 5 lines (adjust as needed)
             ),
             menuItemStyleData: MenuItemStyleData(
               height: 40, // Height for each menu item
@@ -555,18 +634,31 @@ class _ProjectEditState extends State<ProjectEdit> {
       ],
     );
   }
+
   Widget _DropdownSource(String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.openSans(
-            fontSize: 14,
-            color: Color(0xFF555555),
-            fontWeight: FontWeight.w700,
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: title,
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Color(0xFF555555),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: ' *',
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(height: 8),
@@ -582,7 +674,7 @@ class _ProjectEditState extends State<ProjectEdit> {
           child: DropdownButton2<SourceData>(
             isExpanded: true,
             hint: Text(
-              'Select $title',
+              widget.project.project_source_name,
               style: GoogleFonts.openSans(
                 color: Color(0xFF555555),
               ),
@@ -590,19 +682,17 @@ class _ProjectEditState extends State<ProjectEdit> {
             style: GoogleFonts.openSans(
               color: Color(0xFF555555),
             ),
-            items: SourceList
-                .map((item) => DropdownMenuItem<SourceData>(
-              value: item,
-              child: Text(
-                item.source_name ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.openSans(
-                  fontSize: 14,
-                ),
-              ),
-            ))
-                .toList(),
+            items: SourceList.map((item) => DropdownMenuItem<SourceData>(
+                  value: item,
+                  child: Text(
+                    item.source_name ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                    ),
+                  ),
+                )).toList(),
             value: selectedSource,
             onChanged: (value) {
               setState(() {
@@ -621,7 +711,7 @@ class _ProjectEditState extends State<ProjectEdit> {
             ),
             dropdownStyleData: DropdownStyleData(
               maxHeight:
-              200, // Height for displaying up to 5 lines (adjust as needed)
+                  200, // Height for displaying up to 5 lines (adjust as needed)
             ),
             menuItemStyleData: MenuItemStyleData(
               height: 40, // Height for each menu item
@@ -671,6 +761,7 @@ class _ProjectEditState extends State<ProjectEdit> {
       ],
     );
   }
+
   Widget _DropdownCategory(String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -686,119 +777,97 @@ class _ProjectEditState extends State<ProjectEdit> {
           ),
         ),
         SizedBox(height: 8),
-        Container(
+        MultiSelectDialogField(
+          items: CategoryList.map((category) => MultiSelectItem<CategoryData>(
+              category, category.categories_name)).toList(),
+          title: Text(
+            "Select Categories",
+            style: TextStyle(
+              color: Color(0xFF555555),
+              fontSize: 16,
+            ),
+          ),
+          selectedColor: Color(0xFFFF9900),
+          buttonIcon: Icon(
+            Icons.arrow_drop_down, // ไอคอนที่จะแสดง
+            color: Color(0xFF555555), // สีของไอคอน
+            size: 24, // ขนาดของไอคอน
+          ),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
             color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
             border: Border.all(
               color: Color(0xFFFF9900),
-              width: 1.0,
+              width: 1,
             ),
           ),
-          child: DropdownButton2<CategoryData>(
-            isExpanded: true,
-            hint: Text(
-              'Select $title',
-              style: GoogleFonts.openSans(
-                color: Color(0xFF555555),
-              ),
-            ),
+          buttonText: Text(
+            maxLines: 1,
+            "Select Categories",
+            // CategoryList.length == 0
+            //     ? "Select Categories"
+            //     : (widget.project.category_data.length != 0)
+            //         ? widget.project.category_data
+            //         : CategoryList.map((e) => e.categories_name).join(", "),
             style: GoogleFonts.openSans(
               color: Color(0xFF555555),
+              fontSize: 14,
             ),
-            items: CategoryList
-                .map((item) => DropdownMenuItem<CategoryData>(
-              value: item,
-              child: Text(
-                item.categories_name ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.openSans(
-                  fontSize: 14,
-                ),
-              ),
-            ))
-                .toList(),
-            value: selectedCategory,
-            onChanged: (value) {
-              setState(() {
-                selectedCategory = value;
-                // account_id = value?.account_id ?? '';
-              });
-            },
-            underline: SizedBox.shrink(),
-            iconStyleData: IconStyleData(
-              icon: Icon(Icons.arrow_drop_down,
-                  color: Color(0xFF555555), size: 30),
-              iconSize: 30,
+            overflow: TextOverflow.ellipsis, // ตัดข้อความถ้ายาวเกิน
+          ),
+          chipDisplay: MultiSelectChipDisplay(
+            icon: Icon(
+              Icons.close,
+              color: Colors.red,
+              size: 14, // กำหนดขนาดของไอคอน
             ),
-            buttonStyleData: ButtonStyleData(
-              padding: const EdgeInsets.symmetric(vertical: 2),
-            ),
-            dropdownStyleData: DropdownStyleData(
-              maxHeight:
-              200, // Height for displaying up to 5 lines (adjust as needed)
-            ),
-            menuItemStyleData: MenuItemStyleData(
-              height: 40, // Height for each menu item
-            ),
-            dropdownSearchData: DropdownSearchData(
-              searchController: _searchController,
-              searchInnerWidgetHeight: 50,
-              searchInnerWidget: Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextFormField(
-                  controller: _searchController,
-                  keyboardType: TextInputType.text,
-                  style: GoogleFonts.openSans(
-                      color: Color(0xFF555555), fontSize: 14),
-                  decoration: InputDecoration(
-                    isDense: true,
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 8,
-                    ),
-                    hintText: '$Search...',
-                    hintStyle: GoogleFonts.openSans(
-                        fontSize: 14, color: Color(0xFF555555)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
-              searchMatchFn: (item, searchValue) {
-                return item.value!.categories_name
-                    .toLowerCase()
-                    .contains(searchValue.toLowerCase());
-              },
-            ),
-            onMenuStateChange: (isOpen) {
-              if (!isOpen) {
-                _searchController
-                    .clear(); // Clear the search field when the menu closes
+            onTap: (value) {
+              if (CategoryList.length <= 1) {
+                _fetchCategory();
+                CategoryList.clear();
+              } else {
+                setState(() {
+                  CategoryList.remove(value);
+                });
               }
             },
+            textStyle: GoogleFonts.openSans(
+              color: Color(0xFF555555),
+            ),
           ),
+          onConfirm: (values) {
+            CategoryList = List<CategoryData>.from(values);
+          },
         ),
         SizedBox(height: 8),
       ],
     );
   }
+
   Widget _DropdownProcess(String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.openSans(
-            fontSize: 14,
-            color: Color(0xFF555555),
-            fontWeight: FontWeight.w700,
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: title,
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Color(0xFF555555),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: ' *',
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(height: 8),
@@ -814,7 +883,7 @@ class _ProjectEditState extends State<ProjectEdit> {
           child: DropdownButton2<ProcessData>(
             isExpanded: true,
             hint: Text(
-              'Select $title',
+              widget.project.project_process_name,
               style: GoogleFonts.openSans(
                 color: Color(0xFF555555),
               ),
@@ -822,19 +891,17 @@ class _ProjectEditState extends State<ProjectEdit> {
             style: GoogleFonts.openSans(
               color: Color(0xFF555555),
             ),
-            items: ProcessList
-                .map((item) => DropdownMenuItem<ProcessData>(
-              value: item,
-              child: Text(
-                item.process_name ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.openSans(
-                  fontSize: 14,
-                ),
-              ),
-            ))
-                .toList(),
+            items: ProcessList.map((item) => DropdownMenuItem<ProcessData>(
+                  value: item,
+                  child: Text(
+                    item.process_name ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                    ),
+                  ),
+                )).toList(),
             value: selectedProcess,
             onChanged: (value) {
               setState(() {
@@ -853,7 +920,7 @@ class _ProjectEditState extends State<ProjectEdit> {
             ),
             dropdownStyleData: DropdownStyleData(
               maxHeight:
-              200, // Height for displaying up to 5 lines (adjust as needed)
+                  200, // Height for displaying up to 5 lines (adjust as needed)
             ),
             menuItemStyleData: MenuItemStyleData(
               height: 40, // Height for each menu item
@@ -903,18 +970,31 @@ class _ProjectEditState extends State<ProjectEdit> {
       ],
     );
   }
-  Widget _DropdownPriority(String title) {
+
+  Widget _DropdownProjectPriority(String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.openSans(
-            fontSize: 14,
-            color: Color(0xFF555555),
-            fontWeight: FontWeight.w700,
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: title,
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Color(0xFF555555),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: ' *',
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(height: 8),
@@ -930,7 +1010,7 @@ class _ProjectEditState extends State<ProjectEdit> {
           child: DropdownButton2<PriorityData>(
             isExpanded: true,
             hint: Text(
-              'Select $title',
+              widget.project.project_priority_name,
               style: GoogleFonts.openSans(
                 color: Color(0xFF555555),
               ),
@@ -938,19 +1018,17 @@ class _ProjectEditState extends State<ProjectEdit> {
             style: GoogleFonts.openSans(
               color: Color(0xFF555555),
             ),
-            items: PriorityList
-                .map((item) => DropdownMenuItem<PriorityData>(
-              value: item,
-              child: Text(
-                item.priority_name ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.openSans(
-                  fontSize: 14,
-                ),
-              ),
-            ))
-                .toList(),
+            items: PriorityList.map((item) => DropdownMenuItem<PriorityData>(
+                  value: item,
+                  child: Text(
+                    item.priority_name ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                    ),
+                  ),
+                )).toList(),
             value: selectedPriority,
             onChanged: (value) {
               setState(() {
@@ -969,7 +1047,7 @@ class _ProjectEditState extends State<ProjectEdit> {
             ),
             dropdownStyleData: DropdownStyleData(
               maxHeight:
-              200, // Height for displaying up to 5 lines (adjust as needed)
+                  200, // Height for displaying up to 5 lines (adjust as needed)
             ),
             menuItemStyleData: MenuItemStyleData(
               height: 40, // Height for each menu item
@@ -1019,6 +1097,7 @@ class _ProjectEditState extends State<ProjectEdit> {
       ],
     );
   }
+
   Widget _DropdownSubStatus(String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1054,19 +1133,17 @@ class _ProjectEditState extends State<ProjectEdit> {
             style: GoogleFonts.openSans(
               color: Color(0xFF555555),
             ),
-            items: SubStatusList
-                .map((item) => DropdownMenuItem<SubStatusData>(
-              value: item,
-              child: Text(
-                item.sub_status_name ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.openSans(
-                  fontSize: 14,
-                ),
-              ),
-            ))
-                .toList(),
+            items: SubStatusList.map((item) => DropdownMenuItem<SubStatusData>(
+                  value: item,
+                  child: Text(
+                    item.sub_status_name ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                    ),
+                  ),
+                )).toList(),
             value: selectedSubStatus,
             onChanged: (value) {
               setState(() {
@@ -1085,7 +1162,7 @@ class _ProjectEditState extends State<ProjectEdit> {
             ),
             dropdownStyleData: DropdownStyleData(
               maxHeight:
-              200, // Height for displaying up to 5 lines (adjust as needed)
+                  200, // Height for displaying up to 5 lines (adjust as needed)
             ),
             menuItemStyleData: MenuItemStyleData(
               height: 40, // Height for each menu item
@@ -1140,13 +1217,26 @@ class _ProjectEditState extends State<ProjectEdit> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          maxLines: 1,
-          style: GoogleFonts.openSans(
-            fontSize: 14,
-            color: Color(0xFF555555),
-            fontWeight: FontWeight.bold,
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: title,
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Color(0xFF555555),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: ' *',
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(height: 8),
@@ -1162,7 +1252,7 @@ class _ProjectEditState extends State<ProjectEdit> {
           child: DropdownButton2<SaleData>(
             isExpanded: true,
             hint: Text(
-              'Select Sale',
+              widget.project.project_sale_nonsale_name,
               style: GoogleFonts.openSans(
                 color: Color(0xFF555555),
               ),
@@ -1170,17 +1260,15 @@ class _ProjectEditState extends State<ProjectEdit> {
             style: GoogleFonts.openSans(
               color: Color(0xFF555555),
             ),
-            items: SaleDataList
-                .map((item) => DropdownMenuItem<SaleData>(
-              value: item,
-              child: Text(
-                item.sale_name,
-                style: GoogleFonts.openSans(
-                  fontSize: 14,
-                ),
-              ),
-            ))
-                .toList(),
+            items: SaleDataList.map((item) => DropdownMenuItem<SaleData>(
+                  value: item,
+                  child: Text(
+                    item.sale_name,
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                    ),
+                  ),
+                )).toList(),
             value: selectedSaleData,
             onChanged: (value) {
               setState(() {
@@ -1198,48 +1286,11 @@ class _ProjectEditState extends State<ProjectEdit> {
             ),
             dropdownStyleData: DropdownStyleData(
               maxHeight:
-              200, // Height for displaying up to 5 lines (adjust as needed)
+                  200, // Height for displaying up to 5 lines (adjust as needed)
             ),
             menuItemStyleData: MenuItemStyleData(
               height: 40, // Height for each menu item
             ),
-            dropdownSearchData: DropdownSearchData(
-              searchController: _searchController,
-              searchInnerWidgetHeight: 50,
-              searchInnerWidget: Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextFormField(
-                  controller: _searchController,
-                  keyboardType: TextInputType.text,
-                  style: GoogleFonts.openSans(
-                      color: Color(0xFF555555), fontSize: 14),
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 8,
-                    ),
-                    hintText: '$Search...',
-                    hintStyle: GoogleFonts.openSans(
-                        fontSize: 14, color: Color(0xFF555555)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
-              searchMatchFn: (item, searchValue) {
-                return item.value!.sale_name
-                    .toLowerCase()
-                    .contains(searchValue.toLowerCase());
-              },
-            ),
-            onMenuStateChange: (isOpen) {
-              if (!isOpen) {
-                _searchController
-                    .clear(); // Clear the search field when the menu closes
-              }
-            },
           ),
         ),
         SizedBox(height: 8),
@@ -1273,7 +1324,7 @@ class _ProjectEditState extends State<ProjectEdit> {
           child: DropdownButton2<ProjectModelData>(
             isExpanded: true,
             hint: Text(
-              'Select Model',
+              widget.project.project_model_name,
               style: GoogleFonts.openSans(
                 color: Color(0xFF555555),
               ),
@@ -1281,17 +1332,16 @@ class _ProjectEditState extends State<ProjectEdit> {
             style: GoogleFonts.openSans(
               color: Color(0xFF555555),
             ),
-            items: ProjectModelList
-                .map((item) => DropdownMenuItem<ProjectModelData>(
-              value: item,
-              child: Text(
-                item.project_model_name,
-                style: GoogleFonts.openSans(
-                  fontSize: 14,
-                ),
-              ),
-            ))
-                .toList(),
+            items: ProjectModelList.map(
+                (item) => DropdownMenuItem<ProjectModelData>(
+                      value: item,
+                      child: Text(
+                        item.project_model_name,
+                        style: GoogleFonts.openSans(
+                          fontSize: 14,
+                        ),
+                      ),
+                    )).toList(),
             value: selectedProjectModel,
             onChanged: (value) {
               setState(() {
@@ -1309,48 +1359,11 @@ class _ProjectEditState extends State<ProjectEdit> {
             ),
             dropdownStyleData: DropdownStyleData(
               maxHeight:
-              200, // Height for displaying up to 5 lines (adjust as needed)
+                  200, // Height for displaying up to 5 lines (adjust as needed)
             ),
             menuItemStyleData: MenuItemStyleData(
               height: 40, // Height for each menu item
             ),
-            dropdownSearchData: DropdownSearchData(
-              searchController: _searchController,
-              searchInnerWidgetHeight: 50,
-              searchInnerWidget: Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextFormField(
-                  controller: _searchController,
-                  keyboardType: TextInputType.text,
-                  style: GoogleFonts.openSans(
-                      color: Color(0xFF555555), fontSize: 14),
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 8,
-                    ),
-                    hintText: '$Search...',
-                    hintStyle: GoogleFonts.openSans(
-                        fontSize: 14, color: Color(0xFF555555)),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
-              searchMatchFn: (item, searchValue) {
-                return item.value!.project_model_name
-                    .toLowerCase()
-                    .contains(searchValue.toLowerCase());
-              },
-            ),
-            onMenuStateChange: (isOpen) {
-              if (!isOpen) {
-                _searchController
-                    .clear(); // Clear the search field when the menu closes
-              }
-            },
           ),
         ),
         SizedBox(height: 8),
@@ -1358,20 +1371,7 @@ class _ProjectEditState extends State<ProjectEdit> {
     );
   }
 
-  ProjectModelData? selectedProjectModel;
-  List<ProjectModelData> ProjectModelList = [
-    ProjectModelData(project_model_id: '0', project_model_name: 'Sale Project'),
-    ProjectModelData(project_model_id: '1', project_model_name: 'Non Sale Project'),
-  ];
-
-  SaleData? selectedSaleData;
-  List<SaleData> SaleDataList = [
-    SaleData(sale_id: '0', sale_name: 'internal'),
-    SaleData(sale_id: '1', sale_name: 'external'),
-  ];
-
-  Widget _textBody(
-      String title, TextEditingController textController, bool _isTrue) {
+  Widget _DropdownApprove(String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1385,7 +1385,115 @@ class _ProjectEditState extends State<ProjectEdit> {
           ),
         ),
         SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+            border: Border.all(
+              color: Color(0xFFFF9900),
+              width: 1.0,
+            ),
+          ),
+          child: DropdownButton2<ApproveQuotation>(
+            isExpanded: true,
+            hint: Text(
+              widget.project.approve_quotation,
+              style: GoogleFonts.openSans(
+                color: Color(0xFF555555),
+              ),
+            ),
+            style: GoogleFonts.openSans(
+              color: Color(0xFF555555),
+            ),
+            items: ApproveList.map(
+                    (item) => DropdownMenuItem<ApproveQuotation>(
+                  value: item,
+                  child: Text(
+                    item.approve_quotation,
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                    ),
+                  ),
+                )).toList(),
+            value: selectedApprove,
+            onChanged: (value) {
+              setState(() {
+                selectedApprove = value;
+              });
+            },
+            underline: SizedBox.shrink(),
+            iconStyleData: IconStyleData(
+              icon: Icon(Icons.arrow_drop_down,
+                  color: Color(0xFF555555), size: 24),
+              iconSize: 24,
+            ),
+            buttonStyleData: ButtonStyleData(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+            ),
+            dropdownStyleData: DropdownStyleData(
+              maxHeight:
+              200, // Height for displaying up to 5 lines (adjust as needed)
+            ),
+            menuItemStyleData: MenuItemStyleData(
+              height: 40, // Height for each menu item
+            ),
+          ),
+        ),
+        SizedBox(height: 8),
+      ],
+    );
+  }
+
+  ProjectModelData? selectedProjectModel;
+  List<ProjectModelData> ProjectModelList = [
+    ProjectModelData(
+        project_model_id: '0', project_model_name: 'Internal'),
+    ProjectModelData(
+        project_model_id: '1', project_model_name: 'External'),
+  ];
+
+  SaleData? selectedSaleData;
+  List<SaleData> SaleDataList = [
+    SaleData(sale_id: '0', sale_name: 'Sale Project'),
+    SaleData(sale_id: '1', sale_name: 'Non Sale Project'),
+  ];
+
+  ApproveQuotation? selectedApprove;
+  List<ApproveQuotation> ApproveList = [
+    ApproveQuotation(approve_quotation: 'No'),
+    ApproveQuotation(approve_quotation: 'Yes'),
+  ];
+
+  Widget _textBody(String title, String getData,
+      TextEditingController textController, bool _isTrue) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: title,
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Color(0xFF555555),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: ' *',
+                style: GoogleFonts.openSans(
+                  fontSize: 14,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 8),
         TextFormField(
+          cursorColor: Colors.red,
           minLines: (textController == _descriptionController) ? 3 : 1,
           maxLines: null,
           enabled: (_isTrue == true) ? true : false,
@@ -1397,12 +1505,12 @@ class _ProjectEditState extends State<ProjectEdit> {
             filled: true,
             fillColor: Colors.white,
             contentPadding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             hintText: (_selectedLocation == null || _isTrue == true)
-                ? ''
+                ? getData
                 : '${_selectedLocation!.latitude}, ${_selectedLocation!.longitude}',
             hintStyle:
-            GoogleFonts.openSans(fontSize: 14, color: Color(0xFF555555)),
+                GoogleFonts.openSans(fontSize: 14, color: Color(0xFF555555)),
             suffixIcon: Container(
               alignment: Alignment.centerRight,
               width: 10,
@@ -1410,7 +1518,7 @@ class _ProjectEditState extends State<ProjectEdit> {
                 child: IconButton(
                     onPressed: () {},
                     icon:
-                    Icon((title != 'Location') ? null : Icons.location_on),
+                        Icon((title != 'Location') ? null : Icons.location_on),
                     color: Color(0xFFFF9900),
                     iconSize: 18),
               ),
@@ -1450,7 +1558,7 @@ class _ProjectEditState extends State<ProjectEdit> {
     );
   }
 
-  Widget _DateBody(String _nemedate) {
+  Widget _DateBody(String _nemedate, String date, int start_end) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1476,14 +1584,14 @@ class _ProjectEditState extends State<ProjectEdit> {
           ),
           child: InkWell(
             onTap: () {
-              _requestDateEnd(context);
+              _requestDateEnd(context, start_end);
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
                   Text(
-                    showlastDay,
+                    date,
                     style: GoogleFonts.openSans(
                         fontSize: 14, color: Color(0xFF555555)),
                   ),
@@ -1501,7 +1609,7 @@ class _ProjectEditState extends State<ProjectEdit> {
     );
   }
 
-  void _fatchApi(){
+  void _fatchApi() {
     _fetchContact();
     _fetchAccount();
     _fetchType();
@@ -1515,11 +1623,12 @@ class _ProjectEditState extends State<ProjectEdit> {
   ContactData? selectedContact;
   List<ContactData> contactList = [];
   Future<void> _fetchContact() async {
-    final uri = Uri.parse(
-        '$host/api/origami/need/contact.php?page=&search=$_search');
+    final uri =
+        Uri.parse('$host/api/origami/need/contact.php?page=&search=$_search');
     try {
       final response = await http.post(
-        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
+        uri,
+        headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -1532,9 +1641,6 @@ class _ProjectEditState extends State<ProjectEdit> {
         setState(() {
           contactList =
               dataJson.map((json) => ContactData.fromJson(json)).toList();
-          if (contactList.isNotEmpty && selectedContact == null) {
-            selectedContact = contactList[0];
-          }
         });
       } else {
         throw Exception('Failed to load status data');
@@ -1547,11 +1653,12 @@ class _ProjectEditState extends State<ProjectEdit> {
   AccountData? selectedAccount;
   List<AccountData> AccountList = [];
   Future<void> _fetchAccount() async {
-    final uri = Uri.parse(
-        '$host/api/origami/need/account.php?page=&search=$_search');
+    final uri =
+        Uri.parse('$host/api/origami/need/account.php?page=&search=$_search');
     try {
       final response = await http.post(
-        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
+        uri,
+        headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -1564,9 +1671,6 @@ class _ProjectEditState extends State<ProjectEdit> {
         setState(() {
           AccountList =
               dataJson.map((json) => AccountData.fromJson(json)).toList();
-          if (AccountList.isNotEmpty && selectedAccount == null) {
-            selectedAccount = AccountList[0];
-          }
         });
       } else {
         throw Exception('Failed to load status data');
@@ -1583,23 +1687,20 @@ class _ProjectEditState extends State<ProjectEdit> {
         '$host/api/origami/crm/project/component/type.php?search=$_search');
     try {
       final response = await http.post(
-        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
+        uri,
+        headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
           'Authorization': widget.Authorization,
-          'index':'',
+          'index': '',
         },
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         final List<dynamic> dataJson = jsonResponse['type_data'];
         setState(() {
-          TypeList =
-              dataJson.map((json) => TypeData.fromJson(json)).toList();
-          if (TypeList.isNotEmpty && selectedType == null) {
-            selectedType = TypeList[0];
-          }
+          TypeList = dataJson.map((json) => TypeData.fromJson(json)).toList();
         });
       } else {
         throw Exception('Failed to load status data');
@@ -1616,12 +1717,13 @@ class _ProjectEditState extends State<ProjectEdit> {
         '$host/api/origami/crm/project/component/source.php?search=$_search');
     try {
       final response = await http.post(
-        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
+        uri,
+        headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
           'Authorization': widget.Authorization,
-          'index':''
+          'index': ''
         },
       );
       if (response.statusCode == 200) {
@@ -1630,9 +1732,6 @@ class _ProjectEditState extends State<ProjectEdit> {
         setState(() {
           SourceList =
               dataJson.map((json) => SourceData.fromJson(json)).toList();
-          if (SourceList.isNotEmpty && selectedSource == null) {
-            selectedSource = SourceList[0];
-          }
         });
       } else {
         throw Exception('Failed to load status data');
@@ -1649,12 +1748,13 @@ class _ProjectEditState extends State<ProjectEdit> {
         '$host/api/origami/crm/project/component/category.php?search=$_search');
     try {
       final response = await http.post(
-        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
+        uri,
+        headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
           'Authorization': widget.Authorization,
-          'index':''
+          'index': ''
         },
       );
       if (response.statusCode == 200) {
@@ -1663,9 +1763,6 @@ class _ProjectEditState extends State<ProjectEdit> {
         setState(() {
           CategoryList =
               dataJson.map((json) => CategoryData.fromJson(json)).toList();
-          if (CategoryList.isNotEmpty && selectedCategory == null) {
-            selectedCategory = CategoryList[0];
-          }
         });
       } else {
         throw Exception('Failed to load status data');
@@ -1682,12 +1779,13 @@ class _ProjectEditState extends State<ProjectEdit> {
         '$host/api/origami/crm/project/component/process.php?search=$_search');
     try {
       final response = await http.post(
-        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
+        uri,
+        headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
           'Authorization': widget.Authorization,
-          'index':''
+          'index': ''
         },
       );
       if (response.statusCode == 200) {
@@ -1696,9 +1794,6 @@ class _ProjectEditState extends State<ProjectEdit> {
         setState(() {
           ProcessList =
               dataJson.map((json) => ProcessData.fromJson(json)).toList();
-          if (ProcessList.isNotEmpty && selectedProcess == null) {
-            selectedProcess = ProcessList[0];
-          }
         });
       } else {
         throw Exception('Failed to load status data');
@@ -1715,12 +1810,13 @@ class _ProjectEditState extends State<ProjectEdit> {
         '$host/api/origami/crm/project/component/priority.php?search=$_search');
     try {
       final response = await http.post(
-        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
+        uri,
+        headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
           'Authorization': widget.Authorization,
-          'index':''
+          'index': ''
         },
       );
       if (response.statusCode == 200) {
@@ -1729,9 +1825,6 @@ class _ProjectEditState extends State<ProjectEdit> {
         setState(() {
           PriorityList =
               dataJson.map((json) => PriorityData.fromJson(json)).toList();
-          if (PriorityList.isNotEmpty && selectedPriority == null) {
-            selectedPriority = PriorityList[0];
-          }
         });
       } else {
         throw Exception('Failed to load status data');
@@ -1748,12 +1841,13 @@ class _ProjectEditState extends State<ProjectEdit> {
         '$host/api/origami/crm/project/component/substatus.php?search=$_search');
     try {
       final response = await http.post(
-        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
+        uri,
+        headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
           'Authorization': widget.Authorization,
-          'index':''
+          'index': ''
         },
       );
       if (response.statusCode == 200) {
@@ -1762,9 +1856,6 @@ class _ProjectEditState extends State<ProjectEdit> {
         setState(() {
           SubStatusList =
               dataJson.map((json) => SubStatusData.fromJson(json)).toList();
-          if (SubStatusList.isNotEmpty && selectedSubStatus == null) {
-            selectedSubStatus = SubStatusList[0];
-          }
         });
       } else {
         throw Exception('Failed to load status data');
@@ -1773,5 +1864,4 @@ class _ProjectEditState extends State<ProjectEdit> {
       throw Exception('Failed to load personal data: $e');
     }
   }
-
 }

@@ -52,6 +52,9 @@ class _AccountEditViewState extends State<AccountEditView> {
 
   @override
   void dispose() {
+    _controllerOwner.dispose();
+    _controllerActivity.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 

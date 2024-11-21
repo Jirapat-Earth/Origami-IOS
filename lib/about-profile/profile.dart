@@ -1,10 +1,12 @@
 import 'package:http/http.dart' as http;
 import '../imports.dart';
+import 'change_password.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
     Key? key,
-    required this.employee, required this.Authorization,
+    required this.employee,
+    required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String Authorization;
@@ -20,10 +22,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<Map<String, dynamic>> fetchProfile() async {
     try {
-      final uri =
-      Uri.parse("$host/api/origami/profile/profile.php");
+      final uri = Uri.parse("$host/api/origami/profile/profile.php");
       final response = await http.post(
-        uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
+        uri,
+        headers: {'Authorization': 'Bearer ${widget.Authorization}'},
         body: {
           'comp_id': widget.employee.comp_id,
           'emp_id': widget.employee.emp_id,
@@ -37,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
         // Parse JSON data into objects
         ProfileResponse profileData =
-        ProfileResponse.fromJson(jsonResponse['employee_data']);
+            ProfileResponse.fromJson(jsonResponse['employee_data']);
 
         // Return data as a Map
         return {
@@ -79,24 +81,24 @@ class _ProfilePageState extends State<ProfilePage> {
           // แสดงตัวโหลดข้อมูล
           return Center(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(
-                    color: Color(0xFFFF9900),
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Text(
-                    '$Loading...',
-                    style: GoogleFonts.openSans(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF555555),
-                    ),
-                  ),
-                ],
-              ));
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: Color(0xFFFF9900),
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              Text(
+                '$Loading...',
+                style: GoogleFonts.openSans(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF555555),
+                ),
+              ),
+            ],
+          ));
         } else if (snapshot.hasError) {
           // แสดงข้อความเมื่อมีข้อผิดพลาด
           return Center(child: Text('Error: ${snapshot.error}'));
@@ -114,9 +116,41 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white70,
-      body: _loading(),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: Colors.white70,
+        body: Column(
+          children: [
+            Container(
+              color: Colors.transparent,
+              child: TabBar(
+                indicatorColor: Color(0xFFFF9900),
+                labelColor: Color(0xFFFF9900),
+                unselectedLabelColor: Colors.orange.shade200,
+                labelStyle: GoogleFonts.openSans(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                tabs: [
+                  Tab(text: 'Profile', icon: Icon(Icons.person)),
+                  Tab(text: 'Password', icon: Icon(Icons.lock)),
+                ],
+              ),
+            ),
+            Divider(),
+            Expanded(
+                child: TabBarView(
+              children: [
+                _loading(),
+                ChangePassword(
+                    employee: widget.employee,
+                    Authorization: widget.Authorization),
+              ],
+            )),
+          ],
+        ),
+      ),
     );
   }
 
@@ -286,7 +320,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                           child: Text(
                                             profileData.dna_name,
                                             style: GoogleFonts.openSans(
-                                                fontSize: 14, color: Color(0xFF555555)),
+                                                fontSize: 14,
+                                                color: Color(0xFF555555)),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                           ),
@@ -426,45 +461,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
-                // Column(
-                //   crossAxisAlignment: CrossAxisAlignment.start,
-                //   children: [
-                //     Text(
-                //       'Signature ',
-                //       style: GoogleFonts.openSans(
-                //         fontSize: 16,
-                //         color: Color(0xFF555555),
-                //         fontWeight: FontWeight.bold,
-                //       ),
-                //     ),
-                //     SizedBox(
-                //       height: 16,
-                //     ),
-                //     Container(
-                //       decoration: BoxDecoration(
-                //         color: Colors.white,
-                //         borderRadius: BorderRadius.circular(15),
-                //         boxShadow: [
-                //           BoxShadow(
-                //             color: Colors.grey.withOpacity(0.5),
-                //             spreadRadius: 0,
-                //             blurRadius: 1,
-                //             // offset: Offset(0, 1), // x, y
-                //           ),
-                //         ],
-                //       ),
-                //       child: Image.memory(
-                //         imageBytes,
-                //         height: 150,
-                //         width: double.infinity,
-                //         fit: BoxFit.fill,
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(
-                //   height: 20,
-                // ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(1),
@@ -476,9 +472,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   onPressed: () {},
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 60,
-                        right: 60),
+                    padding: const EdgeInsets.only(left: 60, right: 60),
                     child: Container(
                       width: double.infinity,
                       child: Center(
@@ -502,6 +496,73 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  Future<void> _fetchProfileSave() async {
+    final uri = Uri.parse("$host/api/origami/profile/saveProfile.php");
+    final response = await http.post(
+      uri,
+      headers: {'Authorization': 'Bearer ${widget.Authorization}'},
+      body: {
+        'emp_id': widget.employee.emp_id,
+        'comp_id': widget.employee.comp_id,
+        'home_location': '',
+        'signature_drawing': '', // ลายเซนต์
+      },
+    );
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['status'] == false) {
+        final message = jsonResponse['message'];
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              message,
+              style: GoogleFonts.openSans(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+      } else {
+
+      }
+    } else {
+      throw Exception('Failed to load projects');
+    }
+  }
+
+  Future<void> _fetchPasswordReset() async {
+    final uri = Uri.parse("$host/api/origami/profile/passwordReset.php");
+    final response = await http.post(
+      uri,
+      headers: {'Authorization': 'Bearer ${widget.Authorization}'},
+      body: {
+        'emp_id': widget.employee.emp_id,
+        'comp_id': widget.employee.comp_id,
+        'new_password': '',
+      },
+    );
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['status'] == false) {
+        final message = jsonResponse['message'];
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              message,
+              style: GoogleFonts.openSans(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+      } else {
+
+      }
+    } else {
+      throw Exception('Failed to load projects');
+    }
   }
 }
 

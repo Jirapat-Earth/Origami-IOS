@@ -49,6 +49,9 @@ class _AccountAddViewState extends State<AccountAddView> {
 
   @override
   void dispose() {
+    _controllerOwner.dispose();
+    _controllerActivity.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 

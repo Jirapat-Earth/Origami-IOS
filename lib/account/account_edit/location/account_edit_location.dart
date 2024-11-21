@@ -8,7 +8,8 @@ class AccountEditLocation extends StatefulWidget {
   const AccountEditLocation({
     Key? key,
     required this.employee,
-    required this.pageInput, required this.Authorization,
+    required this.pageInput,
+    required this.Authorization,
   }) : super(key: key);
   final Employee employee;
   final String pageInput;
@@ -51,7 +52,22 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
 
   @override
   void dispose() {
-    // _scrollController.dispose();
+    _searchController.dispose();
+    _branchController.dispose();
+    _noBranchController.dispose();
+    _laneController.dispose();
+    _roadController.dispose();
+    _buildingController.dispose();
+    _provinceController.dispose();
+    _districtController.dispose();
+    _subDistrictController.dispose();
+    _postCodeController.dispose();
+    _shipToController.dispose();
+    _documentController.dispose();
+    _mapMarkerRegisterController.dispose();
+    _mapMarkerLocationController.dispose();
+    _mapMarkerShipController.dispose();
+    _mapMarkerDocumentController.dispose();
     super.dispose();
   }
 
@@ -199,7 +215,8 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            Icon(Icons.save, size: 20, color: Color(0xFFFF9900)),
+                            Icon(Icons.save,
+                                size: 20, color: Color(0xFFFF9900)),
                             SizedBox(width: 4),
                             Text(
                               'SAVE',
@@ -399,23 +416,24 @@ class _AccountEditLocationState extends State<AccountEditLocation> {
                 Expanded(child: _AccountLocation('', controller)),
                 SizedBox(width: 4),
                 InkWell(
-                  onTap:(){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LocationGoogleMap(
-                          latLng: (LatLng? value) {
-                            setState(() {
-                              _selectedLocation = value;
-                            });
-                          },
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LocationGoogleMap(
+                            latLng: (LatLng? value) {
+                              setState(() {
+                                _selectedLocation = value;
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
                     child: Padding(
                       padding: const EdgeInsets.all(12),
-                      child: Icon(Icons.location_on, size: 18, color: Color(0xFFFF9900)),
+                      child: Icon(Icons.location_on,
+                          size: 18, color: Color(0xFFFF9900)),
                     ))
               ],
             ),

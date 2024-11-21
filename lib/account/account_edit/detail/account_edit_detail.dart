@@ -44,7 +44,18 @@ class _AccountEditDetailState extends State<AccountEditDetail> {
 
   @override
   void dispose() {
-    // _scrollController.dispose();
+    _searchController.dispose();
+    _nameTHController.dispose();
+    _nameENController.dispose();
+    _descriptionController.dispose();
+    _emailController.dispose();
+    _telController.dispose();
+    _faxController.dispose();
+    _mobileController.dispose();
+    _capitalController.dispose();
+    _staffController.dispose();
+    _taxIdController.dispose();
+    _oldCodeController.dispose();
     super.dispose();
   }
 

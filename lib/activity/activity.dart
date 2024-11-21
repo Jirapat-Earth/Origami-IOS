@@ -37,6 +37,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 

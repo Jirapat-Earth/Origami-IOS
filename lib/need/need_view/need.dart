@@ -39,6 +39,7 @@ class NeedsView extends StatefulWidget {
 
 class _NeedsViewState extends State<NeedsView> {
   TextEditingController _searchController = TextEditingController();
+  // final FocusNode _focusNode = FocusNode();
   DateTime now = DateTime.now();
 
   int currentStep = 1;
@@ -243,47 +244,18 @@ class _NeedsViewState extends State<NeedsView> {
       fetchNeedResponse();
       print("Current text: ${_searchController.text}");
     });
-    // fetchNeedRespond(
-    //   typeName,
-    //   status_id,
-    //   searchText,
-    //   firstDay,
-    //   lastDay,
-    //   priorityId,
-    //   departmentId,
-    //   projectId,
-    //   ownerId,
-    // );
-  }
-
-  Future<List<AnnounceData>> fetchAnnounce() async {
-    final uri =
-        Uri.parse("$host/api/origami/announce/announce.php");
-    final response = await http.post(
-      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
-      body: {
-        'comp_id': widget.employee.comp_id,
-        'emp_id': widget.employee.emp_id,
-        'Authorization': widget.Authorization,
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      // เข้าถึงข้อมูลในคีย์ 'instructors'
-      final List<dynamic> instructorsJson = jsonResponse['announce_data'];
-      // แปลงข้อมูลจาก JSON เป็น List<Instructor>
-      return instructorsJson
-          .map((json) => AnnounceData.fromJson(json))
-          .toList();
-    } else {
-      throw Exception('Failed to load instructors');
-    }
+    // _focusNode.addListener(() {
+    //   if (!_focusNode.hasFocus) {
+    //     // เมื่อ TextField สูญเสียโฟกัส
+    //     _searchController.clear();
+    //   }
+    // });
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    // _focusNode.dispose();
     super.dispose();
   }
 
@@ -404,6 +376,7 @@ class _NeedsViewState extends State<NeedsView> {
                           ),
                           child: TextField(
                             controller: _searchController,
+                            // focusNode: _focusNode,
                             decoration: InputDecoration(
                               hintText: '$Search...',
                               hintStyle: GoogleFonts.openSans(
@@ -477,42 +450,47 @@ class _NeedsViewState extends State<NeedsView> {
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Row(
                       children: List.generate(NeedTypeOption.length, (index) {
-                        return InkWell(
-                          onTap: () {
-                            _selectcolor = index;
-                            typeName =
-                                NeedTypeOption[_selectcolor ?? 0].typeId ?? '';
-                            fetchNeedResponse();
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(1),
-                            child: Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 0.5,
-                                ),
-                              ),
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 4),
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                _selectcolor = index;
+                              });
+                              typeName =
+                                  NeedTypeOption[index].typeId ?? '';
+                              fetchNeedResponse();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(1),
                               child: Container(
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
-                                  color: (index == _selectcolor)
-                                      ? Color(0xFFFF9900)
-                                      : Colors.grey.shade100,
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    color: Colors.white,
+                                    width: 0.5,
+                                  ),
                                 ),
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      bottom: 6, top: 6, left: 16, right: 16),
-                                  child: Text(
-                                    NeedTypeOption[index].typeName ?? '',
-                                    style: GoogleFonts.openSans(
-                                        color: (index == _selectcolor)
-                                            ? Colors.white
-                                            : Color(0xFF555555)),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(25),
+                                    color: (index == _selectcolor)
+                                        ? Color(0xFFFF9900)
+                                        : Colors.grey.shade100,
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        bottom: 6, top: 6, left: 16, right: 16),
+                                    child: Text(
+                                      NeedTypeOption[index].typeName ?? '',
+                                      style: GoogleFonts.openSans(
+                                          color: (index == _selectcolor)
+                                              ? Colors.white
+                                              : Color(0xFF555555)),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -525,60 +503,56 @@ class _NeedsViewState extends State<NeedsView> {
                 ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Row(
-                      children: List.generate(
-                        NeedTypeOption[_selectcolor ?? 0].typeStatus?.length??0,
-                            (index) {
-                          return InkWell(
-                            onTap: () {
-                              // setState(() {
+                  child: Row(
+                    children: List.generate(NeedTypeOption[_selectcolor].typeStatus?.length??0, (index) {
+                      final typeStatus = NeedTypeOption[_selectcolor].typeStatus?[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 8, top: 4),
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
                               _indexcolor = index;
-                              status_id = NeedTypeOption[_selectcolor ?? 0]
-                                  .typeStatus?[index]
-                                  .statusId ??
-                                  '';
-                              fetchNeedResponse();
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: 4, top: 4, left: 2, right: 2),
-                              child: ClipPath(
-                                clipper: ArrowClipper(15, 32, Edge.RIGHT),
-                                child: Container(
-                                  padding: EdgeInsets.all(8),
-                                  height: 34,
-                                  // width: 150,
-                                  color: (index == _indexcolor)
-                                      ? Color(0xFFFF9900)
-                                      : Colors.grey.shade100,
-                                  child: Center(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(left: 8, right: 16),
-                                        child: Text(
-                                          "${NeedTypeOption[_selectcolor ?? 0].typeStatus?[index].statusName}",
-                                          style: GoogleFonts.openSans(
-                                            color: (index == _indexcolor)
-                                                ? Colors.white
-                                                : Color(0xFF555555),
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
+                            });
+                            status_id = typeStatus?.statusId ?? '';
+                            fetchNeedResponse();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                bottom: 4, top: 4, left: 2, right: 2),
+                            child: ClipPath(
+                              clipper: ArrowClipper(15, 32, Edge.RIGHT),
+                              child: Container(
+                                padding: EdgeInsets.all(8),
+                                height: 34,
+                                // width: 150,
+                                color: (index == _indexcolor)
+                                    ? Color(0xFFFF9900)
+                                    : Colors.grey.shade100,
+                                child: Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 8, right: 16),
+                                      child: Text(
+                                        "${typeStatus?.statusName}",
+                                        style: GoogleFonts.openSans(
+                                          color: (index == _indexcolor)
+                                              ? Colors.white
+                                              : Color(0xFF555555),
                                         ),
-                                      )),
-                                ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                    )),
                               ),
-                              // Text(
-                              //   NeedTypeOption[index].typeName ?? '',
-                              //   style: GoogleFonts.openSans(
-                              //       fontSize: 12.0, color: (index == _selectcolor)?Colors.white:Color(0xFF555555)),
-                              // ),
                             ),
-                          );
-                        },
-                      ),
-                    ),
+                            // Text(
+                            //   NeedTypeOption[index].typeName ?? '',
+                            //   style: GoogleFonts.openSans(
+                            //       fontSize: 12.0, color: (index == _selectcolor)?Colors.white:Color(0xFF555555)),
+                            // ),
+                          ),
+                        ),
+                      );
+                    }),
                   ),
                 ),
                 Divider(),
@@ -1014,8 +988,32 @@ class _NeedsViewState extends State<NeedsView> {
     ));
   }
 
-  String priorityId = '';
+  Future<List<AnnounceData>> fetchAnnounce() async {
+    final uri =
+    Uri.parse("$host/api/origami/announce/announce.php");
+    final response = await http.post(
+      uri, headers: {'Authorization': 'Bearer ${widget.Authorization}'},
+      body: {
+        'comp_id': widget.employee.comp_id,
+        'emp_id': widget.employee.emp_id,
+        'Authorization': widget.Authorization,
+      },
+    );
 
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      // เข้าถึงข้อมูลในคีย์ 'instructors'
+      final List<dynamic> instructorsJson = jsonResponse['announce_data'];
+      // แปลงข้อมูลจาก JSON เป็น List<Instructor>
+      return instructorsJson
+          .map((json) => AnnounceData.fromJson(json))
+          .toList();
+    } else {
+      throw Exception('Failed to load instructors');
+    }
+  }
+
+  String priorityId = '';
   List<NeedTypeRespond> NeedTypeOption = [];
   List<NeedTypeItemRespond> NeedTypeItemOption = [];
   Future<void> fetchTypeRespond() async {
@@ -1673,16 +1671,16 @@ class NeedTypeRespond {
   String? typeName;
   String? typeColor;
   String? typeImage;
-  List<Status>? typeStatus;
-  List<String>? statusListString;
+  List<Status> typeStatus;
+  List<String> statusListString;
 
   NeedTypeRespond({
     this.typeId,
     this.typeName,
     this.typeColor,
     this.typeImage,
-    this.typeStatus,
-    this.statusListString,
+    required this.typeStatus,
+    required this.statusListString,
   });
 
   factory NeedTypeRespond.fromJson(Map<String, dynamic> json) {
@@ -1694,15 +1692,16 @@ class NeedTypeRespond {
       typeStatus: (json['type_status'] as List)
           .map((statusJson) => Status.fromJson(statusJson))
           .toList(),
-      statusListString: List<String>.from(json['status_list_string']),
+      statusListString:
+      (json['status_list_string'] as List).map((e) => e as String).toList(),
     );
   }
 }
 
 class Status {
-  String? statusId;
-  String? statusName;
-  int? statusFlag;
+  final String? statusId;
+  final String? statusName;
+  final int? statusFlag;
 
   Status({
     this.statusId,
@@ -1720,10 +1719,10 @@ class Status {
 }
 
 class NeedTypeItemRespond {
-  String? type_id;
-  String? type_name;
-  String? type_color;
-  String? type_image;
+  final String? type_id;
+  final String? type_name;
+  final String? type_color;
+  final String? type_image;
 
   NeedTypeItemRespond({
     this.type_id,

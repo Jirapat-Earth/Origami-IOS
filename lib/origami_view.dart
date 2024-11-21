@@ -1,5 +1,7 @@
+import 'dart:ui';
+
 import 'package:http/http.dart' as http;
-import 'package:origami_ios/time_sample/time_sample.dart';
+import 'package:origami_ios/time_sample/time_stamp.dart';
 import '../imports.dart';
 
 class OrigamiPage extends StatefulWidget {
@@ -17,9 +19,15 @@ class OrigamiPage extends StatefulWidget {
 
 class _OrigamiPageState extends State<OrigamiPage> {
   int _index = 12;
-  static var optionStyle = GoogleFonts.openSans(
+  TextStyle optionStyle = GoogleFonts.openSans(
     fontSize: 24,
     fontWeight: FontWeight.bold,
+    color: Color(0xFF555555),
+  );
+  TextStyle styleOrange = GoogleFonts.openSans(
+    color: Color(0xFFFF9900),
+  );
+  TextStyle styleGrey = GoogleFonts.openSans(
     color: Color(0xFF555555),
   );
 
@@ -37,7 +45,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
   GetTimeStampSim? timeStampObject;
   List<GetTimeStampSim> timeStampList = [];
   Widget build(BuildContext context) {
-    double drawerWidth = MediaQuery.of(context).size.width * 0.6;
+    double drawerWidth = MediaQuery.of(context).size.width * 0.8;
     return WillPopScope(
       onWillPop: () async {
         // เช็คว่ามีการกดปุ่มย้อนกลับครั้งล่าสุดหรือไม่ และเวลาห่างจากปัจจุบันมากกว่า 2 วินาทีหรือไม่
@@ -102,7 +110,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
           ],
         ),
         drawer: Container(
-          // width: drawerWidth,
+          width: drawerWidth,
           child: Drawer(
             elevation: 0,
             backgroundColor: Colors.white,
@@ -528,10 +536,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
                   ),
                   Text(
                     title,
-                    style: GoogleFonts.openSans(
-                        color: (_index == page)
-                            ? Color(0xFFFF9900)
-                            : Color(0xFF555555)),
+                    style: (_index == page)?styleOrange:styleGrey,
                   ),
                 ],
               ),
@@ -598,20 +603,13 @@ class _OrigamiPageState extends State<OrigamiPage> {
                   elevation: 0,
                   title: Text(
                     'Do you want to log out?',
-                    style: GoogleFonts.openSans(
-                      fontSize: 16,
-                      color: Color(0xFF555555),
-                      // fontWeight: FontWeight.bold,
-                    ),
+                    style: styleGrey,
                   ),
                   actions: <Widget>[
                     TextButton(
                       child: Text(
                         '$Cancel',
-                        style: GoogleFonts.openSans(
-                          color: Color(0xFF555555),
-                          // fontWeight: FontWeight.bold,
-                        ),
+                        style: styleGrey,
                       ),
                       onPressed: () {
                         setState(() {
@@ -894,11 +892,7 @@ class _OrigamiPageState extends State<OrigamiPage> {
                                               '${branch?.branch_name ?? ''}',
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
-                                              style: GoogleFonts.openSans(
-                                                fontSize: 16,
-                                                color: Color(0xFF555555),
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                              style: styleGrey,
                                             ),
                                           ),
                                         ],

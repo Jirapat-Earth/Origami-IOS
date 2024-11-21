@@ -55,7 +55,13 @@ export 'package:origami_ios/IDOC/idoc_view.dart';
 export 'package:signature/signature.dart';
 export 'package:intl/date_symbol_data_local.dart'; // โหลดข้อมูล locale สำหรับการแสดงวันที่
 export 'package:syncfusion_flutter_calendar/calendar.dart';
-export 'package:file_picker/file_picker.dart';
 export 'package:permission_handler/permission_handler.dart';
 export 'package:percent_indicator/percent_indicator.dart';
 export 'package:flutter_image_compress/flutter_image_compress.dart';
+export 'package:flutter_switch/flutter_switch.dart';
+export 'package:multi_select_flutter/multi_select_flutter.dart';
+export 'package:open_file/open_file.dart';
+// export 'package:archive/archive_io.dart'; // สำหรับแตกไฟล์ ZIP
+export 'package:file_picker/file_picker.dart'; // สำหรับเลือกไฟล์
+export 'package:xml/xml.dart'; // สำหรับอ่าน XML
+

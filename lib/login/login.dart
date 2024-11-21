@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../imports.dart';
@@ -17,6 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailforgotController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
@@ -27,11 +29,11 @@ class _LoginPageState extends State<LoginPage> {
     _saveCredentials(username, password);
     if (username.isEmpty && password.isEmpty) {
       // Show error message if username or password is empty
-      // if (_formKey.currentState!.validate()) {
-      //   String email = _usernameController.text;
-      //   String password = _passwordController.text;
-      //   Fluttertoast.showToast(msg: 'Logged in as $email');
-      // }
+      if (_formKey.currentState!.validate()) {
+        String email = _usernameController.text;
+        String password = _passwordController.text;
+        Fluttertoast.showToast(msg: 'Logged in as $email');
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please enter both email and password.',
@@ -53,8 +55,8 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        final String Authorization = jsonResponse['Authorization'];
         if (jsonResponse['status'] == true) {
+          final String Authorization = jsonResponse['Authorization'];
           final List<dynamic> employeeJson = jsonResponse['employee_data'];
           List<Employee> employee = [];
           setState(() {
@@ -76,30 +78,23 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           );
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => TrandarShop(),
-          //   ),
-          // );
         } else {
-          // If login fails, show error message
+          final String error_message = jsonResponse['message'];
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content: Text(
-              'Username not found!',
-              style: GoogleFonts.openSans(
-                color: Colors.white,
-              ),
-            )
-                // 'Email or Password is incorrect, please try again',),
+              content: Text(
+                error_message, // 'Email or Password is incorrect, please try again',
+                style: GoogleFonts.openSans(
+                  color: Colors.white,
                 ),
+              ),
+            ),
           );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Login failed. Please try again.',
+            content: Text('Status Code Error!',
                 style: GoogleFonts.openSans(
                   color: Colors.white,
                 )),
@@ -264,16 +259,30 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  String forgot_mail = '';
   @override
   void initState() {
     super.initState();
     Translate();
     _loadSelectedRadio();
     _loadCredentials();
+    _emailforgotController.addListener(() {
+      forgot_mail = _emailforgotController.text;
+      print("Current text: ${_emailforgotController.text}");
+    });
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _emailforgotController.dispose();
+    super.dispose();
   }
 
   DateTime? lastPressed;
   bool isPass = true;
+  bool _forgot = false;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -300,7 +309,6 @@ class _LoginPageState extends State<LoginPage> {
           );
           return false; // ไม่ออกจากแอป
         }
-
         // ถ้ากดปุ่มย้อนกลับสองครั้งภายในเวลาที่กำหนด ให้ออกจากแอป
         return true;
       },
@@ -328,201 +336,7 @@ class _LoginPageState extends State<LoginPage> {
                             color: Color.fromRGBO(0, 0, 0, 0.05),
                             child: Padding(
                               padding: const EdgeInsets.all(24.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 150,
-                                    height: 150,
-                                    child: Image.asset(
-                                      'assets/images/logoOrigami/ogm_logo.png',
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  _isLoading
-                                      ? Center(
-                                          child: LoadingAnimationWidget
-                                              .staggeredDotsWave(
-                                            size: 75,
-                                            color: Colors.amber,
-                                          ),
-                                        )
-                                      : Container(),
-                                  Form(
-                                    key: _formKey,
-                                    child: Column(
-                                      children: [
-                                        TextFormField(
-                                          controller: _usernameController,
-                                          style: GoogleFonts.openSans(
-                                            color: Colors.white,
-                                          ),
-                                          decoration: InputDecoration(
-                                            labelText: 'Email',
-                                            labelStyle: GoogleFonts.openSans(
-                                              color: Colors.white,
-                                            ),
-                                            hintStyle: GoogleFonts.openSans(
-                                              color: Colors.white,
-                                            ),
-                                            prefixIcon: Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFFF9900),
-                                                width: 1.0,
-                                              ),
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            disabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10),
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
-                                                width: 1,
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
-                                                width: 1.0,
-                                              ),
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
-                                                width: 1.0,
-                                              ),
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 16.0),
-                                        TextFormField(
-                                          controller: _passwordController,
-                                          style: GoogleFonts.openSans(
-                                            color: Colors.white,
-                                          ),
-                                          obscureText: isPass,
-                                          decoration: InputDecoration(
-                                            labelText: 'Password',
-                                            labelStyle: GoogleFonts.openSans(
-                                              color: Colors.white,
-                                            ),
-                                            hintStyle: GoogleFonts.openSans(
-                                              color: Colors.white,
-                                            ),
-                                            prefixIcon: Icon(
-                                              Icons.lock,
-                                              color: Colors.white,
-                                            ),
-                                            suffixIcon: Container(
-                                              alignment: Alignment.centerRight,
-                                              width: 10,
-                                              child: Center(
-                                                child: IconButton(
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        (isPass == true)
-                                                            ? isPass = false
-                                                            : isPass = true;
-                                                      });
-                                                    },
-                                                    icon: Icon(isPass
-                                                        ? Icons.remove_red_eye
-                                                        : Icons
-                                                            .remove_red_eye_outlined),
-                                                    color: Colors.white,
-                                                    iconSize: 18),
-                                              ),
-                                            ),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFFF9900),
-                                                width: 1.0,
-                                              ),
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            disabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10),
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
-                                                width: 1,
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
-                                                width: 1.0,
-                                              ),
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
-                                                width: 1.0,
-                                              ),
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 8),
-                                        Row(
-                                          children: [
-                                            Spacer(),
-                                            TextButton(
-                                              onPressed: () {  },
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.end,
-                                                  children: [
-                                                    Icon(Icons.lock_open,color: Colors.white,size: 20),
-                                                    SizedBox(width: 8),
-                                                    Text('Forgot Pwd?',style: GoogleFonts.openSans(
-                                                      color: Colors.white,
-                                                      fontWeight: FontWeight.w500,
-                                                    ),),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 16.0),
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            padding: const EdgeInsets.all(1),
-                                            foregroundColor: Colors.white,
-                                            backgroundColor: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                            ),
-                                          ),
-                                          onPressed: _login,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 60,
-                                                right: 60,
-                                                bottom: 14,
-                                                top: 14),
-                                            child: Text(
-                                              'LOGIN',
-                                              style: GoogleFonts.openSans(
-                                                color: Color(0xFF555555),
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              child: (_forgot == false)?_loginWidget():_forgotWidget(),
                             ),
                           ),
                         ),
@@ -544,6 +358,434 @@ class _LoginPageState extends State<LoginPage> {
           )),
     );
   }
+
+  Widget _loginWidget(){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: 150,
+          height: 150,
+          child: Image.asset(
+            'assets/images/logoOrigami/ogm_logo.png',
+            fit: BoxFit.cover,
+          ),
+        ),
+        _isLoading
+            ? Center(
+          child: LoadingAnimationWidget
+              .staggeredDotsWave(
+            size: 75,
+            color: Colors.amber,
+          ),
+        )
+            : Container(),
+        SizedBox(height: 16),
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _usernameController,
+                style: GoogleFonts.openSans(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  labelStyle: GoogleFonts.openSans(
+                    color: Colors.white,
+                  ),
+                  hintStyle: GoogleFonts.openSans(
+                    color: Colors.white,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFFFF9900),
+                      width: 1.0,
+                    ),
+                    borderRadius:
+                    BorderRadius.circular(10),
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Color(
+                          0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                      width: 1,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(
+                          0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                      width: 1.0,
+                    ),
+                    borderRadius:
+                    BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(
+                          0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
+                      width: 1.0,
+                    ),
+                    borderRadius:
+                    BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: _passwordController,
+                style: GoogleFonts.openSans(
+                  color: Colors.white,
+                ),
+                obscureText: isPass,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  labelStyle: GoogleFonts.openSans(
+                    color: Colors.white,
+                  ),
+                  hintStyle: GoogleFonts.openSans(
+                    color: Colors.white,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.lock,
+                    color: Colors.white,
+                  ),
+                  suffixIcon: Container(
+                    alignment: Alignment.centerRight,
+                    width: 10,
+                    child: Center(
+                      child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              (isPass == true)
+                                  ? isPass = false
+                                  : isPass = true;
+                            });
+                          },
+                          icon: Icon(isPass
+                              ? Icons.remove_red_eye
+                              : Icons
+                              .remove_red_eye_outlined),
+                          color: Colors.white,
+                          iconSize: 18),
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0xFFFF9900),
+                      width: 1.0,
+                    ),
+                    borderRadius:
+                    BorderRadius.circular(10),
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius:
+                    BorderRadius.circular(10),
+                    borderSide: BorderSide(
+                      color: Color(
+                          0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                      width: 1,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(
+                          0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                      width: 1.0,
+                    ),
+                    borderRadius:
+                    BorderRadius.circular(10),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(
+                          0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
+                      width: 1.0,
+                    ),
+                    borderRadius:
+                    BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _forgot = true;
+                      });
+                    },
+                    child: Padding(
+                      padding:
+                      const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.end,
+                        children: [
+                          Icon(Icons.lock_open,
+                              color: Colors.white,
+                              size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                            'Forgot Pwd?',
+                            style:
+                            GoogleFonts.openSans(
+                              color: Colors.white,
+                              fontWeight:
+                              FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16.0),
+              Container(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(1),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                      BorderRadius.circular(15),
+                    ),
+                  ),
+                  onPressed: _login,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 60,
+                        right: 60,
+                        bottom: 14,
+                        top: 14),
+                    child: Text(
+                      'LOGIN',
+                      style: GoogleFonts.openSans(
+                        color: Color(0xFF555555),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _forgotWidget(){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: 150,
+          height: 150,
+          child: Image.asset(
+            'assets/images/logoOrigami/ogm_logo.png',
+            fit: BoxFit.cover,
+          ),
+        ),
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              SizedBox(height: 16),
+              Text(
+                'Forgot your password?',
+                style:
+                GoogleFonts.openSans(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  '    Please enter your email address to request a password reset.',
+                  style:
+                  GoogleFonts.openSans(
+                    color: Colors.orange.shade50,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: _emailforgotController,
+                  style: GoogleFonts.openSans(
+                    color: Colors.white,
+                  ),
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    labelStyle: GoogleFonts.openSans(
+                      color: Colors.white,
+                    ),
+                    hintStyle: GoogleFonts.openSans(
+                      color: Colors.white,
+                    ),
+                    prefixIcon: Icon(
+                      Icons.person,
+                      color: Colors.white,
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFFFF9900),
+                        width: 1.0,
+                      ),
+                      borderRadius:
+                      BorderRadius.circular(10),
+                    ),
+                    disabledBorder: OutlineInputBorder(
+                      borderRadius:
+                      BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: Color(
+                            0xFFFF9900), // ตั้งสีขอบเมื่อตัวเลือกถูกปิดใช้งาน
+                        width: 1,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(
+                            0xFFFF9900), // ขอบสีส้มตอนที่ไม่ได้โฟกัส
+                        width: 1.0,
+                      ),
+                      borderRadius:
+                      BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(
+                            0xFFFF9900), // ขอบสีส้มตอนที่โฟกัส
+                        width: 1.0,
+                      ),
+                      borderRadius:
+                      BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Container(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(1),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                      BorderRadius.circular(15),
+                    ),
+                  ),
+                  onPressed: () => _fetchForgetMail(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 60,
+                        right: 60,
+                        bottom: 14,
+                        top: 14),
+                    child: Text(
+                      'SEND',
+                      style: GoogleFonts.openSans(
+                        color: Color(0xFF555555),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _forgot = false;
+                      });
+                    },
+                    child: Padding(
+                      padding:
+                      const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.start,
+                        children: [
+                          Icon(Icons.chevron_left,
+                              color: Colors.white,
+                              size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                            'Return to login.',
+                            style:
+                            GoogleFonts.openSans(
+                              color: Colors.white,
+                              fontWeight:
+                              FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Spacer(),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _fetchForgetMail() async {
+    final uri = Uri.parse("$host/api/origami/forgot_password.php");
+    final response = await http.post(
+      uri,
+      body: {
+        'email': forgot_mail,
+      },
+    );
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['status'] == false) {
+        final message = jsonResponse['message'];
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              message,
+              style: GoogleFonts.openSans(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+      }
+    } else {
+      throw Exception('Failed to load projects');
+    }
+  }
+
 }
 
 class Employee {

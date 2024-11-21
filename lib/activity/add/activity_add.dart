@@ -62,6 +62,17 @@ class _activityAddState extends State<activityAdd> {
     // addNewContactList.add();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _typeController.dispose();
+    _subjectController.dispose();
+    _descriptionController.dispose();
+    _costController.dispose();
+    _searchController.dispose();
+    _searchfilterController.dispose();
+  }
+
   String currentTime = '';
   TimeOfDay selectedTimeIn = TimeOfDay(hour: 09, minute: 00);
   TimeOfDay selectedTimeOut = TimeOfDay(hour: 18, minute: 00);
